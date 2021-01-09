@@ -1,0 +1,8 @@
+*.html
+.DS_Store
+__pycache__/
+html/
+_build/
+.vscode/
+*.out
+*.egg-info
