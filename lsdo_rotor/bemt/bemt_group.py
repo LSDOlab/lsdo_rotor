@@ -3,6 +3,7 @@ import numpy as np
 import omtools.api as ot
 
 from lsdo_rotor.airfoil.quadratic_airfoil_group import QuadraticAirfoilGroup
+from lsdo_rotor.inputs.inputs_group import InputsGroup
 
 
 class BEMTGroup(ot.ImplicitComponent):
@@ -15,12 +16,12 @@ class BEMTGroup(ot.ImplicitComponent):
 
         g = self.group
 
-        group = ot.Group()
-        group.create_indep_var('twist', val=50. * np.pi / 180.)
-        group.create_indep_var('Vx', val=50)
-        group.create_indep_var('Vt', val=100.)
-        group.create_indep_var('sigma', val=0.15)
-        g.add_subsystem('inputs_group', group, promotes=['*'])
+        # group = ot.Group()
+        # group.create_indep_var('twist', val=50. * np.pi / 180.)
+        # group.create_indep_var('Vx', val=50)
+        # group.create_indep_var('Vt', val=100.)
+        # group.create_indep_var('sigma', val=0.15)
+        # g.add_subsystem('inputs_group', group, promotes=['*'])
 
         phi = g.create_implicit_output('phi', shape=shape)
         Vx = g.declare_input('Vx')
@@ -39,7 +40,7 @@ class BEMTGroup(ot.ImplicitComponent):
 
         Cx = Cl * ot.cos(phi) - Cd * ot.sin(phi)
         Ct = Cl * ot.sin(phi) + Cd * ot.cos(phi)
-        term1 = Vt * 2 * Ct * ot.sin(2 * phi) / Cx
+        term1 = Vt * (2 * Ct * ot.sin(2 * phi) / Cx  -  Cx * sigma)
         term2 = Vx * (2 * ot.sin(2 * phi) + Ct * sigma)
         residual = term1 - term2
 
