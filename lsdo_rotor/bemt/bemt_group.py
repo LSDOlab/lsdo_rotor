@@ -28,8 +28,9 @@ class BEMTGroup(ot.ImplicitComponent):
         Vt = g.declare_input('Vt')
         sigma = g.declare_input('sigma')
         twist = g.declare_input('twist')
-
+        print(type(Vx),'Vx')
         alpha = twist - phi
+        print(alpha,'alpha')
         g.register_output('alpha', alpha)
 
         group = QuadraticAirfoilGroup(shape=shape)
@@ -39,6 +40,7 @@ class BEMTGroup(ot.ImplicitComponent):
         Cd = g.declare_input('Cd')
 
         Cx = Cl * ot.cos(phi) - Cd * ot.sin(phi)
+        print(type(Cx),'Cx_type')
         Ct = Cl * ot.sin(phi) + Cd * ot.cos(phi)
         term1 = Vt * (2 * Ct * ot.sin(2 * phi) / Cx  -  Cx * sigma)
         term2 = Vx * (2 * ot.sin(2 * phi) + Ct * sigma)

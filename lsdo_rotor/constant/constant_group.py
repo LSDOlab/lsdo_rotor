@@ -14,7 +14,9 @@ class ConstantGroup(ot.Group):
         ux = self.declare_input('ux')
         ut = self.declare_input('ut')
         
-        C = Vt * ut /(2 * (2 * ux - Vx)) + Vt * ux /(Vt - ut) - Vx
+        C = (Vt * ut /(2 * (2 * ux - Vx)) + Vt * ux /(Vt - ut) - Vx)  
 
-        self.register_output('C', C)
+        
+        
+        self.register_output('C',C)
         

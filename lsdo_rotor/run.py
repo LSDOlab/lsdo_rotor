@@ -8,7 +8,7 @@ from lsdo_rotor.polar.polar_group import PolarGroup
 from lsdo_rotor.induced_velocity.induced_velocity_group import InducedVelocityGroup
 from lsdo_rotor.constant.constant_group import ConstantGroup
 from lsdo_rotor.efficiency.efficiency_group import EfficiencyGroup
-
+from lsdo_rotor.quartic_solver.quartic_solver_group import BracketedImplicitComp
 
 shape = (1,)
 
@@ -44,31 +44,20 @@ group = EfficiencyGroup(
 )
 prob.model.add_subsystem('efficiency_group', group, promotes=['*'])
 
+group = BracketedImplicitComp(
+    shape=shape,
+)
+prob.model.add_subsystem('bracketed_implicit_group', group, promotes=['*'])
+
+
+
+
 prob.setup(check=True)
 prob.run_model()
 
+
 # prob.model.list_outputs()
-print(prob['phi'],'phi')
 
 
-# print(prob['Cx'],'Cx_A')
-# print(prob['Ct'],'Ct_B')
-# print(prob['Vx'],'Vx_C')
-# print(prob['Vt'],'Vt_D')
-# print(prob['sigma'],'sigma_E')
-# print(prob['phi'],'phi_F')
-print(prob['ux'],'ux')
-print(prob['ut'],'ut')
-# print(prob['a'],'a')
-# print(prob['b'],'b')
-# print(prob['e'],'c')
-# print(prob['d'],'d')
-# print(prob['e'],'e')
-# print(prob['p'],'p')
-# print(prob['q'],'q')
-# print(prob['Q'],'Q')
-# print(prob['S'],'S')
-# print(prob['delta_0'],'delta_0')
-# print(prob['delta_1'],'delta_1')
 print(prob['eta'],'eta')
-print(prob['C'],'Constant C')
+
