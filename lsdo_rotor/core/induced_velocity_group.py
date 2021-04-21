@@ -1,6 +1,5 @@
 import omtools.api as ot
 import numpy as np
-from lsdo_rotor.core.airfoil_group import AirfoilGroup
 from lsdo_rotor.rotor_parameters import RotorParameters
 
 class InducedVelocityGroup(ot.Group):
@@ -74,47 +73,33 @@ class InducedVelocityGroup(ot.Group):
             rotational_speed = self.declare_input('_rotational_speed', shape=shape)
             n = self.declare_input('reference_rotational_speed') 
 
-            Cl = self.declare_input('_true_Cl', shape=shape)
-            Cd = self.declare_input('_true_Cd', shape=shape)
-            
-            Cl2 = self.declare_input('_Cl_BEMT', shape=shape)
-            Cd2 = self.declare_input('_Cd_BEMT', shape=shape)
-
-            
+            Cl = self.declare_input('_Cl', shape=shape)
+            Cd = self.declare_input('_Cd', shape=shape)
 
             Cx = Cl * ot.cos(phi_BEMT) - Cd * ot.sin(phi_BEMT)
             Ct = Cl * ot.sin(phi_BEMT) + Cd * ot.cos(phi_BEMT)
-
-            Cx2 = Cl2 * ot.cos(phi_BEMT) - Cd2 * ot.sin(phi_BEMT)
-            Ct2 = Cl2 * ot.sin(phi_BEMT) + Cd2 * ot.cos(phi_BEMT)
-        
-            alpha = twist - phi_BEMT
             
-            ux = (4 * F * Vt * ot.sin(phi_BEMT)**2) / (4 * F * ot.sin(phi_BEMT) * ot.cos(phi_BEMT) +  sigma * Ct)  
-            ux2 = (4 * F * Vt * ot.sin(phi_BEMT)**2) / (4 * F * ot.sin(phi_BEMT) * ot.cos(phi_BEMT) +  sigma * Ct2)        
-            # ux = Vx + sigma * Cx * Vt / (4 * F * ot.sin(phi_BEMT) * ot.cos(phi_BEMT) + sigma * Ct)            
+            ux = (4 * F * Vt * ot.sin(phi_BEMT)**2) / (4 * F * ot.sin(phi_BEMT) * ot.cos(phi_BEMT) +  sigma * Ct)         
+            # ux = Vx + sigma * Cx * Vt / (4 * F * ot.sin(phi_BEMT) * ot.cos(phi_BEMT) + sigma * Ct)  
+           
             ut = 2 * Vt * sigma * Ct / (2 * F * ot.sin(2 * phi_BEMT) + sigma * Ct)
-            ut2 = 2 * Vt * sigma * Ct2 / (2 * F * ot.sin(2 * phi_BEMT) + sigma * Ct2)
 
+            # Old equations for induced velocities that break down at Vx = 0
             # ux = Vx * 4 * F * ot.sin(phi_BEMT)**2 / (4 * F *  ot.sin(phi_BEMT)**2 -sigma * Cx)
             # ut = Vx * 2 * F * sigma * Ct / (4 * F * ot.sin(phi_BEMT)**2 -sigma * Cx)
-
-            dT2 = num_blades * Cx * 0.5 * 1.2 * (ux**2 + (Vt - 0.5 * ut)**2) * chord * dr
-            dQ2 = num_blades * Ct * 0.5 * 1.2 * (ux**2 + (Vt - 0.5 * ut)**2) * chord * dr * radius
-
-            dT22 = num_blades * Cx2 * 0.5 * 1.2 * (ux2**2 + (Vt - 0.5 * ut2)**2) * chord * dr
-            dQ22 = num_blades * Ct2 * 0.5 * 1.2 * (ux2**2 + (Vt - 0.5 * ut2)**2) * chord * dr * radius
 
             dT = 4 * np.pi * radius * 1.2 * ux * (ux - Vx) * F * dr            
             dQ = 2 * np.pi * radius**2 * 1.2 * ux * ut * F * dr
 
-            dT1 = 4 * np.pi * radius * 1.2 * ux2 * (ux2 - Vx) * F * dr            
-            dQ1 = 2 * np.pi * radius**2 * 1.2 * ux2 * ut2 * F * dr
-
             T = ot.sum(dT)
             Q = ot.sum(dQ)
 
-        
+            dT2 = num_blades * Cx * 0.5 * 1.2 * (ux**2 + (Vt - 0.5 * ut)**2) * chord * dr
+            dQ2 = num_blades * Ct * 0.5 * 1.2 * (ux**2 + (Vt - 0.5 * ut)**2) * chord * dr * radius
+
+            T2 = ot.sum(dT2)
+            Q2 = ot.sum(dQ2)
+
             eta = Vx * dT / rotational_speed / 2 / np.pi / dQ
 
             eta_1 = Vx / ux
@@ -125,7 +110,7 @@ class InducedVelocityGroup(ot.Group):
             FOM  = eta_2 * eta_3
 
             eta_total = Vx_ref * T / (n * 2 * np.pi * Q)
-
+            alpha = twist - phi_BEMT
             
 
 
@@ -134,17 +119,16 @@ class InducedVelocityGroup(ot.Group):
             self.register_output('BEMT_tangential_induced_velocity',ut)
             self.register_output('BEMT_local_thrust', dT)
             self.register_output('BEMT_local_thrust_2', dT2)
-            self.register_output('BEMT_local_thrust_22', dT22)
-            self.register_output('BEMT_local_thrust_1', dT1)
-
-            self.register_output('BEMT_total_thrust',T)
+           
+            
             self.register_output('BEMT_local_torque', dQ)
             self.register_output('BEMT_local_torque_2', dQ2)
-            self.register_output('BEMT_local_torque_22', dQ22)
-            self.register_output('BEMT_local_torque_1', dQ1)
 
 
             self.register_output('BEMT_total_torque',Q)
+            self.register_output('BEMT_total_thrust',T)
+            self.register_output('BEMT_total_torque_2',Q2)
+            self.register_output('BEMT_total_thrust_2',T2)
             self.register_output('BEMT_local_efficiency',eta)
             self.register_output('BEMT_total_efficiency',eta_total)
             self.register_output('BEMT_local_AoA',alpha)
@@ -154,8 +138,7 @@ class InducedVelocityGroup(ot.Group):
             self.register_output('FOM', FOM)
             self.register_output('Cx',Cx)
             self.register_output('Ct',Ct)
-            self.register_output('Cx2',Cx2)
-            self.register_output('Ct2',Ct2)
+            
 
-            self.add_constraint('BEMT_total_thrust', equals = 1)
-            self.add_objective('BEMT_total_torque')
+            # self.add_constraint('BEMT_total_thrust', equals = 1)
+            # self.add_objective('BEMT_total_torque')

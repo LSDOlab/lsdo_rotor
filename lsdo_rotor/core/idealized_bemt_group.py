@@ -9,9 +9,10 @@ from lsdo_rotor.core.inputs_group import InputsGroup
 from lsdo_rotor.core.preprocess_group import PreprocessGroup
 from lsdo_rotor.core.bemt_implicit_component import BEMTImplicitComponent
 from lsdo_rotor.core.induced_velocity_group import InducedVelocityGroup
-from lsdo_rotor.core.airfoil_group import AirfoilGroup
 from lsdo_rotor.core.loss_group import LossGroup
 from lsdo_rotor.core.viterna_explicit_component import ViternaExplicitComponent
+from lsdo_rotor.airfoil.quadratic_airfoil_group import QuadraticAirfoilGroup
+from lsdo_rotor.core.smoothing_explicit_component import SmoothingExplicitComponent
 # from lsdo_rotor.core.bc_implicit_component import BCImplicitComponent
 
 
@@ -93,7 +94,7 @@ class IdealizedBEMTGroup(ot.Group):
                 shape=shape,
             )
             self.add_subsystem('preprocess_group', group, promotes=['*'])
-
+            
             comp = BEMTImplicitComponent(
                 rotor = rotor,
                 shape=shape,
@@ -101,15 +102,22 @@ class IdealizedBEMTGroup(ot.Group):
                 num_radial=num_radial,
                 )
             self.add_subsystem('bemt_implicit_component', comp, promotes=['*'])
+            
+            _phi_BEMT = self.declare_input('_phi_BEMT', shape=shape)
+            _pitch = self.declare_input('_pitch', shape=shape)
 
-            group = AirfoilGroup(
-                shape=shape,
-            )
-            self.add_subsystem('airfoil_group', group, promotes=['*'])
+            alpha = _pitch - _phi_BEMT
+            self.register_output('_alpha', alpha)
+
+            # group = QuadraticAirfoilGroup(
+            #     shape=shape,
+            #     rotor=rotor,
+            # )
+            # self.add_subsystem('airfoil_group', group, promotes=['*'])
 
             comp = ViternaExplicitComponent(
                 shape = shape,
-                # rotor = rotor,
+                rotor = rotor,
             )
             self.add_subsystem('viterna_explicit_component', comp, promotes=['*'])
 

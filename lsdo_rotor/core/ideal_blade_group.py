@@ -5,7 +5,7 @@ from lsdo_rotor.core.inputs_group import InputsGroup
 from lsdo_rotor.core.preprocess_group import PreprocessGroup
 from lsdo_rotor.core.efficiency_coeffs_group import EfficiencyCoeffsGroup
 from lsdo_rotor.core.efficiency_implicit_component import EfficiencyImplicitComponent
-from lsdo_rotor.core.airfoil_group import AirfoilGroup
+
 
 
 class IdealBladeGroup(ot.Group):
@@ -40,9 +40,6 @@ class IdealBladeGroup(ot.Group):
                 shape=shape,
             )
             self.add_subsystem('preprocess_group', group, promotes=['*'])
-
-            group = AirfoilGroup(shape=shape)
-            self.add_subsystem('airfoil_group',group, promotes=['*'])
 
             group = EfficiencyCoeffsGroup(shape=shape)
             self.add_subsystem('efficiency_coeffs_group', group, promotes=['*'])

@@ -4,7 +4,8 @@ import omtools.api as ot
 
 from lsdo_rotor.airfoil.quadratic_airfoil_group import QuadraticAirfoilGroup
 from lsdo_rotor.rotor_parameters import RotorParameters
-
+from lsdo_rotor.core.smoothing_explicit_component import SmoothingExplicitComponent
+from lsdo_rotor.core.viterna_explicit_component import ViternaExplicitComponent
 class BEMTImplicitComponent(ot.ImplicitComponent):
 
     def initialize(self):
@@ -84,28 +85,19 @@ class BEMTImplicitComponent(ot.ImplicitComponent):
             radius = g.declare_input('_radius',shape= shape)
             rotor_radius = g.declare_input('_rotor_radius', shape= shape)
             hub_radius = g.declare_input('_hub_radius', shape = shape)
-
-
+            
             alpha = twist - phi_BEMT
             g.register_output('_alpha', alpha)
+        
 
-            group = QuadraticAirfoilGroup(
-                shape=shape,
+            comp  = ViternaExplicitComponent(
+                shape = shape,
                 rotor = rotor,
             )
-            g.add_subsystem('quadratic_airfoil_group', group, promotes=['*'])
+            g.add_subsystem('viterna_explicit_component', comp, promotes = ['*'])
 
-            Cl = g.declare_input('Cl' ,shape=shape)
-            Cd = g.declare_input('Cd', shape=shape)
-
-            # Cl0_ref = g.declare_input('Cl0',shape=shape)
-            # Cla_ref = g.declare_input('Cla',shape=shape)
-            # Cdmin_ref = g.declare_input('Cdmin',shape=shape)
-            # K_ref = g.declare_input('K',shape=shape)
-            # alpha_Cdmin_ref = g.declare_input('alpha_Cdmin',shape=shape)
-
-            # Cl = Cl0_ref + Cla_ref * alpha
-            # Cd = Cdmin_ref + K_ref * alpha + alpha_Cdmin_ref * alpha**2
+            Cl = g.declare_input('_Cl' ,shape=shape)
+            Cd = g.declare_input('_Cd', shape=shape)
 
             f_tip = B / 2 * (rotor_radius - radius) / radius / ot.sin(phi_BEMT)
             f_hub = B / 2 * (radius - hub_radius) / hub_radius / ot.sin(phi_BEMT)
@@ -114,9 +106,7 @@ class BEMTImplicitComponent(ot.ImplicitComponent):
             F_hub = 2 / np.pi * ot.arccos(ot.exp(-f_hub))
 
             F = F_tip * F_hub
-            # g.register_output('_F',F)
-
-
+    
             Cx = Cl * ot.cos(phi_BEMT) - Cd * ot.sin(phi_BEMT)
             Ct = Cl * ot.sin(phi_BEMT) + Cd * ot.cos(phi_BEMT)
             
@@ -128,7 +118,7 @@ class BEMTImplicitComponent(ot.ImplicitComponent):
             phi_BEMT.define_residual_bracketed(
                 residual,
                 x1=eps,
-                x2=np.pi / 2. ,
+                x2=np.pi / 2. - eps,
             )
 
             # g.register_output('_phi_BEMT',phi_BEMT)

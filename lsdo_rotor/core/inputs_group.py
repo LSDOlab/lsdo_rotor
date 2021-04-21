@@ -52,26 +52,13 @@ class InputsGroup(ot.Group):
         # Cl = self.declare_input('Cl')
         # Cd = self.declare_input('Cd')
 
-        self.register_output('_Cl0', ot.expand(Cl0,shape))
-        self.register_output('_Cla', ot.expand(Cla,shape))
-        self.register_output('_Cdmin', ot.expand(Cdmin,shape))
-        self.register_output('_K', ot.expand(K,shape))
-        self.register_output('_alpha_Cdmin', ot.expand(alpha_Cdmin,shape))
-        self.register_output('_Cl_stall', ot.expand(Cl_stall, shape))
-        self.register_output('_Cd_stall', ot.expand(Cd_stall, shape))
-        self.register_output('_Cl_stall_minus', ot.expand(Cl_stall_minus, shape))
-        self.register_output('_Cd_stall_minus', ot.expand(Cd_stall_minus, shape))
-
         # self.register_output('_Cl', ot.expand(Cl,shape))
         # self.register_output('_Cd', ot.expand(Cd,shape))
 
         self.register_output('_hub_radius', ot.expand(hub_radius, shape))
         self.register_output('_rotor_radius', ot.expand(rotor_radius, shape))
         self.register_output('_slice_thickness', ot.expand(slice_thickness, shape))
-        self.register_output('_alpha', ot.expand(alpha, shape))
-        self.register_output('_alpha_stall', ot.expand(alpha_stall, shape))
-        self.register_output('_alpha_stall_minus', ot.expand(alpha_stall_minus, shape))
-        self.register_output('_AR', ot.expand(AR, shape))
+        # self.register_output('_alpha', ot.expand(alpha, shape))
         self.register_output('_reference_chord', ot.expand(reference_chord,shape))
         self.register_output('_reference_radius', ot.expand(reference_radius,shape))
 
