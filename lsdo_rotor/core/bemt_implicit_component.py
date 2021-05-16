@@ -6,6 +6,10 @@ from lsdo_rotor.airfoil.quadratic_airfoil_group import QuadraticAirfoilGroup
 from lsdo_rotor.rotor_parameters import RotorParameters
 from lsdo_rotor.core.smoothing_explicit_component import SmoothingExplicitComponent
 from lsdo_rotor.core.viterna_explicit_component import ViternaExplicitComponent
+from lsdo_rotor.airfoil.airfoil_surrogate_model import AirfoilSurrogateModel
+from lsdo_rotor.atmosphere.atmosphere_group import AtmosphereGroup
+
+
 class BEMTImplicitComponent(ot.ImplicitComponent):
 
     def initialize(self):
@@ -85,16 +89,46 @@ class BEMTImplicitComponent(ot.ImplicitComponent):
             radius = g.declare_input('_radius',shape= shape)
             rotor_radius = g.declare_input('_rotor_radius', shape= shape)
             hub_radius = g.declare_input('_hub_radius', shape = shape)
-            
+            chord = g.declare_input('_chord',shape=shape)
+            altitude    = rotor['altitude'] * 1e-3
+            L           = 6.5
+            R           = 287
+            T0          = 288.16
+            P0          = 101325
+            g0          = 9.81
+            mu0         = 1.735e-5
+            S1          = 110.4
+            T           = T0 - L * altitude
+            P           = P0 * (T/T0)**(g0/L/R)
+            rho         = P/R/T  
+            mu          = mu0 * (T/T0)**(3/2) * (T0 + S1)/(T + S1) 
+            W           = (Vx**2 + Vt**2)**0.5  
+            Re          = rho * W * chord / mu
+
+            g.register_output('Re', Re)
+
             alpha = twist - phi_BEMT
             g.register_output('_alpha', alpha)
         
 
-            comp  = ViternaExplicitComponent(
+            # group = AtmosphereGroup(
+            #     rotor = rotor,
+            #     shape = shape,
+            #     mode  = mode,
+            # )
+            # g.add_subsystem('atmosphere_group', group, promotes=['*'])
+
+            comp  = AirfoilSurrogateModel(
                 shape = shape,
                 rotor = rotor,
             )
-            g.add_subsystem('viterna_explicit_component', comp, promotes = ['*'])
+            g.add_subsystem('airfoil_surrogate_model', comp, promotes = ['*'])
+            
+            # comp  = ViternaExplicitComponent(
+            #     shape = shape,
+            #     rotor = rotor,
+            # )
+            # g.add_subsystem('viterna_explicit_component', comp, promotes = ['*'])
 
             Cl = g.declare_input('_Cl' ,shape=shape)
             Cd = g.declare_input('_Cd', shape=shape)
@@ -120,6 +154,16 @@ class BEMTImplicitComponent(ot.ImplicitComponent):
                 x1=eps,
                 x2=np.pi / 2. - eps,
             )
+
+
+
+    def solve_linear(self, d_outputs, d_residuals,mode):
+        if mode == 'fwd':
+            d_outputs['_phi_BEMT'] = 1 / self.derivs * d_residuals['_phi_BEMT']
+        elif mode == 'rev':
+            d_residuals['_phi_BEMT'] = 1 / self.derivs * d_outputs['_phi_BEMT']
+                
+
 
             # g.register_output('_phi_BEMT',phi_BEMT)
                 

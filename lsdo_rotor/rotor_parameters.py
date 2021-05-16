@@ -34,3 +34,4 @@ class RotorParameters(OptionsDictionary):
         self.declare('coeff_Cl_minus')
         self.declare('coeff_Cd_plus')
         self.declare('coeff_Cd_minus')
+        self.declare('altitude')

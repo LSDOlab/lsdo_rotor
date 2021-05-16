@@ -8,16 +8,18 @@ from lsdo_rotor.rotor_parameters import RotorParameters
 from lsdo_rotor.core.get_smoothing_parameters import get_smoothing_parameters
 from lsdo_rotor.get_airfoil_parameters import get_airfoil_parameters
 from lsdo_rotor.get_rotor_dictionary import get_rotor_dictionary
+# from lsdo_rotor.get_parameter_dictionary import get_parameter_dictionary
 from lsdo_rotor.get_external_rotor_data import get_external_rotor_data
 from lsdo_rotor.get_plot_sweeps_vs_J import get_plot_sweeps_vs_J
 from lsdo_rotor.get_plot_sweeps_vs_r import get_plot_sweeps_vs_r
 
 #------------------------------Set airfoil file name-----------------------------------------------------------------------------#
-airfoil_filename = 'xf-e63-il-50000.txt'   
-rotor_diameter = 0.254 
-RPM = 3000
-V_inf = 5                                                       
-
+airfoil_filename = 'xf-naca4412-il-100000.txt'
+rotor_diameter = 0.254
+RPM = 5000
+V_inf = 10
+num_blades = 2
+altitude = 1000
 #------------------------------Extracting Data From Airfoil Polar----------------------------------------------------------------#
 airfoil_parameters = get_airfoil_parameters(airfoil_filename)
 
@@ -25,7 +27,8 @@ airfoil_parameters = get_airfoil_parameters(airfoil_filename)
 smoothing_parameters = get_smoothing_parameters(airfoil_parameters[0] ,airfoil_parameters[1] , airfoil_parameters[2], airfoil_parameters[3], airfoil_parameters[4], airfoil_parameters[5], 10, airfoil_parameters[6], airfoil_parameters[7], airfoil_parameters[8], airfoil_parameters[9], airfoil_parameters[10])
 
 #------------------------------Setting Rotor Dictionary------------------------------------------------------------------------------#
-rotor = get_rotor_dictionary(airfoil_filename)
+# rotor = get_rotor_dictionary(airfoil_filename)
+rotor = get_rotor_dictionary(airfoil_filename,num_blades, altitude)
 
 """
     Mode settings
@@ -36,18 +39,19 @@ mode = 2
 
 
 num_blades = rotor['num_blades']
+print(rotor['altitude'])
 
-num_evaluations = 1         # Rotor blade discretization in time:                            Can stay 1 
+num_evaluations = 1         # Rotor blade discretization in time:                            Can stay 1
 num_radial = 18             # Rotor blade discretization in spanwise direction:              Has to be the same as the size of the chord and pitch vector
-num_tangential = 1          # Rotor blade discretization in tangential/azimuthal direction:  Can stay 1 
+num_tangential = 1          # Rotor blade discretization in tangential/azimuthal direction:  Can stay 1
 
 #------------------------------Setting variable shape-----------------------------------------------------------------------------#
 shape = (num_evaluations, num_radial, num_tangential)
 
-#------------------------------Creating OpenMDAO problem class--------------------------------------------------------------------# 
+#------------------------------Creating OpenMDAO problem class--------------------------------------------------------------------#
 prob = om.Problem()
 
-#------------------------------Creating omtools group for external inputs---------------------------------------------------------# 
+#------------------------------Creating omtools group for external inputs---------------------------------------------------------#
 group = ot.Group()
 
 group.create_indep_var('reference_radius', shape=1)
@@ -79,7 +83,7 @@ group.create_indep_var('chord', shape=(num_radial,))
 
 prob.model.add_subsystem('external_inputs_group', group, promotes=['*'])
 
-#------------------------------Adding main working group --> where majority of the model is implemented---------------------------------------------------------# 
+#------------------------------Adding main working group --> where majority of the model is implemented---------------------------------------------------------#
 group = IdealizedBEMTGroup(
     mode = mode,
     rotor=rotor,
@@ -88,6 +92,13 @@ group = IdealizedBEMTGroup(
     num_tangential=num_tangential,
 )
 prob.model.add_subsystem('idealized_bemt_group', group, promotes=['*'])
+
+
+prob.driver = om.ScipyOptimizeDriver()
+prob.driver.options['tol'] = 1e-9
+prob.model.add_design_var('chord',lower = 0.04, upper = 0.2)
+prob.model.add_design_var('pitch',lower = 10, upper = 80)
+
 
 prob.setup(check=True)
 
@@ -100,8 +111,8 @@ external_rotor_data = get_external_rotor_data(rotor_geometry, rotor_performance)
 
 
 
-#------------------------------Setting rotor parameters----------------------------------------------------------# 
-prob['rotor_radius'] = rotor_diameter/2   
+#------------------------------Setting rotor parameters----------------------------------------------------------#
+prob['rotor_radius'] = rotor_diameter/2
 prob['hub_radius'] = 0.15 * prob['rotor_radius']
 prob['slice_thickness'] = (prob['rotor_radius']-prob['hub_radius'])/ (num_radial-1)
 
@@ -132,7 +143,7 @@ prob['reference_tangential_inflow_velocity'] = prob['rotational_speed'] * 2. * n
 prob['reference_x_dir'][0, :] = [1., 0., 0.]
 prob['reference_y_dir'][0, :] = [0., 1., 0.]
 prob['reference_z_dir'][0, :] = [0., 0., 1.]
-prob['reference_inflow_velocity'][0, 0, 0, :] = [0., 0., 0.]   
+prob['reference_inflow_velocity'][0, 0, 0, :] = [0., 0., 0.]
 
 
 for i in range(num_evaluations):
@@ -147,7 +158,12 @@ for i in range(num_evaluations):
 prob['alpha'] = 6. * np.pi /180.
 
 #---------------------------------------Running Model-----------------------------------------------------#
+
+
+
+
 prob.run_model()
+# prob.run_driver()
 
 
 #----------------------------Printing output for ideal loading mode----------------------------------------#
@@ -174,58 +190,82 @@ elif mode == 2:
     for var_name in [
     # '_axial_inflow_velocity',
     # '_tangential_inflow_velocity',
-    
+
     # 'BEMT_local_efficiency',
     'BEMT_total_efficiency',
-    
+
     # 'BEMT_axial_induced_velocity',
     # 'BEMT_tangential_induced_velocity',
-    
+
     # 'BEMT_local_thrust',
     # 'BEMT_local_torque',
-    
+
     'BEMT_total_thrust',
     'BEMT_total_torque',
-    
+    'Re',
+    # '_Re_test',
+
     # '_phi_BEMT',
-    'BEMT_local_AoA',
+    # 'BEMT_local_AoA',
     # 'pitch',
 
-    # 'chord', 
-    
+    '_chord',
+
     # '_Cl',
     # '_Cd',
-    
+
     # '_radius',
     # '_rotor_radius',
     # '_hub_radius',
-    
+
     # 'BEMT_loss_factor',
     ]:
         print(var_name, prob[var_name])
 
+# J = V_inf / (RPM / 60) / rotor_diameter
+
+# fig, axs = plt.subplots(2,3,figsize=(12,8))
+# fig.suptitle('Sweeps vs. Raidus ' + '\n' + 'J = {}'.format(J))
+# axs[0,0].plot(prob['_radius'].flatten(),prob['Re'].flatten(),marker = '*',label = 'Re')
+# axs[0,0].set_ylabel('Re')
+# axs[0,1].plot(prob['_radius'].flatten(),prob['_Cl'].flatten(),marker = '*',label = 'Cl')
+# axs[0,1].set_ylabel('Cl')
+# axs[0,2].plot(prob['_radius'].flatten(),prob['_Cd'].flatten(),marker = '*',label = 'Cd')
+# axs[0,2].set_ylabel('Cd')
+# axs[1,1].plot(prob['_radius'].flatten(),prob['BEMT_local_thrust'].flatten(),label = 'thrust')
+# axs[1,1].set_ylabel('thrust')
+# axs[1,0].plot(prob['_radius'].flatten(),prob['_phi_BEMT'].flatten() * 180/np.pi,marker = '*',label = 'phi')
+# axs[1,0].plot(prob['_radius'].flatten(),prob['BEMT_local_AoA'].flatten()* 180/np.pi,marker = '*',label = 'AoA')
+# axs[1,0].plot(prob['_radius'].flatten(),prob['pitch'].flatten()* 180/np.pi,marker = '*',label = 'twist')
+# axs[1,0].set_ylabel('angles')
+# axs[1,0].legend()
+# axs[1,2].plot(prob['_radius'].flatten(),prob['BEMT_local_torque'].flatten(),marker = '*',label = 'torque')
+# axs[1,2].set_ylabel('torque')
+
+# plt.tight_layout(rect = [0,0.03,1,0.9])
+# plt.show()
 
 #------------------------------Plotting--------------------------------------------------#
 airfoil_files = [
-    'xf-NACA4412-il-50000.txt',
+    # 'xf-NACA4412-il-50000.txt',
     'xf-clarky-il-50000.txt',
-    'xf-e63-il-50000.txt',
+    # 'xf-e63-il-50000.txt',
 ]
 airfoil_names = [
-    'NACA 4412',
+    # 'NACA 4412',
     'Clark-Y',
-    'Eppler E63',
+    # 'Eppler E63',
 ]
 rotor_files = [
     'APC_10_6_geometry.txt',
     'APC_10_6_performance_5000.txt',
 ]
 geometry_array = np.array([
-    # 0.1 * np.ones((50,)), 
+    # 0.1 * np.ones((50,)),
     # np.linspace(65,20,50) * np.pi / 180.,
 ])
 
-get_plot_sweeps_vs_J(airfoil_files, airfoil_names, rotor_files, geometry_array, RPM, rotor_diameter, 20, 21, '50 000')
+# get_plot_sweeps_vs_J(airfoil_files, airfoil_names, rotor_files, geometry_array, RPM, rotor_diameter, 20, 21, '50 000')
 
 # get_plot_sweeps_vs_r(airfoil_files, airfoil_names, rotor_files, geometry_array, RPM, rotor_diameter, V_inf, '50 000')
 

@@ -1,12 +1,13 @@
 from lsdo_rotor.rotor_parameters import RotorParameters
 
-from lsdo_rotor.core.get_smoothing_parameters import get_smoothing_parameters
+from lsdo_rotor.get_smoothing_parameters import get_smoothing_parameters
 from lsdo_rotor.get_airfoil_parameters import get_airfoil_parameters
 
-def get_rotor_dictionary(text_file, blades, altitude):
+
+def get_parameter_dictionary(text_file, blades):
     airfoil_parameters = get_airfoil_parameters(text_file)
     smoothing_parameters = get_smoothing_parameters(airfoil_parameters[0] ,airfoil_parameters[1] , airfoil_parameters[2], airfoil_parameters[3], airfoil_parameters[4], airfoil_parameters[5], 10, airfoil_parameters[6], airfoil_parameters[7], airfoil_parameters[8], airfoil_parameters[9], airfoil_parameters[10])
-
+    
     rotor = RotorParameters(
         a_stall_plus    = airfoil_parameters[0],
         Cl_stall_plus   = airfoil_parameters[1],
@@ -36,7 +37,5 @@ def get_rotor_dictionary(text_file, blades, altitude):
         coeff_Cd_minus  = smoothing_parameters[12],
 
         num_blades=blades,
-        altitude = altitude,
     )
-
     return rotor

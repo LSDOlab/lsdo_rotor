@@ -39,7 +39,7 @@ def get_plot_sweeps_vs_J(airfoil_files, airfoil_names, rotor_files, geometry_arr
     total_thrust = np.zeros((num_airfoils, len(velocity_vec)))
 
     for k in range(len(airfoil_files)):
-        rotor = get_rotor_dictionary(airfoil_files[k])    
+        rotor = get_rotor_dictionary(airfoil_files[k],2,1000)    
         mode = 2
         num_blades = rotor['num_blades']
 
@@ -178,7 +178,7 @@ def get_plot_sweeps_vs_J(airfoil_files, airfoil_names, rotor_files, geometry_arr
 
     fig, axs = plt.subplots(1, 3, figsize=(12, 8))
 
-    fig.suptitle('Rotor Parameter Sweeps vs. Advance Ratio with Blade Element Momentum Theory' + '\n' + 'RPM = {}, Re = {}'.format(RPM, Re),fontsize=23)
+    fig.suptitle('Rotor Parameter Sweeps vs. Advance Ratio with Blade Element Momentum Theory' + '\n' + 'RPM = {}'.format(RPM),fontsize=23)
     
     for i in range(len(airfoil_files)):
         axs[0].plot(J[0,:],  eta_total_mat[i,:], label = r'$\eta_{BEM}$ ' + airfoil_names[i])

@@ -94,60 +94,60 @@ class ViternaExplicitComponent(om.ExplicitComponent):
 
         # print('-'*60)
         # print(alpha)
-        # print(Cl)
-        # print(Cd)
+        print(Cl)
+        print(Cd)
 
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
 
-    prob = om.Problem()
+#     prob = om.Problem()
 
-    comp = om.IndepVarComp()
+#     comp = om.IndepVarComp()
 
-    d2r = np.pi/180
-    comp.add_output('alpha_stall', val = 12 * np.pi/180)
-    comp.add_output('alpha_stall_minus', val = -7 * d2r)
-    comp.add_output('Cl_stall', val = 1.5)
-    comp.add_output('Cd_stall', val = 0.03)
-    comp.add_output('Cl_stall_minus', val = -0.5)
-    comp.add_output('Cd_stall_minus', val = 0.025)
-    comp.add_output('AR', val =10)
-    comp.add_output('smoothing_tolerance', val = 5 *d2r)
+#     d2r = np.pi/180
+#     comp.add_output('alpha_stall', val = 12 * np.pi/180)
+#     comp.add_output('alpha_stall_minus', val = -7 * d2r)
+#     comp.add_output('Cl_stall', val = 1.5)
+#     comp.add_output('Cd_stall', val = 0.03)
+#     comp.add_output('Cl_stall_minus', val = -0.5)
+#     comp.add_output('Cd_stall_minus', val = 0.025)
+#     comp.add_output('AR', val =10)
+#     comp.add_output('smoothing_tolerance', val = 5 *d2r)
     
     
-    comp.add_output('_alpha')
+#     comp.add_output('_alpha')
 
-    comp.add_output('Cl0', val =0.2)
-    comp.add_output('Cla', val = 0.9 * 2 * np.pi)
-    comp.add_output('Cdmin', val = 0.002)
-    comp.add_output('K', val = 2.1)
-    comp.add_output('alpha_Cdmin', val = 0.2 * d2r) 
-    prob.model.add_subsystem('inputs', comp, promotes=['*'])
+#     comp.add_output('Cl0', val =0.2)
+#     comp.add_output('Cla', val = 0.9 * 2 * np.pi)
+#     comp.add_output('Cdmin', val = 0.002)
+#     comp.add_output('K', val = 2.1)
+#     comp.add_output('alpha_Cdmin', val = 0.2 * d2r) 
+#     prob.model.add_subsystem('inputs', comp, promotes=['*'])
     
-    comp = ViternaExplicitComponent(shape=(1,))
-    prob.model.add_subsystem('comp', comp, promotes=['*'])
+#     comp = ViternaExplicitComponent(shape=(1,))
+#     prob.model.add_subsystem('comp', comp, promotes=['*'])
 
-    prob.setup()
+#     prob.setup()
 
-    num = 500
-    alpha = np.linspace(-np.pi/2., np.pi/2., num)
-    CL = np.empty(num)
-    CD = np.empty(num)
+#     num = 500
+#     alpha = np.linspace(-np.pi/2., np.pi/2., num)
+#     CL = np.empty(num)
+#     CD = np.empty(num)
 
-    for i in range(num):
-        prob['_alpha'] = alpha[i]
-        prob.run_model()
-        CL[i] = prob['_Cl']
-        print(CL,'CL')
-        CD[i] = prob['_Cd']
+#     for i in range(num):
+#         prob['_alpha'] = alpha[i]
+#         prob.run_model()
+#         CL[i] = prob['_Cl']
+#         print(CL,'CL')
+#         CD[i] = prob['_Cd']
 
-    import matplotlib.pyplot as plt
-    plt.subplot(2, 1, 1)
-    plt.plot(alpha / d2r, CL)
-    plt.subplot(2, 1, 2)
-    plt.plot(alpha / d2r, CD)
-    plt.show()
+#     import matplotlib.pyplot as plt
+#     plt.subplot(2, 1, 1)
+#     plt.plot(alpha / d2r, CL)
+#     plt.subplot(2, 1, 2)
+#     plt.plot(alpha / d2r, CD)
+#     plt.show()
 
-        # self.add_output('_Cl', shape = shape)
-        # self.add_output('_Cd', shape = shape)
+#         # self.add_output('_Cl', shape = shape)
+#         # self.add_output('_Cd', shape = shape)
