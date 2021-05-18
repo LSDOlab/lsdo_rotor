@@ -94,8 +94,8 @@ class ViternaExplicitComponent(om.ExplicitComponent):
 
         # print('-'*60)
         # print(alpha)
-        print(Cl)
-        print(Cd)
+        # print(Cl)
+        # print(Cd)
 
 
 

@@ -94,10 +94,13 @@ group = IdealizedBEMTGroup(
 prob.model.add_subsystem('idealized_bemt_group', group, promotes=['*'])
 
 
+# Defining driver and design variables 
 prob.driver = om.ScipyOptimizeDriver()
 prob.driver.options['tol'] = 1e-9
-prob.model.add_design_var('chord',lower = 0.04, upper = 0.2)
-prob.model.add_design_var('pitch',lower = 10, upper = 80)
+prob.driver.options['maxiter'] = 200
+# This is for the APC propellers so these values are quite small. 
+prob.model.add_design_var('chord',lower = 0.01, upper = 0.2)
+prob.model.add_design_var('pitch',lower = 5*np.pi/180, upper = 50*np.pi/180)
 
 
 prob.setup(check=True)
@@ -162,8 +165,8 @@ prob['alpha'] = 6. * np.pi /180.
 
 
 
-prob.run_model()
-# prob.run_driver()
+# prob.run_model()
+prob.run_driver()
 
 
 #----------------------------Printing output for ideal loading mode----------------------------------------#
@@ -207,7 +210,8 @@ elif mode == 2:
 
     # '_phi_BEMT',
     # 'BEMT_local_AoA',
-    # 'pitch',
+    # '_pitch',
+    'pitch',
 
     '_chord',
 

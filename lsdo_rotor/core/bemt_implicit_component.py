@@ -157,11 +157,11 @@ class BEMTImplicitComponent(ot.ImplicitComponent):
 
 
 
-    def solve_linear(self, d_outputs, d_residuals,mode):
-        if mode == 'fwd':
-            d_outputs['_phi_BEMT'] = 1 / self.derivs * d_residuals['_phi_BEMT']
-        elif mode == 'rev':
-            d_residuals['_phi_BEMT'] = 1 / self.derivs * d_outputs['_phi_BEMT']
+    # def solve_linear(self, d_outputs, d_residuals,mode):
+    #     if mode == 'fwd':
+    #         d_outputs['_phi_BEMT'] = 1 / self.derivs * d_residuals['_phi_BEMT']
+    #     elif mode == 'rev':
+    #         d_residuals['_phi_BEMT'] = 1 / self.derivs * d_outputs['_phi_BEMT']
                 
 
 
