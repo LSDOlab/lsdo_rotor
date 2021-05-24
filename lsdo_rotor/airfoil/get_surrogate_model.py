@@ -30,7 +30,7 @@ def get_surrogate_model(airfoil_name):
 
     interp = RMTB(num_ctrl_pts=100, xlimits=xlimits,nonlinear_maxiter=20,
             solver_tolerance=1e-16, energy_weight=1e-8, regularization_weight=0.,
-            print_prediction=False)
+            print_prediction=False, print_training = False)
 
     interp.set_training_values(xt,yt)
     interp.train()

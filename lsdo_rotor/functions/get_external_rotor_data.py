@@ -1,6 +1,9 @@
 import numpy as np 
 
+
+
 def get_external_rotor_data(rotor_geometry, rotor_performance):
+    
     geometry = rotor_geometry
     data = np.loadtxt(geometry, delimiter=',', skiprows=1, dtype=str)
     with open(rotor_geometry, 'r') as f:

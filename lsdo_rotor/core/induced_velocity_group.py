@@ -141,5 +141,6 @@ class InducedVelocityGroup(ot.Group):
             self.register_output('Ct',Ct)
 
 
-            self.add_constraint('BEMT_total_thrust', equals = 1.5)
-            self.add_objective('BEMT_total_torque')
+            # self.add_constraint('BEMT_total_thrust', equals = 1500)# lower = 650, upper = 750)
+            # self.add_objective('BEMT_total_torque')
+            # self.add_design_var('BEMT_total_efficiency')
