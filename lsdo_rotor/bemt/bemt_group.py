@@ -1,47 +1,45 @@
 import numpy as np
 
-import omtools.api as ot
+from csdl import ImplicitModel
+import csdl
 
 from lsdo_rotor.airfoil.quadratic_airfoil_group import QuadraticAirfoilGroup
 from lsdo_rotor.inputs.inputs_group import InputsGroup
 
 
-class BEMTGroup(ot.ImplicitComponent):
-
+class BEMTGroup(ImplicitModel):
     def initialize(self):
-        self.options.declare('shape', types=tuple)
+        self.parameters.declare('shape', types=tuple)
 
-    def setup(self):
-        shape = self.options['shape']
+    def define(self):
+        shape = self.parameters['shape']
 
-        g = self.group
+        # group = Model()
+        # group.create_input('twist', val=50. * np.pi / 180.)
+        # group.create_input('Vx', val=50)
+        # group.create_input('Vt', val=100.)
+        # group.create_input('sigma', val=0.15)
+        # self.add(group, name='inputs_group', promotes=['*'])
 
-        # group = ot.Group()
-        # group.create_indep_var('twist', val=50. * np.pi / 180.)
-        # group.create_indep_var('Vx', val=50)
-        # group.create_indep_var('Vt', val=100.)
-        # group.create_indep_var('sigma', val=0.15)
-        # g.add_subsystem('inputs_group', group, promotes=['*'])
-
-        phi = g.create_implicit_output('phi', shape=shape)
-        Vx = g.declare_input('Vx')
-        Vt = g.declare_input('Vt')
-        sigma = g.declare_input('sigma')
-        twist = g.declare_input('twist')
+        phi = self.create_implicit_output('phi', shape=shape)
+        Vx = self.declare_variable('Vx')
+        Vt = self.declare_variable('Vt')
+        sigma = self.declare_variable('sigma')
+        twist = self.declare_variable('twist')
 
         alpha = twist - phi
-        g.register_output('alpha', alpha)
+        self.register_output('alpha', alpha)
 
         group = QuadraticAirfoilGroup(shape=shape)
-        g.add_subsystem('airfoil_group', group, promotes=['*'])
+        self.add(group, name='airfoil_group', promotes=['*'])
 
-        Cl = g.declare_input('Cl')
-        Cd = g.declare_input('Cd')
+        Cl = self.declare_variable('Cl')
+        Cd = self.declare_variable('Cd')
 
-        Cx = Cl * ot.cos(phi) - Cd * ot.sin(phi)
-        Ct = Cl * ot.sin(phi) + Cd * ot.cos(phi)
-        term1 = Vt * (2 * Ct * ot.sin(2 * phi) / Cx  -  Cx * sigma)
-        term2 = Vx * (2 * ot.sin(2 * phi) + Ct * sigma)
+        Cx = Cl * csdl.cos(phi) - Cd * csdl.sin(phi)
+        Ct = Cl * csdl.sin(phi) + Cd * csdl.cos(phi)
+        term1 = Vt * (2 * Ct * csdl.sin(2 * phi) / Cx - Cx * sigma)
+        term2 = Vx * (2 * csdl.sin(2 * phi) + Ct * sigma)
         residual = term1 - term2
 
         phi.define_residual_bracketed(

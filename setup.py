@@ -7,7 +7,6 @@ setup(
         'lsdo_rotor',
     ],
     install_requires=[
-        'openmdao',
-        'omtools',
+        'csdl',
     ],
 )

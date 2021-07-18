@@ -1,34 +1,32 @@
-import omtools.api as ot
+from csdl import Model
+import csdl
 
 from lsdo_rotor.airfoil.quadratic_airfoil_group import QuadraticAirfoilGroup
 from lsdo_rotor.bemt.bemt_group import BEMTGroup
 from lsdo_rotor.inputs.inputs_group import InputsGroup
 
-class PolarGroup(ot.Group):
+
+class PolarGroup(Model):
     def initialize(self):
-        self.options.declare('shape', types=tuple)
+        self.parameters.declare('shape', types=tuple)
 
-    def setup(self):
-        shape = self.options['shape']
+    def define(self):
+        shape = self.parameters['shape']
 
-        
-
-        phi = self.declare_input('phi')
-        twist = self.declare_input('twist')
+        phi = self.declare_variable('phi')
+        twist = self.declare_variable('twist')
 
         alpha = twist - phi
         self.register_output('alpha', alpha)
 
         group = QuadraticAirfoilGroup(shape=shape)
-        self.add_subsystem('airfoil_group', group, promotes=['*'])
+        self.add(group, name='airfoil_group', promotes=['*'])
 
-        Cl = self.declare_input('Cl')
-        Cd = self.declare_input('Cd')
+        Cl = self.declare_variable('Cl')
+        Cd = self.declare_variable('Cd')
 
-        Cx = Cl * ot.cos(phi) - Cd * ot.sin(phi)
-        Ct = Cl * ot.sin(phi) + Cd * ot.cos(phi)
+        Cx = Cl * csdl.cos(phi) - Cd * csdl.sin(phi)
+        Ct = Cl * csdl.sin(phi) + Cd * csdl.cos(phi)
 
-        self.register_output('Cx',Cx)
-        self.register_output('Ct',Ct)
-
-
+        self.register_output('Cx', Cx)
+        self.register_output('Ct', Ct)

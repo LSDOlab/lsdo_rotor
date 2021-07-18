@@ -1,29 +1,29 @@
 import numpy as np
 
-import omtools.api as ot
+from csdl import Model
+import csdl
 
 
-class QuadraticAirfoilGroup(ot.Group):
-
+class QuadraticAirfoilGroup(Model):
     def initialize(self):
-        self.options.declare('shape', types=tuple)
-        self.options.declare('Cl0', default=0.)
-        self.options.declare('Cl1', default=2 * np.pi)
-        self.options.declare('Cd0', default=0.005)
-        self.options.declare('Cd1', default=0.)
-        self.options.declare('Cd2', default=0.5)
+        self.parameters.declare('shape', types=tuple)
+        self.parameters.declare('Cl0', default=0.)
+        self.parameters.declare('Cl1', default=2 * np.pi)
+        self.parameters.declare('Cd0', default=0.005)
+        self.parameters.declare('Cd1', default=0.)
+        self.parameters.declare('Cd2', default=0.5)
 
-    def setup(self):
-        Cl0 = self.options['Cl0']
-        Cl1 = self.options['Cl1']
-        Cd0 = self.options['Cd0']
-        Cd1 = self.options['Cd1']
-        Cd2 = self.options['Cd2']
+    def define(self):
+        Cl0 = self.parameters['Cl0']
+        Cl1 = self.parameters['Cl1']
+        Cd0 = self.parameters['Cd0']
+        Cd1 = self.parameters['Cd1']
+        Cd2 = self.parameters['Cd2']
 
-        alpha = self.declare_input('alpha')
+        alpha = self.declare_variable('alpha')
 
         Cl = Cl0 + Cl1 * alpha
-        Cd = Cd0 + Cd1 * alpha + Cd2 * alpha ** 2
+        Cd = Cd0 + Cd1 * alpha + Cd2 * alpha**2
 
         self.register_output('Cl', Cl)
         self.register_output('Cd', Cd)

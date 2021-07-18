@@ -1,30 +1,29 @@
 import numpy as np
-import omtools.api as ot
+from csdl import ImplicitModel
+import csdl
 import cmath
 
 from lsdo_rotor.inputs.inputs_group import InputsGroup
 from lsdo_rotor.constant.constant_group import ConstantGroup
 
-# class EfficiencyGroup(ot.Group): 
+# class EfficiencyGroup(Model):
 
-class EfficiencyGroup(ot.ImplicitComponent):
 
+class EfficiencyGroup(ImplicitModel):
     def initialize(self):
-        self.options.declare('shape', types=tuple)
+        self.parameters.declare('shape', types=tuple)
 
-    def setup(self):
-        shape = self.options['shape']
+    def define(self):
+        shape = self.parameters['shape']
 
-        g = self.group
-        
-        eta = g.create_implicit_output('eta', shape=shape)
-        Vx = g.declare_input('Vx')
-        Vt = g.declare_input('Vt')
-        C = g.declare_input('C')
+        eta = self.create_implicit_output('eta', shape=shape)
+        Vx = self.declare_variable('Vx')
+        Vt = self.declare_variable('Vt')
+        C = self.declare_variable('C')
 
         a = -64 * C**2 * Vt**2 - 128 * C * Vx * Vt**2 - 64 * Vx**2 * Vt**2 - 64 * Vt**4
         b = 128 * C**2 * Vt**2 + 288 * C * Vx * Vt**2 + 160 * Vx**2 * Vt**2 + 160 * Vt**4
-        c = 16 * C**2 * Vx**2 - 80 * C**2 * Vt**2 + 32 * C * Vx**3 - 208 * C * Vx * Vt**2 + 16 * Vx**4 - 116 * Vx**2 * Vt**2 - 132 * Vt**4 
+        c = 16 * C**2 * Vx**2 - 80 * C**2 * Vt**2 + 32 * C * Vx**3 - 208 * C * Vx * Vt**2 + 16 * Vx**4 - 116 * Vx**2 * Vt**2 - 132 * Vt**4
         d = -16 * C**2 * Vx**2 + 16 * C**2 * Vt**2 - 40 * C * Vx**3 + 48 * C * Vx * Vt**2 - 24 * Vx**4 + 16 * Vx**2 * Vt**2 + 40 * Vt**4
         e = 12 * C * Vx**3 + 8 * Vx**4 - 4 * Vt**4 + 4 * C**2 * Vx**2 + 4 * Vx**2 * Vt**2
 
