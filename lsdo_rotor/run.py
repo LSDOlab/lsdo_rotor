@@ -122,7 +122,6 @@ sim['reference_radius'] = reference_radius
 sim['rotational_speed'] = RPM/60.
 sim['reference_rotational_speed'] = RPM/60.
 sim['reference_chord'] = reference_chord
-sim['reference_twist'] = reference_twist
 sim['reference_blade_solidity'] = num_blades * sim['reference_chord'] / 2. / np.pi / sim['reference_radius']
 sim['reference_tangential_inflow_velocity'] = sim['rotational_speed'] * 2. * np.pi * sim['reference_radius']
 
