@@ -41,7 +41,6 @@ altitude            = 100        # (in m)
 # specify three parameters for optimal blade design 
 reference_radius    = rotor_diameter / 4  # Specify the reference radius; We recommend radius / 2
 reference_chord     = 0.15                # Specify the reference chord length at the reference radius (in m)
-reference_twist     = 40                  # Specify the reference twist angle at the reference radius  (in deg)
 
 # The following parameters are used for mode 2 only
 # Change these parameters if you want to chord and twist profile to vary
