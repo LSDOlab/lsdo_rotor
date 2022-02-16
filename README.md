@@ -11,7 +11,7 @@ lsdo_rotor requires the following packages to be installed before it can be used
 
 Please follow the installation instructions provided in the above links. Once these packages are installed you can proceed as follows with the installation of lsdo_rotor:
 
-* Clone this repository via ``git clone https://github.com/MariusLRuh/lsdo_rotor.git`` or download it as a .zip file. If the repository is cloned successfully, future versions of lsdo_rotor can be downloaded via `git pull`.
+* Clone this repository via ``git clone https://github.com/LSDOlab/lsdo_rotor.git`` or download it as a .zip file. If the repository is cloned successfully, future versions of lsdo_rotor can be downloaded via `git pull`.
 * Execute the next two commands to install lsdo_rotor
   * ``cd lsdo_rotor``
   * ``pip install -e .``
