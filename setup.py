@@ -8,6 +8,8 @@ setup(
     ],
     install_requires=[
         'openmdao',
-        'omtools',
+        'csdl',
+        'csdl_om',
+        'smt',
     ],
 )

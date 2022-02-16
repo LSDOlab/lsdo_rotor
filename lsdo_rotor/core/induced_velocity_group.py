@@ -1,146 +1,115 @@
-import omtools.api as ot
 import numpy as np
-from lsdo_rotor.rotor_parameters import RotorParameters
+from csdl import Model
+import csdl
 
-class InducedVelocityGroup(ot.Group):
-
+class InducedVelocityGroup(Model):
+    
     def initialize(self):
-        self.options.declare('shape', types=tuple)
-        self.options.declare('mode', types = int)
-        self.options.declare('rotor', types=RotorParameters)
+        self.parameters.declare('rotor')
+        self.parameters.declare('mode', types = int)
+        self.parameters.declare('shape',types = tuple)
 
-    def setup(self):
-        shape = self.options['shape']
-        mode = self.options['mode']
-        rotor = self.options['rotor']
+    def define(self):
+        rotor = self.parameters['rotor']
+        mode = self.parameters['mode']
+        shape = self.parameters['shape']
 
-        num_blades = rotor['num_blades']
-        # print(num_blades)
+        B = num_blades = rotor['num_blades']
 
         if mode == 1:
-            phi = self.declare_input('_phi_ideal_loading', shape=shape)
+            phi = self.declare_variable('phi_reference_ildm')
+            Vx = self.declare_variable('reference_axial_inflow_velocity')
+            Vt = self.declare_variable('reference_tangential_inflow_velocity')
 
-            Vx = self.declare_input('reference_axial_inflow_velocity', shape=shape)
-            Vt = self.declare_input('reference_tangential_inflow_velocity', shape=shape)
-            sigma = self.declare_input('reference_blade_solidity', shape=shape)
-            Cl0_ref = self.declare_input('Cl0',shape=shape)
-            Cla_ref = self.declare_input('Cla',shape=shape)
-            Cdmin_ref = self.declare_input('Cdmin',shape=shape)
-            K_ref = self.declare_input('K',shape=shape)
-            alpha_Cdmin_ref = self.declare_input('alpha_Cdmin',shape=shape)
-            alpha_ref = self.declare_input('alpha',shape=shape)
-            Cl_ref = Cl0_ref + Cla_ref * alpha_ref
-            Cd_ref = Cdmin_ref + K_ref * alpha_ref + alpha_Cdmin_ref * alpha_ref**2
+            reference_radius = self.declare_variable('reference_radius')
+            rotor_radius = self.declare_variable('rotor_radius')
+            hub_radius = self.declare_variable('hub_radius')
+            sigma = self.declare_variable('reference_blade_solidity')
 
+            Cl_ref_chord = rotor['ideal_Cl_ref_chord']
+            Cd_ref_chord = rotor['ideal_Cd_ref_chord']
+            alpha_ref_chord = rotor['ideal_alpha_ref_chord']
 
-            Cl = self.declare_input('_Cl', shape=shape)
-            Cd = self.declare_input('_Cd', shape=shape)
+            f_tip = B / 2 * (rotor_radius - reference_radius) / reference_radius / csdl.sin(phi)
+            f_hub = B / 2 * (reference_radius - hub_radius) / hub_radius / csdl.sin(phi)
 
-            Cx = Cl_ref * ot.cos(phi) - Cd_ref * ot.sin(phi)
-            Ct = Cl_ref * ot.sin(phi) + Cd_ref * ot.cos(phi)
+            F_tip = 2 / np.pi * csdl.arccos(csdl.exp(-f_tip))
+            F_hub = 2 / np.pi * csdl.arccos(csdl.exp(-f_hub))
 
-            ux = 4 * Vt * ot.sin(phi)**2 / (2 * (ot.sin(2 * phi) +  sigma * Ct))
-            ut = 2 * Vt * sigma * Ct / (2 * ot.sin(2 * phi) + sigma * Ct)
+            F = F_tip * F_hub
+
+            Cx = Cl_ref_chord * csdl.cos(phi) - Cd_ref_chord * csdl.sin(phi)
+            Ct = Cl_ref_chord * csdl.sin(phi) + Cd_ref_chord * csdl.cos(phi)
+
+            ux = (4 * F * Vt * csdl.sin(phi)**2) / (4 * F * csdl.sin(phi) * csdl.cos(phi) +  sigma * Ct)
+            ut = 2 * Vt * sigma * Ct / (2 * F * csdl.sin(2 * phi) + sigma * Ct)
 
             C = Vt * ut /(2 * ux - Vx) + 2 * Vt * ux /(Vt - ut) - 2 * Vx
 
-
-            # ax = Cx * sigma/ (4 * ot.sin(phi)**2 - Cx * sigma)
-            # ay = Ct * sigma/ (2 * ot.sin(2 * phi) + Ct * sigma)
-
-            # x = Vt/Vx
-
-            # C2 = x**2 * ay / (1 + 2 * ax) + (1 + ax)/(1 - 2 * ay)
-
-            # self.register_output('ideal_loading_constant_non_dimensional',C2)
-
-            self.register_output('_axial_induced_velocity_BEMT', ux)
-            self.register_output('_tangential_induced_velocity_BEMT', ut)
             self.register_output('ideal_loading_constant', C)
+            self.register_output('axial_induced_velocity_ideal_loading_BEM_step',ux)
+            self.register_output('tangential_induced_velocity_ideal_loading_BEM_step',ut)
 
         elif mode == 2:
-            # print(shape)
-            phi_BEMT = self.declare_input('_phi_BEMT', shape=shape)
-            Vx = self.declare_input('_axial_inflow_velocity', shape=shape)
-            Vx_ref = self.declare_input('reference_axial_inflow_velocity')
-            Vt = self.declare_input('_tangential_inflow_velocity', shape=shape)
-            sigma = self.declare_input('_blade_solidity', shape=shape)
-            chord = self.declare_input('_chord',shape=shape)
-            radius = self.declare_input('_radius', shape = shape)
-            dr = self.declare_input('_slice_thickness', shape = shape)
-            twist = self.declare_input('_pitch', shape=shape)
-            F = self.declare_input('BEMT_loss_factor', shape=shape)
+            print('TEST')
+            phi = self.declare_variable('phi_distribution', shape=shape)
+            twist = self.declare_variable('pitch_distribution', shape=shape)
 
-            rotational_speed = self.declare_input('_rotational_speed', shape=shape)
-            n = self.declare_input('reference_rotational_speed')
+            Vx = self.declare_variable('_axial_inflow_velocity', shape=shape)
+            Vt = self.declare_variable('_tangential_inflow_velocity', shape=shape)
+            Vx_ref = self.declare_variable('reference_axial_inflow_velocity')
+            
+            sigma = self.declare_variable('_blade_solidity', shape=shape)
+            chord = self.declare_variable('chord_distribution',shape=shape)
+            radius = self.declare_variable('_radius', shape = shape)
+            dr = self.declare_variable('_slice_thickness', shape = shape)
+            rho = self.declare_variable('rho', shape = shape)
+            
+            F = self.declare_variable('F', shape=shape)
 
-            Cl = self.declare_input('_Cl', shape=shape)
-            Cd = self.declare_input('_Cd', shape=shape)
+            rotational_speed = self.declare_variable('_rotational_speed', shape=shape)
+            n = self.declare_variable('reference_rotational_speed')
 
-            Cx = Cl * ot.cos(phi_BEMT) - Cd * ot.sin(phi_BEMT)
-            Ct = Cl * ot.sin(phi_BEMT) + Cd * ot.cos(phi_BEMT)
+            Cl = self.declare_variable('Cl', shape=shape)
+            Cd = self.declare_variable('Cd', shape=shape)
 
-            ux = (4 * F * Vt * ot.sin(phi_BEMT)**2) / (4 * F * ot.sin(phi_BEMT) * ot.cos(phi_BEMT) +  sigma * Ct)
-            # ux = Vx + sigma * Cx * Vt / (4 * F * ot.sin(phi_BEMT) * ot.cos(phi_BEMT) + sigma * Ct)
+            Cx1 = Cl * csdl.cos(phi) - Cd * csdl.sin(phi)
+            Ct1 = Cl * csdl.sin(phi) + Cd * csdl.cos(phi)
 
-            ut = 2 * Vt * sigma * Ct / (2 * F * ot.sin(2 * phi_BEMT) + sigma * Ct)
+            Cx2 = self.declare_variable('Cx', shape=shape)
+            Ct2 = self.declare_variable('Ct', shape=shape)
 
-            # Old equations for induced velocities that break down at Vx = 0
-            # ux = Vx * 4 * F * ot.sin(phi_BEMT)**2 / (4 * F *  ot.sin(phi_BEMT)**2 -sigma * Cx)
-            # ut = Vx * 2 * F * sigma * Ct / (4 * F * ot.sin(phi_BEMT)**2 -sigma * Cx)
+            ux = (4 * F * Vt * csdl.sin(phi)**2) / (4 * F * csdl.sin(phi) * csdl.cos(phi) +  sigma * Ct2)
+            ux_2 = Vx + sigma * Cx2 * Vt / (4 * F * csdl.sin(phi) * csdl.cos(phi) + sigma * Ct1)
+        
+            ut = 2 * Vt * sigma * Ct2 / (2 * F * csdl.sin(2 * phi) + sigma * Ct1)
 
-            dT = 4 * np.pi * radius * 1.2 * ux * (ux - Vx) * F * dr
-            dQ = 2 * np.pi * radius**2 * 1.2 * ux * ut * F * dr
+            dT = 4 * np.pi * radius * rho * ux * (ux - Vx) * F * dr
+            dQ = 2 * np.pi * radius**2 * rho * ux * ut * F * dr
 
-            T = ot.sum(dT)
-            Q = ot.sum(dQ)
+            dT2 = num_blades * Cx1 * 0.5 * rho * (ux**2 + (Vt - 0.5 * ut)**2) * chord * dr
+            dQ2 = num_blades * Ct1 * 0.5 * rho * (ux**2 + (Vt - 0.5 * ut)**2) * chord * dr * radius
 
-            dT2 = num_blades * Cx * 0.5 * 1.2 * (ux**2 + (Vt - 0.5 * ut)**2) * chord * dr
-            dQ2 = num_blades * Ct * 0.5 * 1.2 * (ux**2 + (Vt - 0.5 * ut)**2) * chord * dr * radius
+            T2 = csdl.sum(dT2)
+            Q2 = csdl.sum(dQ2)
 
-            T2 = ot.sum(dT2)
-            Q2 = ot.sum(dQ2)
+            T = csdl.sum(dT)
+            Q = csdl.sum(dQ)
 
-            eta = Vx * dT / rotational_speed / 2 / np.pi / dQ
+            self.register_output('_ux',ux)
+            self.register_output('_ux_2',ux_2)
+            self.register_output('_ut', ut)
 
-            eta_1 = Vx / ux
-            eta_2 = (Vt - 0.5 * ut) / Vt
-            eta_3 = 2 * ux * (ux - Vx) / (ut * (Vt - 0.5 * ut))
-
-            # eta_3 = eta /eta_1/eta_2
-            FOM  = eta_2 * eta_3
-
-            eta_total = Vx_ref * T / (n * 2 * np.pi * Q)
-            alpha = twist - phi_BEMT
-
-
-
-            self.register_output('test_output',ut * (Vt - 0.5 * ut))
-            self.register_output('BEMT_axial_induced_velocity',ux)
-            self.register_output('BEMT_tangential_induced_velocity',ut)
-            self.register_output('BEMT_local_thrust', dT)
-            self.register_output('BEMT_local_thrust_2', dT2)
+            self.register_output('_local_thrust', dT)
+            self.register_output('total_thrust', T)
+            self.register_output('_local_thrust_2', dT2)
+            self.register_output('total_thrust_2', T2)
 
 
-            self.register_output('BEMT_local_torque', dQ)
-            self.register_output('BEMT_local_torque_2', dQ2)
+            self.register_output('_local_torque', dQ)
+            self.register_output('total_torque', Q)
+            self.register_output('_local_torque_2', dQ2)
+            self.register_output('total_torque_2', Q2)
 
 
-            self.register_output('BEMT_total_torque',Q)
-            self.register_output('BEMT_total_thrust',T)
-            self.register_output('BEMT_total_torque_2',Q2)
-            self.register_output('BEMT_total_thrust_2',T2)
-            self.register_output('BEMT_local_efficiency',eta)
-            self.register_output('BEMT_total_efficiency',eta_total)
-            self.register_output('BEMT_local_AoA',alpha)
-            self.register_output('BEMT_eta_1', eta_1)
-            self.register_output('BEMT_eta_2', eta_2)
-            self.register_output('BEMT_eta_3', eta_3)
-            self.register_output('FOM', FOM)
-            self.register_output('Cx',Cx)
-            self.register_output('Ct',Ct)
 
-
-            # self.add_constraint('BEMT_total_thrust', equals = 1500)# lower = 650, upper = 750)
-            # self.add_objective('BEMT_total_torque')
-            # self.add_design_var('BEMT_total_efficiency')
