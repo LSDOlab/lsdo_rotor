@@ -30,9 +30,10 @@ The user will only have to change parameters in the `run.py` file, which has com
     * `reference_radius` The user needs to specify a reference radius at which a value for the chord length is specified. We recommend `reference_radius = rotor_radius / 2 = rotor_diameter / 4`
     * `reference_chord` The user needs to specify a reference chord length AT the above mentioned `reference_radius`. We defer to the judgment of user to specify a reasonable value
     * `num_radial` This specifies the number of radial nodes. The larger the value the more accurate the results will. We recommend a value of at least 25. 
-    These are only the parameters that require some more explanation. Please follow the comments in the run.py file for the other parameters
+    
+   These are only the parameters that require some more explanation. Please follow the comments in the run.py file for the other parameters
   
-  The output of the `ILDM` is the following
+   The output of the `ILDM` is the following
     * All performance related parameters (e.g. thrust, torque, efficiency, etc); The user can print these by setting `print_rotor_performance = 'y'`
     * The ideal, back-computed blade shape given by twist and chord; The user can plot the ideal blade profile by setting `plot_rotor_blade_shape  = 'y'`
   
