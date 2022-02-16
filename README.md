@@ -15,6 +15,9 @@ Please follow the installation instructions provided in the above links. Once th
 * Execute the next two commands to install lsdo_rotor
   * ``cd lsdo_rotor``
   * ``pip install -e .``
+* If the installation is successful, check that the run.py file executes by typing
+  * ``cd lsdo_rotor``
+  * ``python run.py``
   
 # User guidelines
 
