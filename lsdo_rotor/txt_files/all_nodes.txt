@@ -1,0 +1,2200 @@
+node name, 	 node object
+external_inputs_model, <csdl.core.subgraph.Subgraph object at 0x7fcd7770dcd0>
+	DEPENDENTS
+	core_inputs_model, <csdl.core.subgraph.Subgraph object at 0x7fcd77715650>
+	DEPENDENCIES
+core_inputs_model, <csdl.core.subgraph.Subgraph object at 0x7fcd77715650>
+	DEPENDENTS
+	preprocess_model, <csdl.core.subgraph.Subgraph object at 0x7fcd797933d0>
+	DEPENDENCIES
+	external_inputs_model, <csdl.core.subgraph.Subgraph object at 0x7fcd7770dcd0>
+M, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771cd10>
+	DEPENDENTS
+	_000H, <csdl.operations.expand.expand object at 0x7fcd7771c0d0>
+	DEPENDENCIES
+_000H, <csdl.operations.expand.expand object at 0x7fcd7771c0d0>
+	DEPENDENTS
+	M_matrix, <csdl.core.output.Output object at 0x7fcd7771cc50>
+	DEPENDENCIES
+	M, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771cd10>
+M_matrix, <csdl.core.output.Output object at 0x7fcd7771cc50>
+	DEPENDENTS
+	DEPENDENCIES
+	_000H, <csdl.operations.expand.expand object at 0x7fcd7771c0d0>
+M_inv, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd775d3690>
+	DEPENDENTS
+	_000J, <csdl.operations.expand.expand object at 0x7fcd7771cb50>
+	DEPENDENCIES
+_000J, <csdl.operations.expand.expand object at 0x7fcd7771cb50>
+	DEPENDENTS
+	inv_M_matrix, <csdl.core.output.Output object at 0x7fcd7771c9d0>
+	DEPENDENCIES
+	M_inv, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd775d3690>
+inv_M_matrix, <csdl.core.output.Output object at 0x7fcd7771c9d0>
+	DEPENDENTS
+	DEPENDENCIES
+	_000J, <csdl.operations.expand.expand object at 0x7fcd7771cb50>
+nu_0_vec, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771c250>
+	DEPENDENTS
+	_000L, <csdl.operations.expand.expand object at 0x7fcd7771c190>
+	DEPENDENCIES
+_000L, <csdl.operations.expand.expand object at 0x7fcd7771c190>
+	DEPENDENTS
+	nu_0_vec_exp, <csdl.core.output.Output object at 0x7fcd7771c790>
+	DEPENDENCIES
+	nu_0_vec, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771c250>
+nu_0_vec_exp, <csdl.core.output.Output object at 0x7fcd7771c790>
+	DEPENDENTS
+	DEPENDENCIES
+	_000L, <csdl.operations.expand.expand object at 0x7fcd7771c190>
+nu_s_vec, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771cc90>
+	DEPENDENTS
+	_000N, <csdl.operations.expand.expand object at 0x7fcd7771cb90>
+	DEPENDENCIES
+_000N, <csdl.operations.expand.expand object at 0x7fcd7771cb90>
+	DEPENDENTS
+	nu_s_vec_exp, <csdl.core.output.Output object at 0x7fcd7771cd90>
+	DEPENDENCIES
+	nu_s_vec, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771cc90>
+nu_s_vec_exp, <csdl.core.output.Output object at 0x7fcd7771cd90>
+	DEPENDENTS
+	DEPENDENCIES
+	_000N, <csdl.operations.expand.expand object at 0x7fcd7771cb90>
+nu_c_vec, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd775d3710>
+	DEPENDENTS
+	_000P, <csdl.operations.expand.expand object at 0x7fcd7771c2d0>
+	DEPENDENCIES
+_000P, <csdl.operations.expand.expand object at 0x7fcd7771c2d0>
+	DEPENDENTS
+	nu_c_vec_exp, <csdl.core.output.Output object at 0x7fcd7771c590>
+	DEPENDENCIES
+	nu_c_vec, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd775d3710>
+nu_c_vec_exp, <csdl.core.output.Output object at 0x7fcd7771c590>
+	DEPENDENTS
+	DEPENDENCIES
+	_000P, <csdl.operations.expand.expand object at 0x7fcd7771c2d0>
+hub_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7770dc10>
+	DEPENDENTS
+	_000R, <csdl.operations.expand.expand object at 0x7fcd7771c350>
+	DEPENDENCIES
+_000R, <csdl.operations.expand.expand object at 0x7fcd7771c350>
+	DEPENDENTS
+	_hub_radius, <csdl.core.output.Output object at 0x7fcd77715510>
+	DEPENDENCIES
+	hub_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7770dc10>
+_hub_radius, <csdl.core.output.Output object at 0x7fcd77715510>
+	DEPENDENTS
+	DEPENDENCIES
+	_000R, <csdl.operations.expand.expand object at 0x7fcd7771c350>
+rotor_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd774e3ed0>
+	DEPENDENTS
+	_000T, <csdl.operations.expand.expand object at 0x7fcd77715990>
+	DEPENDENCIES
+_000T, <csdl.operations.expand.expand object at 0x7fcd77715990>
+	DEPENDENTS
+	_rotor_radius, <csdl.core.output.Output object at 0x7fcd77715590>
+	DEPENDENCIES
+	rotor_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd774e3ed0>
+_rotor_radius, <csdl.core.output.Output object at 0x7fcd77715590>
+	DEPENDENTS
+	DEPENDENCIES
+	_000T, <csdl.operations.expand.expand object at 0x7fcd77715990>
+rotational_speed, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7770d6d0>
+	DEPENDENTS
+	_000V, <csdl.operations.expand.expand object at 0x7fcd777157d0>
+	DEPENDENCIES
+_000V, <csdl.operations.expand.expand object at 0x7fcd777157d0>
+	DEPENDENTS
+	_rotational_speed, <csdl.core.output.Output object at 0x7fcd77715050>
+	DEPENDENCIES
+	rotational_speed, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7770d6d0>
+_rotational_speed, <csdl.core.output.Output object at 0x7fcd77715050>
+	DEPENDENTS
+	DEPENDENCIES
+	_000V, <csdl.operations.expand.expand object at 0x7fcd777157d0>
+dr, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771c150>
+	DEPENDENTS
+	_000X, <csdl.operations.expand.expand object at 0x7fcd777153d0>
+	DEPENDENCIES
+_000X, <csdl.operations.expand.expand object at 0x7fcd777153d0>
+	DEPENDENTS
+	_dr, <csdl.core.output.Output object at 0x7fcd77715a90>
+	DEPENDENCIES
+	dr, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771c150>
+_dr, <csdl.core.output.Output object at 0x7fcd77715a90>
+	DEPENDENTS
+	DEPENDENCIES
+	_000X, <csdl.operations.expand.expand object at 0x7fcd777153d0>
+position, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771c690>
+	DEPENDENTS
+	_000Z, <csdl.operations.expand.expand object at 0x7fcd77715dd0>
+	DEPENDENCIES
+_000Z, <csdl.operations.expand.expand object at 0x7fcd77715dd0>
+	DEPENDENTS
+	_position, <csdl.core.output.Output object at 0x7fcd777156d0>
+	DEPENDENCIES
+	position, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771c690>
+_position, <csdl.core.output.Output object at 0x7fcd777156d0>
+	DEPENDENTS
+	DEPENDENCIES
+	_000Z, <csdl.operations.expand.expand object at 0x7fcd77715dd0>
+x_dir, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771c050>
+	DEPENDENTS
+	_0010, <csdl.operations.expand.expand object at 0x7fcd77715f50>
+	DEPENDENCIES
+_0010, <csdl.operations.expand.expand object at 0x7fcd77715f50>
+	DEPENDENTS
+	_x_dir, <csdl.core.output.Output object at 0x7fcd77715f10>
+	DEPENDENCIES
+	x_dir, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771c050>
+_x_dir, <csdl.core.output.Output object at 0x7fcd77715f10>
+	DEPENDENTS
+	DEPENDENCIES
+	_0010, <csdl.operations.expand.expand object at 0x7fcd77715f50>
+y_dir, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771c950>
+	DEPENDENTS
+	_0012, <csdl.operations.expand.expand object at 0x7fcd77715350>
+	DEPENDENCIES
+_0012, <csdl.operations.expand.expand object at 0x7fcd77715350>
+	DEPENDENTS
+	_y_dir, <csdl.core.output.Output object at 0x7fcd77715d50>
+	DEPENDENCIES
+	y_dir, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771c950>
+_y_dir, <csdl.core.output.Output object at 0x7fcd77715d50>
+	DEPENDENTS
+	DEPENDENCIES
+	_0012, <csdl.operations.expand.expand object at 0x7fcd77715350>
+z_dir, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771ccd0>
+	DEPENDENTS
+	_0014, <csdl.operations.expand.expand object at 0x7fcd77715250>
+	DEPENDENCIES
+_0014, <csdl.operations.expand.expand object at 0x7fcd77715250>
+	DEPENDENTS
+	_z_dir, <csdl.core.output.Output object at 0x7fcd777158d0>
+	DEPENDENCIES
+	z_dir, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771ccd0>
+_z_dir, <csdl.core.output.Output object at 0x7fcd777158d0>
+	DEPENDENTS
+	DEPENDENCIES
+	_0014, <csdl.operations.expand.expand object at 0x7fcd77715250>
+inflow_velocity, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771c510>
+	DEPENDENTS
+	_0016, <csdl.operations.power_combination.power_combination object at 0x7fcd7771cb10>
+	DEPENDENCIES
+_0016, <csdl.operations.power_combination.power_combination object at 0x7fcd7771cb10>
+	DEPENDENTS
+	_inflow_velocity, <csdl.core.output.Output object at 0x7fcd77715290>
+	DEPENDENCIES
+	inflow_velocity, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771c510>
+_inflow_velocity, <csdl.core.output.Output object at 0x7fcd77715290>
+	DEPENDENTS
+	DEPENDENCIES
+	_0016, <csdl.operations.power_combination.power_combination object at 0x7fcd7771cb10>
+pitch, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771c750>
+	DEPENDENTS
+	_0018, <csdl.operations.expand.expand object at 0x7fcd77715b10>
+	DEPENDENCIES
+_0018, <csdl.operations.expand.expand object at 0x7fcd77715b10>
+	DEPENDENTS
+	_pitch, <csdl.core.output.Output object at 0x7fcd6bbc90d0>
+	DEPENDENCIES
+	pitch, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771c750>
+_pitch, <csdl.core.output.Output object at 0x7fcd6bbc90d0>
+	DEPENDENTS
+	DEPENDENCIES
+	_0018, <csdl.operations.expand.expand object at 0x7fcd77715b10>
+chord, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771cf10>
+	DEPENDENTS
+	_001a, <csdl.operations.expand.expand object at 0x7fcd77715850>
+	DEPENDENCIES
+_001a, <csdl.operations.expand.expand object at 0x7fcd77715850>
+	DEPENDENTS
+	_chord, <csdl.core.output.Output object at 0x7fcd777152d0>
+	DEPENDENCIES
+	chord, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd7771cf10>
+_chord, <csdl.core.output.Output object at 0x7fcd777152d0>
+	DEPENDENTS
+	DEPENDENCIES
+	_001a, <csdl.operations.expand.expand object at 0x7fcd77715850>
+preprocess_model, <csdl.core.subgraph.Subgraph object at 0x7fcd797933d0>
+	DEPENDENTS
+	atmosphere_model, <csdl.core.subgraph.Subgraph object at 0x7fcd7742c290>
+	DEPENDENCIES
+	core_inputs_model, <csdl.core.subgraph.Subgraph object at 0x7fcd77715650>
+_hub_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715c50>
+	DEPENDENTS
+	_001s, <csdl.operations.linear_combination.linear_combination object at 0x7fcd77712590>
+	_001y, <csdl.operations.linear_combination.linear_combination object at 0x7fcd77712d90>
+	_001C, <csdl.operations.linear_combination.linear_combination object at 0x7fcd777122d0>
+	_001w, <csdl.operations.linear_combination.linear_combination object at 0x7fcd777128d0>
+	DEPENDENCIES
+_rotor_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715bd0>
+	DEPENDENTS
+	_001s, <csdl.operations.linear_combination.linear_combination object at 0x7fcd77712590>
+	_001y, <csdl.operations.linear_combination.linear_combination object at 0x7fcd77712d90>
+	DEPENDENCIES
+_001y, <csdl.operations.linear_combination.linear_combination object at 0x7fcd77712d90>
+	DEPENDENTS
+	_001z, <csdl.core.output.Output object at 0x7fcd77712b50>
+	DEPENDENCIES
+	_rotor_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715bd0>
+	_hub_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715c50>
+_001z, <csdl.core.output.Output object at 0x7fcd77712b50>
+	DEPENDENTS
+	_001A, <csdl.operations.power_combination.power_combination object at 0x7fcd77712b90>
+	DEPENDENCIES
+	_001y, <csdl.operations.linear_combination.linear_combination object at 0x7fcd77712d90>
+_normalized_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715e10>
+	DEPENDENTS
+	_001u, <csdl.operations.power_combination.power_combination object at 0x7fcd77712910>
+	_001A, <csdl.operations.power_combination.power_combination object at 0x7fcd77712b90>
+	DEPENDENCIES
+_001A, <csdl.operations.power_combination.power_combination object at 0x7fcd77712b90>
+	DEPENDENTS
+	_001B, <csdl.core.output.Output object at 0x7fcd77712ed0>
+	DEPENDENCIES
+	_001z, <csdl.core.output.Output object at 0x7fcd77712b50>
+	_normalized_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715e10>
+_001B, <csdl.core.output.Output object at 0x7fcd77712ed0>
+	DEPENDENTS
+	_001C, <csdl.operations.linear_combination.linear_combination object at 0x7fcd777122d0>
+	DEPENDENCIES
+	_001A, <csdl.operations.power_combination.power_combination object at 0x7fcd77712b90>
+_001C, <csdl.operations.linear_combination.linear_combination object at 0x7fcd777122d0>
+	DEPENDENTS
+	_ref_radius, <csdl.core.output.Output object at 0x7fcd77712790>
+	DEPENDENCIES
+	_hub_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715c50>
+	_001B, <csdl.core.output.Output object at 0x7fcd77712ed0>
+_ref_radius, <csdl.core.output.Output object at 0x7fcd77712790>
+	DEPENDENTS
+	DEPENDENCIES
+	_001C, <csdl.operations.linear_combination.linear_combination object at 0x7fcd777122d0>
+_chord, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715d10>
+	DEPENDENTS
+	_001E, <csdl.operations.power_combination.power_combination object at 0x7fcd77712d50>
+	DEPENDENCIES
+_001E, <csdl.operations.power_combination.power_combination object at 0x7fcd77712d50>
+	DEPENDENTS
+	_001F, <csdl.core.output.Output object at 0x7fcd77712bd0>
+	DEPENDENCIES
+	_chord, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715d10>
+_001F, <csdl.core.output.Output object at 0x7fcd77712bd0>
+	DEPENDENTS
+	_001G, <csdl.operations.power_combination.power_combination object at 0x7fcd77712d10>
+	DEPENDENCIES
+	_001E, <csdl.operations.power_combination.power_combination object at 0x7fcd77712d50>
+_001G, <csdl.operations.power_combination.power_combination object at 0x7fcd77712d10>
+	DEPENDENTS
+	_001H, <csdl.core.output.Output object at 0x7fcd77712410>
+	DEPENDENCIES
+	_001F, <csdl.core.output.Output object at 0x7fcd77712bd0>
+_001H, <csdl.core.output.Output object at 0x7fcd77712410>
+	DEPENDENTS
+	_001I, <csdl.operations.power_combination.power_combination object at 0x7fcd77712390>
+	DEPENDENCIES
+	_001G, <csdl.operations.power_combination.power_combination object at 0x7fcd77712d10>
+_001I, <csdl.operations.power_combination.power_combination object at 0x7fcd77712390>
+	DEPENDENTS
+	_001J, <csdl.core.output.Output object at 0x7fcd77712950>
+	DEPENDENCIES
+	_001H, <csdl.core.output.Output object at 0x7fcd77712410>
+_001J, <csdl.core.output.Output object at 0x7fcd77712950>
+	DEPENDENTS
+	_001K, <csdl.operations.power_combination.power_combination object at 0x7fcd77712610>
+	DEPENDENCIES
+	_001I, <csdl.operations.power_combination.power_combination object at 0x7fcd77712390>
+_001s, <csdl.operations.linear_combination.linear_combination object at 0x7fcd77712590>
+	DEPENDENTS
+	_001t, <csdl.core.output.Output object at 0x7fcd76967fd0>
+	DEPENDENCIES
+	_rotor_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715bd0>
+	_hub_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715c50>
+_001t, <csdl.core.output.Output object at 0x7fcd76967fd0>
+	DEPENDENTS
+	_001u, <csdl.operations.power_combination.power_combination object at 0x7fcd77712910>
+	DEPENDENCIES
+	_001s, <csdl.operations.linear_combination.linear_combination object at 0x7fcd77712590>
+_001u, <csdl.operations.power_combination.power_combination object at 0x7fcd77712910>
+	DEPENDENTS
+	_001v, <csdl.core.output.Output object at 0x7fcd77712810>
+	DEPENDENCIES
+	_001t, <csdl.core.output.Output object at 0x7fcd76967fd0>
+	_normalized_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715e10>
+_001v, <csdl.core.output.Output object at 0x7fcd77712810>
+	DEPENDENTS
+	_001w, <csdl.operations.linear_combination.linear_combination object at 0x7fcd777128d0>
+	DEPENDENCIES
+	_001u, <csdl.operations.power_combination.power_combination object at 0x7fcd77712910>
+_001w, <csdl.operations.linear_combination.linear_combination object at 0x7fcd777128d0>
+	DEPENDENTS
+	_radius, <csdl.core.output.Output object at 0x7fcd77712450>
+	DEPENDENCIES
+	_hub_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715c50>
+	_001v, <csdl.core.output.Output object at 0x7fcd77712810>
+_radius, <csdl.core.output.Output object at 0x7fcd77712450>
+	DEPENDENTS
+	_001K, <csdl.operations.power_combination.power_combination object at 0x7fcd77712610>
+	_0025, <csdl.operations.power_combination.power_combination object at 0x7fcd79793210>
+	DEPENDENCIES
+	_001w, <csdl.operations.linear_combination.linear_combination object at 0x7fcd777128d0>
+_001K, <csdl.operations.power_combination.power_combination object at 0x7fcd77712610>
+	DEPENDENTS
+	_blade_solidity, <csdl.core.output.Output object at 0x7fcd77712a90>
+	DEPENDENCIES
+	_001J, <csdl.core.output.Output object at 0x7fcd77712950>
+	_radius, <csdl.core.output.Output object at 0x7fcd77712450>
+_blade_solidity, <csdl.core.output.Output object at 0x7fcd77712a90>
+	DEPENDENTS
+	DEPENDENCIES
+	_001K, <csdl.operations.power_combination.power_combination object at 0x7fcd77712610>
+_inflow_velocity, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715610>
+	DEPENDENTS
+	_001Q, <csdl.operations.einsum.einsum object at 0x7fcd774b8190>
+	_001M, <csdl.operations.einsum.einsum object at 0x7fcd77712c50>
+	_001O, <csdl.operations.einsum.einsum object at 0x7fcd77712a50>
+	DEPENDENCIES
+_x_dir, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd72be1810>
+	DEPENDENTS
+	_001M, <csdl.operations.einsum.einsum object at 0x7fcd77712c50>
+	DEPENDENCIES
+_001M, <csdl.operations.einsum.einsum object at 0x7fcd77712c50>
+	DEPENDENTS
+	_axial_inflow_velocity, <csdl.core.output.Output object at 0x7fcd77712e10>
+	DEPENDENCIES
+	_inflow_velocity, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715610>
+	_x_dir, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd72be1810>
+_axial_inflow_velocity, <csdl.core.output.Output object at 0x7fcd77712e10>
+	DEPENDENTS
+	DEPENDENCIES
+	_001M, <csdl.operations.einsum.einsum object at 0x7fcd77712c50>
+_direction, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77712310>
+	DEPENDENTS
+	_001S, <csdl.operations.power_combination.power_combination object at 0x7fcd776ce150>
+	_001Y, <csdl.operations.power_combination.power_combination object at 0x7fcd777129d0>
+	DEPENDENCIES
+_y_dir, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd777120d0>
+	DEPENDENTS
+	_001O, <csdl.operations.einsum.einsum object at 0x7fcd77712a50>
+	DEPENDENCIES
+_001O, <csdl.operations.einsum.einsum object at 0x7fcd77712a50>
+	DEPENDENTS
+	_in_plane_inflow_velocity, <csdl.core.output.Output object at 0x7fcd774e3f10>
+	DEPENDENCIES
+	_inflow_velocity, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715610>
+	_y_dir, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd777120d0>
+_in_plane_inflow_velocity, <csdl.core.output.Output object at 0x7fcd774e3f10>
+	DEPENDENTS
+	_001S, <csdl.operations.power_combination.power_combination object at 0x7fcd776ce150>
+	DEPENDENCIES
+	_001O, <csdl.operations.einsum.einsum object at 0x7fcd77712a50>
+_001S, <csdl.operations.power_combination.power_combination object at 0x7fcd776ce150>
+	DEPENDENTS
+	_001T, <csdl.core.output.Output object at 0x7fcd776ce050>
+	DEPENDENCIES
+	_direction, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77712310>
+	_in_plane_inflow_velocity, <csdl.core.output.Output object at 0x7fcd774e3f10>
+_001T, <csdl.core.output.Output object at 0x7fcd776ce050>
+	DEPENDENTS
+	_001W, <csdl.operations.power_combination.power_combination object at 0x7fcd6bebfa10>
+	DEPENDENCIES
+	_001S, <csdl.operations.power_combination.power_combination object at 0x7fcd776ce150>
+_theta, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715c90>
+	DEPENDENTS
+	_001U, <csdl.operations.cos.cos object at 0x7fcd776cef10>
+	_001_, <csdl.operations.sin.sin object at 0x7fcd775a8c10>
+	DEPENDENCIES
+_001U, <csdl.operations.cos.cos object at 0x7fcd776cef10>
+	DEPENDENTS
+	_001V, <csdl.core.output.Output object at 0x7fcd776ce1d0>
+	DEPENDENCIES
+	_theta, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715c90>
+_001V, <csdl.core.output.Output object at 0x7fcd776ce1d0>
+	DEPENDENTS
+	_001W, <csdl.operations.power_combination.power_combination object at 0x7fcd6bebfa10>
+	DEPENDENCIES
+	_001U, <csdl.operations.cos.cos object at 0x7fcd776cef10>
+_001W, <csdl.operations.power_combination.power_combination object at 0x7fcd6bebfa10>
+	DEPENDENTS
+	_001X, <csdl.core.output.Output object at 0x7fcd77712750>
+	DEPENDENCIES
+	_001T, <csdl.core.output.Output object at 0x7fcd776ce050>
+	_001V, <csdl.core.output.Output object at 0x7fcd776ce1d0>
+_001X, <csdl.core.output.Output object at 0x7fcd77712750>
+	DEPENDENTS
+	_0023, <csdl.operations.linear_combination.linear_combination object at 0x7fcd79793110>
+	DEPENDENCIES
+	_001W, <csdl.operations.power_combination.power_combination object at 0x7fcd6bebfa10>
+_z_dir, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715390>
+	DEPENDENTS
+	_001Q, <csdl.operations.einsum.einsum object at 0x7fcd774b8190>
+	DEPENDENCIES
+_001Q, <csdl.operations.einsum.einsum object at 0x7fcd774b8190>
+	DEPENDENTS
+	inflow_z, <csdl.core.output.Output object at 0x7fcd776ce3d0>
+	DEPENDENCIES
+	_inflow_velocity, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715610>
+	_z_dir, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715390>
+inflow_z, <csdl.core.output.Output object at 0x7fcd776ce3d0>
+	DEPENDENTS
+	_001Y, <csdl.operations.power_combination.power_combination object at 0x7fcd777129d0>
+	DEPENDENCIES
+	_001Q, <csdl.operations.einsum.einsum object at 0x7fcd774b8190>
+_001Y, <csdl.operations.power_combination.power_combination object at 0x7fcd777129d0>
+	DEPENDENTS
+	_001Z, <csdl.core.output.Output object at 0x7fcd77712990>
+	DEPENDENCIES
+	_direction, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77712310>
+	inflow_z, <csdl.core.output.Output object at 0x7fcd776ce3d0>
+_001Z, <csdl.core.output.Output object at 0x7fcd77712990>
+	DEPENDENTS
+	_0021, <csdl.operations.power_combination.power_combination object at 0x7fcd6be11590>
+	DEPENDENCIES
+	_001Y, <csdl.operations.power_combination.power_combination object at 0x7fcd777129d0>
+_001_, <csdl.operations.sin.sin object at 0x7fcd775a8c10>
+	DEPENDENTS
+	_0020, <csdl.core.output.Output object at 0x7fcd6ded2550>
+	DEPENDENCIES
+	_theta, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715c90>
+_0020, <csdl.core.output.Output object at 0x7fcd6ded2550>
+	DEPENDENTS
+	_0021, <csdl.operations.power_combination.power_combination object at 0x7fcd6be11590>
+	DEPENDENCIES
+	_001_, <csdl.operations.sin.sin object at 0x7fcd775a8c10>
+_0021, <csdl.operations.power_combination.power_combination object at 0x7fcd6be11590>
+	DEPENDENTS
+	_0022, <csdl.core.output.Output object at 0x7fcd6be26190>
+	DEPENDENCIES
+	_001Z, <csdl.core.output.Output object at 0x7fcd77712990>
+	_0020, <csdl.core.output.Output object at 0x7fcd6ded2550>
+_0022, <csdl.core.output.Output object at 0x7fcd6be26190>
+	DEPENDENTS
+	_0023, <csdl.operations.linear_combination.linear_combination object at 0x7fcd79793110>
+	DEPENDENCIES
+	_0021, <csdl.operations.power_combination.power_combination object at 0x7fcd6be11590>
+_0023, <csdl.operations.linear_combination.linear_combination object at 0x7fcd79793110>
+	DEPENDENTS
+	_0024, <csdl.core.output.Output object at 0x7fcd79793190>
+	DEPENDENCIES
+	_001X, <csdl.core.output.Output object at 0x7fcd77712750>
+	_0022, <csdl.core.output.Output object at 0x7fcd6be26190>
+_0024, <csdl.core.output.Output object at 0x7fcd79793190>
+	DEPENDENTS
+	_0027, <csdl.operations.linear_combination.linear_combination object at 0x7fcd79793310>
+	DEPENDENCIES
+	_0023, <csdl.operations.linear_combination.linear_combination object at 0x7fcd79793110>
+_rotational_speed, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715790>
+	DEPENDENTS
+	_001q, <csdl.operations.power_combination.power_combination object at 0x7fcd777123d0>
+	DEPENDENCIES
+_001q, <csdl.operations.power_combination.power_combination object at 0x7fcd777123d0>
+	DEPENDENTS
+	_angular_speed, <csdl.core.output.Output object at 0x7fcd775d3410>
+	DEPENDENCIES
+	_rotational_speed, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd77715790>
+_angular_speed, <csdl.core.output.Output object at 0x7fcd775d3410>
+	DEPENDENTS
+	_0025, <csdl.operations.power_combination.power_combination object at 0x7fcd79793210>
+	DEPENDENCIES
+	_001q, <csdl.operations.power_combination.power_combination object at 0x7fcd777123d0>
+_0025, <csdl.operations.power_combination.power_combination object at 0x7fcd79793210>
+	DEPENDENTS
+	_0026, <csdl.core.output.Output object at 0x7fcd79793290>
+	DEPENDENCIES
+	_radius, <csdl.core.output.Output object at 0x7fcd77712450>
+	_angular_speed, <csdl.core.output.Output object at 0x7fcd775d3410>
+_0026, <csdl.core.output.Output object at 0x7fcd79793290>
+	DEPENDENTS
+	_0027, <csdl.operations.linear_combination.linear_combination object at 0x7fcd79793310>
+	DEPENDENCIES
+	_0025, <csdl.operations.power_combination.power_combination object at 0x7fcd79793210>
+_0027, <csdl.operations.linear_combination.linear_combination object at 0x7fcd79793310>
+	DEPENDENTS
+	_tangential_inflow_velocity, <csdl.core.output.Output object at 0x7fcd79793390>
+	DEPENDENCIES
+	_0024, <csdl.core.output.Output object at 0x7fcd79793190>
+	_0026, <csdl.core.output.Output object at 0x7fcd79793290>
+_tangential_inflow_velocity, <csdl.core.output.Output object at 0x7fcd79793390>
+	DEPENDENTS
+	DEPENDENCIES
+	_0027, <csdl.operations.linear_combination.linear_combination object at 0x7fcd79793310>
+atmosphere_model, <csdl.core.subgraph.Subgraph object at 0x7fcd7742c290>
+	DEPENDENTS
+	_angular_speed, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0210>
+	_rotor_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0490>
+	_chord, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd76330ad0>
+	_dr, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0510>
+	_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a01d0>
+	_re_pitt_peters, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd79793fd0>
+	_tangential_inflow_velocity, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0350>
+	pitt_peters_post_process_model, <csdl.core.subgraph.Subgraph object at 0x7fcd7770db90>
+	_pitch, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd775d33d0>
+	DEPENDENCIES
+	preprocess_model, <csdl.core.subgraph.Subgraph object at 0x7fcd797933d0>
+_tangential_inflow_velocity, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd79793510>
+	DEPENDENTS
+	_002f, <csdl.operations.power_combination.power_combination object at 0x7fcd797937d0>
+	_002d, <csdl.operations.power_combination.power_combination object at 0x7fcd797935d0>
+	_002j, <csdl.operations.power_combination.power_combination object at 0x7fcd797939d0>
+	DEPENDENCIES
+_002d, <csdl.operations.power_combination.power_combination object at 0x7fcd797935d0>
+	DEPENDENTS
+	_002e, <csdl.core.output.Output object at 0x7fcd79793750>
+	DEPENDENCIES
+	_tangential_inflow_velocity, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd79793510>
+_002e, <csdl.core.output.Output object at 0x7fcd79793750>
+	DEPENDENTS
+	_002f, <csdl.operations.power_combination.power_combination object at 0x7fcd797937d0>
+	DEPENDENCIES
+	_002d, <csdl.operations.power_combination.power_combination object at 0x7fcd797935d0>
+_002f, <csdl.operations.power_combination.power_combination object at 0x7fcd797937d0>
+	DEPENDENTS
+	_rho_pitt_peters, <csdl.core.output.Output object at 0x7fcd79793850>
+	DEPENDENCIES
+	_002e, <csdl.core.output.Output object at 0x7fcd79793750>
+	_tangential_inflow_velocity, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd79793510>
+_rho_pitt_peters, <csdl.core.output.Output object at 0x7fcd79793850>
+	DEPENDENTS
+	_002p, <csdl.operations.power_combination.power_combination object at 0x7fcd79793c90>
+	DEPENDENCIES
+	_002f, <csdl.operations.power_combination.power_combination object at 0x7fcd797937d0>
+_axial_inflow_velocity, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd79793650>
+	DEPENDENTS
+	_002h, <csdl.operations.power_combination.power_combination object at 0x7fcd797938d0>
+	DEPENDENCIES
+_002h, <csdl.operations.power_combination.power_combination object at 0x7fcd797938d0>
+	DEPENDENTS
+	_002i, <csdl.core.output.Output object at 0x7fcd79793950>
+	DEPENDENCIES
+	_axial_inflow_velocity, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd79793650>
+_002i, <csdl.core.output.Output object at 0x7fcd79793950>
+	DEPENDENTS
+	_002l, <csdl.operations.linear_combination.linear_combination object at 0x7fcd79793a90>
+	DEPENDENCIES
+	_002h, <csdl.operations.power_combination.power_combination object at 0x7fcd797938d0>
+_002j, <csdl.operations.power_combination.power_combination object at 0x7fcd797939d0>
+	DEPENDENTS
+	_002k, <csdl.core.output.Output object at 0x7fcd79793a10>
+	DEPENDENCIES
+	_tangential_inflow_velocity, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd79793510>
+_002k, <csdl.core.output.Output object at 0x7fcd79793a10>
+	DEPENDENTS
+	_002l, <csdl.operations.linear_combination.linear_combination object at 0x7fcd79793a90>
+	DEPENDENCIES
+	_002j, <csdl.operations.power_combination.power_combination object at 0x7fcd797939d0>
+_002l, <csdl.operations.linear_combination.linear_combination object at 0x7fcd79793a90>
+	DEPENDENTS
+	_002m, <csdl.core.output.Output object at 0x7fcd79793b10>
+	DEPENDENCIES
+	_002i, <csdl.core.output.Output object at 0x7fcd79793950>
+	_002k, <csdl.core.output.Output object at 0x7fcd79793a10>
+_002m, <csdl.core.output.Output object at 0x7fcd79793b10>
+	DEPENDENTS
+	_002n, <csdl.operations.power_combination.power_combination object at 0x7fcd79793b90>
+	DEPENDENCIES
+	_002l, <csdl.operations.linear_combination.linear_combination object at 0x7fcd79793a90>
+_002n, <csdl.operations.power_combination.power_combination object at 0x7fcd79793b90>
+	DEPENDENTS
+	_002o, <csdl.core.output.Output object at 0x7fcd79793c10>
+	DEPENDENCIES
+	_002m, <csdl.core.output.Output object at 0x7fcd79793b10>
+_002o, <csdl.core.output.Output object at 0x7fcd79793c10>
+	DEPENDENTS
+	_002p, <csdl.operations.power_combination.power_combination object at 0x7fcd79793c90>
+	DEPENDENCIES
+	_002n, <csdl.operations.power_combination.power_combination object at 0x7fcd79793b90>
+_002p, <csdl.operations.power_combination.power_combination object at 0x7fcd79793c90>
+	DEPENDENTS
+	_002q, <csdl.core.output.Output object at 0x7fcd79793d10>
+	DEPENDENCIES
+	_rho_pitt_peters, <csdl.core.output.Output object at 0x7fcd79793850>
+	_002o, <csdl.core.output.Output object at 0x7fcd79793c10>
+_002q, <csdl.core.output.Output object at 0x7fcd79793d10>
+	DEPENDENTS
+	_002r, <csdl.operations.power_combination.power_combination object at 0x7fcd79793d90>
+	DEPENDENCIES
+	_002p, <csdl.operations.power_combination.power_combination object at 0x7fcd79793c90>
+_chord, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797934d0>
+	DEPENDENTS
+	_002r, <csdl.operations.power_combination.power_combination object at 0x7fcd79793d90>
+	DEPENDENCIES
+_002r, <csdl.operations.power_combination.power_combination object at 0x7fcd79793d90>
+	DEPENDENTS
+	_002s, <csdl.core.output.Output object at 0x7fcd79793e10>
+	DEPENDENCIES
+	_002q, <csdl.core.output.Output object at 0x7fcd79793d10>
+	_chord, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797934d0>
+_002s, <csdl.core.output.Output object at 0x7fcd79793e10>
+	DEPENDENTS
+	_002t, <csdl.operations.power_combination.power_combination object at 0x7fcd79793e90>
+	DEPENDENCIES
+	_002r, <csdl.operations.power_combination.power_combination object at 0x7fcd79793d90>
+_002t, <csdl.operations.power_combination.power_combination object at 0x7fcd79793e90>
+	DEPENDENTS
+	_re_pitt_peters, <csdl.core.output.Output object at 0x7fcd79793f10>
+	DEPENDENCIES
+	_002s, <csdl.core.output.Output object at 0x7fcd79793e10>
+_re_pitt_peters, <csdl.core.output.Output object at 0x7fcd79793f10>
+	DEPENDENTS
+	DEPENDENCIES
+	_002t, <csdl.operations.power_combination.power_combination object at 0x7fcd79793e90>
+_re_pitt_peters, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd79793fd0>
+	DEPENDENTS
+	_002I, <lsdo_rotor.core.pitt_peters_custom_implicit_operation.PittPetersCustomImplicitOperation object at 0x7fcd797a0590>
+	DEPENDENCIES
+	atmosphere_model, <csdl.core.subgraph.Subgraph object at 0x7fcd7742c290>
+_chord, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd76330ad0>
+	DEPENDENTS
+	_002I, <lsdo_rotor.core.pitt_peters_custom_implicit_operation.PittPetersCustomImplicitOperation object at 0x7fcd797a0590>
+	DEPENDENCIES
+	atmosphere_model, <csdl.core.subgraph.Subgraph object at 0x7fcd7742c290>
+_pitch, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd775d33d0>
+	DEPENDENTS
+	_002I, <lsdo_rotor.core.pitt_peters_custom_implicit_operation.PittPetersCustomImplicitOperation object at 0x7fcd797a0590>
+	DEPENDENCIES
+	atmosphere_model, <csdl.core.subgraph.Subgraph object at 0x7fcd7742c290>
+_tangential_inflow_velocity, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0350>
+	DEPENDENTS
+	_002I, <lsdo_rotor.core.pitt_peters_custom_implicit_operation.PittPetersCustomImplicitOperation object at 0x7fcd797a0590>
+	DEPENDENCIES
+	atmosphere_model, <csdl.core.subgraph.Subgraph object at 0x7fcd7742c290>
+_dr, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0510>
+	DEPENDENTS
+	_002I, <lsdo_rotor.core.pitt_peters_custom_implicit_operation.PittPetersCustomImplicitOperation object at 0x7fcd797a0590>
+	DEPENDENCIES
+	atmosphere_model, <csdl.core.subgraph.Subgraph object at 0x7fcd7742c290>
+_rotor_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0490>
+	DEPENDENTS
+	_002I, <lsdo_rotor.core.pitt_peters_custom_implicit_operation.PittPetersCustomImplicitOperation object at 0x7fcd797a0590>
+	DEPENDENCIES
+	atmosphere_model, <csdl.core.subgraph.Subgraph object at 0x7fcd7742c290>
+_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a01d0>
+	DEPENDENTS
+	_002I, <lsdo_rotor.core.pitt_peters_custom_implicit_operation.PittPetersCustomImplicitOperation object at 0x7fcd797a0590>
+	DEPENDENCIES
+	atmosphere_model, <csdl.core.subgraph.Subgraph object at 0x7fcd7742c290>
+_angular_speed, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0210>
+	DEPENDENTS
+	_002I, <lsdo_rotor.core.pitt_peters_custom_implicit_operation.PittPetersCustomImplicitOperation object at 0x7fcd797a0590>
+	DEPENDENCIES
+	atmosphere_model, <csdl.core.subgraph.Subgraph object at 0x7fcd7742c290>
+_002I, <lsdo_rotor.core.pitt_peters_custom_implicit_operation.PittPetersCustomImplicitOperation object at 0x7fcd797a0590>
+	DEPENDENTS
+	_lambda, <csdl.core.output.Output object at 0x7fcd797a0690>
+	DEPENDENCIES
+	_re_pitt_peters, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd79793fd0>
+	_chord, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd76330ad0>
+	_pitch, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd775d33d0>
+	_tangential_inflow_velocity, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0350>
+	_dr, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0510>
+	_rotor_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0490>
+	_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a01d0>
+	_angular_speed, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0210>
+_lambda, <csdl.core.output.Output object at 0x7fcd797a0690>
+	DEPENDENTS
+	pitt_peters_post_process_model, <csdl.core.subgraph.Subgraph object at 0x7fcd7770db90>
+	DEPENDENCIES
+	_002I, <lsdo_rotor.core.pitt_peters_custom_implicit_operation.PittPetersCustomImplicitOperation object at 0x7fcd797a0590>
+pitt_peters_post_process_model, <csdl.core.subgraph.Subgraph object at 0x7fcd7770db90>
+	DEPENDENTS
+	DEPENDENCIES
+	atmosphere_model, <csdl.core.subgraph.Subgraph object at 0x7fcd7742c290>
+	_lambda, <csdl.core.output.Output object at 0x7fcd797a0690>
+_lambda, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797ab0d0>
+	DEPENDENTS
+	_0034, <csdl.operations.decompose.decompose object at 0x7fcd797ab210>
+	DEPENDENCIES
+_0034, <csdl.operations.decompose.decompose object at 0x7fcd797ab210>
+	DEPENDENTS
+	_0035, <csdl.core.output.Output object at 0x7fcd797ab2d0>
+	_0039, <csdl.core.output.Output object at 0x7fcd797ab4d0>
+	_0037, <csdl.core.output.Output object at 0x7fcd797ab3d0>
+	DEPENDENCIES
+	_lambda, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797ab0d0>
+_0035, <csdl.core.output.Output object at 0x7fcd797ab2d0>
+	DEPENDENTS
+	_0036, <csdl.operations.indexed_passthrough.indexed_passthrough object at 0x7fcd797ab350>
+	DEPENDENCIES
+	_0034, <csdl.operations.decompose.decompose object at 0x7fcd797ab210>
+_0036, <csdl.operations.indexed_passthrough.indexed_passthrough object at 0x7fcd797ab350>
+	DEPENDENTS
+	lamb_0_pp, <csdl.core.concatenation.Concatenation object at 0x7fcd776cef90>
+	DEPENDENCIES
+	_0035, <csdl.core.output.Output object at 0x7fcd797ab2d0>
+lamb_0_pp, <csdl.core.concatenation.Concatenation object at 0x7fcd776cef90>
+	DEPENDENTS
+	_003b, <csdl.operations.reshape.reshape object at 0x7fcd776cef50>
+	DEPENDENCIES
+	_0036, <csdl.operations.indexed_passthrough.indexed_passthrough object at 0x7fcd797ab350>
+_003b, <csdl.operations.reshape.reshape object at 0x7fcd776cef50>
+	DEPENDENTS
+	_003c, <csdl.core.output.Output object at 0x7fcd797ab5d0>
+	DEPENDENCIES
+	lamb_0_pp, <csdl.core.concatenation.Concatenation object at 0x7fcd776cef90>
+_003c, <csdl.core.output.Output object at 0x7fcd797ab5d0>
+	DEPENDENTS
+	_003d, <csdl.operations.expand.expand object at 0x7fcd797ab610>
+	DEPENDENCIES
+	_003b, <csdl.operations.reshape.reshape object at 0x7fcd776cef50>
+_003d, <csdl.operations.expand.expand object at 0x7fcd797ab610>
+	DEPENDENTS
+	_003e, <csdl.core.output.Output object at 0x7fcd776cefd0>
+	DEPENDENCIES
+	_003c, <csdl.core.output.Output object at 0x7fcd797ab5d0>
+_003e, <csdl.core.output.Output object at 0x7fcd776cefd0>
+	DEPENDENTS
+	_003n, <csdl.operations.power_combination.power_combination object at 0x7fcd797ab990>
+	DEPENDENCIES
+	_003d, <csdl.operations.expand.expand object at 0x7fcd797ab610>
+_003n, <csdl.operations.power_combination.power_combination object at 0x7fcd797ab990>
+	DEPENDENTS
+	_003o, <csdl.core.output.Output object at 0x7fcd797abb10>
+	DEPENDENCIES
+	_003e, <csdl.core.output.Output object at 0x7fcd776cefd0>
+_003o, <csdl.core.output.Output object at 0x7fcd797abb10>
+	DEPENDENTS
+	_003v, <csdl.operations.linear_combination.linear_combination object at 0x7fcd797abe90>
+	DEPENDENCIES
+	_003n, <csdl.operations.power_combination.power_combination object at 0x7fcd797ab990>
+_0039, <csdl.core.output.Output object at 0x7fcd797ab4d0>
+	DEPENDENTS
+	_003a, <csdl.operations.indexed_passthrough.indexed_passthrough object at 0x7fcd797ab250>
+	DEPENDENCIES
+	_0034, <csdl.operations.decompose.decompose object at 0x7fcd797ab210>
+_003a, <csdl.operations.indexed_passthrough.indexed_passthrough object at 0x7fcd797ab250>
+	DEPENDENTS
+	lamb_s_pp, <csdl.core.concatenation.Concatenation object at 0x7fcd75743690>
+	DEPENDENCIES
+	_0039, <csdl.core.output.Output object at 0x7fcd797ab4d0>
+lamb_s_pp, <csdl.core.concatenation.Concatenation object at 0x7fcd75743690>
+	DEPENDENTS
+	_003f, <csdl.operations.reshape.reshape object at 0x7fcd775d3510>
+	DEPENDENCIES
+	_003a, <csdl.operations.indexed_passthrough.indexed_passthrough object at 0x7fcd797ab250>
+_003f, <csdl.operations.reshape.reshape object at 0x7fcd775d3510>
+	DEPENDENTS
+	_003g, <csdl.core.output.Output object at 0x7fcd797ab6d0>
+	DEPENDENCIES
+	lamb_s_pp, <csdl.core.concatenation.Concatenation object at 0x7fcd75743690>
+_003g, <csdl.core.output.Output object at 0x7fcd797ab6d0>
+	DEPENDENTS
+	_003h, <csdl.operations.expand.expand object at 0x7fcd797ab790>
+	DEPENDENCIES
+	_003f, <csdl.operations.reshape.reshape object at 0x7fcd775d3510>
+_003h, <csdl.operations.expand.expand object at 0x7fcd797ab790>
+	DEPENDENTS
+	_003i, <csdl.core.output.Output object at 0x7fcd797ab890>
+	DEPENDENCIES
+	_003g, <csdl.core.output.Output object at 0x7fcd797ab6d0>
+_003i, <csdl.core.output.Output object at 0x7fcd797ab890>
+	DEPENDENTS
+	_003p, <csdl.operations.power_combination.power_combination object at 0x7fcd797abb90>
+	DEPENDENCIES
+	_003h, <csdl.operations.expand.expand object at 0x7fcd797ab790>
+_normalized_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0a10>
+	DEPENDENTS
+	_003p, <csdl.operations.power_combination.power_combination object at 0x7fcd797abb90>
+	_003x, <csdl.operations.power_combination.power_combination object at 0x7fcd797abf90>
+	DEPENDENCIES
+_003p, <csdl.operations.power_combination.power_combination object at 0x7fcd797abb90>
+	DEPENDENTS
+	_003q, <csdl.core.output.Output object at 0x7fcd797abc10>
+	DEPENDENCIES
+	_003i, <csdl.core.output.Output object at 0x7fcd797ab890>
+	_normalized_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0a10>
+_003q, <csdl.core.output.Output object at 0x7fcd797abc10>
+	DEPENDENTS
+	_003t, <csdl.operations.power_combination.power_combination object at 0x7fcd797abd90>
+	DEPENDENCIES
+	_003p, <csdl.operations.power_combination.power_combination object at 0x7fcd797abb90>
+_theta, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0bd0>
+	DEPENDENTS
+	_003r, <csdl.operations.sin.sin object at 0x7fcd797abc90>
+	_004X, <csdl.operations.sin.sin object at 0x7fcd795cd990>
+	_0052, <csdl.operations.cos.cos object at 0x7fcd795cdc90>
+	_003z, <csdl.operations.cos.cos object at 0x7fcd797b80d0>
+	DEPENDENCIES
+_003r, <csdl.operations.sin.sin object at 0x7fcd797abc90>
+	DEPENDENTS
+	_003s, <csdl.core.output.Output object at 0x7fcd797abd10>
+	DEPENDENCIES
+	_theta, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0bd0>
+_003s, <csdl.core.output.Output object at 0x7fcd797abd10>
+	DEPENDENTS
+	_003t, <csdl.operations.power_combination.power_combination object at 0x7fcd797abd90>
+	DEPENDENCIES
+	_003r, <csdl.operations.sin.sin object at 0x7fcd797abc90>
+_003t, <csdl.operations.power_combination.power_combination object at 0x7fcd797abd90>
+	DEPENDENTS
+	_003u, <csdl.core.output.Output object at 0x7fcd797abe10>
+	DEPENDENCIES
+	_003q, <csdl.core.output.Output object at 0x7fcd797abc10>
+	_003s, <csdl.core.output.Output object at 0x7fcd797abd10>
+_003u, <csdl.core.output.Output object at 0x7fcd797abe10>
+	DEPENDENTS
+	_003v, <csdl.operations.linear_combination.linear_combination object at 0x7fcd797abe90>
+	DEPENDENCIES
+	_003t, <csdl.operations.power_combination.power_combination object at 0x7fcd797abd90>
+_003v, <csdl.operations.linear_combination.linear_combination object at 0x7fcd797abe90>
+	DEPENDENTS
+	_003w, <csdl.core.output.Output object at 0x7fcd797abf10>
+	DEPENDENCIES
+	_003o, <csdl.core.output.Output object at 0x7fcd797abb10>
+	_003u, <csdl.core.output.Output object at 0x7fcd797abe10>
+_003w, <csdl.core.output.Output object at 0x7fcd797abf10>
+	DEPENDENTS
+	_003D, <csdl.operations.linear_combination.linear_combination object at 0x7fcd797b82d0>
+	DEPENDENCIES
+	_003v, <csdl.operations.linear_combination.linear_combination object at 0x7fcd797abe90>
+_0037, <csdl.core.output.Output object at 0x7fcd797ab3d0>
+	DEPENDENTS
+	_0038, <csdl.operations.indexed_passthrough.indexed_passthrough object at 0x7fcd797ab450>
+	DEPENDENCIES
+	_0034, <csdl.operations.decompose.decompose object at 0x7fcd797ab210>
+_0038, <csdl.operations.indexed_passthrough.indexed_passthrough object at 0x7fcd797ab450>
+	DEPENDENTS
+	lamb_c_pp, <csdl.core.concatenation.Concatenation object at 0x7fcd797ab1d0>
+	DEPENDENCIES
+	_0037, <csdl.core.output.Output object at 0x7fcd797ab3d0>
+lamb_c_pp, <csdl.core.concatenation.Concatenation object at 0x7fcd797ab1d0>
+	DEPENDENTS
+	_003j, <csdl.operations.reshape.reshape object at 0x7fcd77712510>
+	DEPENDENCIES
+	_0038, <csdl.operations.indexed_passthrough.indexed_passthrough object at 0x7fcd797ab450>
+_003j, <csdl.operations.reshape.reshape object at 0x7fcd77712510>
+	DEPENDENTS
+	_003k, <csdl.core.output.Output object at 0x7fcd797ab8d0>
+	DEPENDENCIES
+	lamb_c_pp, <csdl.core.concatenation.Concatenation object at 0x7fcd797ab1d0>
+_003k, <csdl.core.output.Output object at 0x7fcd797ab8d0>
+	DEPENDENTS
+	_003l, <csdl.operations.expand.expand object at 0x7fcd797ab950>
+	DEPENDENCIES
+	_003j, <csdl.operations.reshape.reshape object at 0x7fcd77712510>
+_003l, <csdl.operations.expand.expand object at 0x7fcd797ab950>
+	DEPENDENTS
+	_003m, <csdl.core.output.Output object at 0x7fcd797aba50>
+	DEPENDENCIES
+	_003k, <csdl.core.output.Output object at 0x7fcd797ab8d0>
+_003m, <csdl.core.output.Output object at 0x7fcd797aba50>
+	DEPENDENTS
+	_003x, <csdl.operations.power_combination.power_combination object at 0x7fcd797abf90>
+	DEPENDENCIES
+	_003l, <csdl.operations.expand.expand object at 0x7fcd797ab950>
+_003x, <csdl.operations.power_combination.power_combination object at 0x7fcd797abf90>
+	DEPENDENTS
+	_003y, <csdl.core.output.Output object at 0x7fcd797abfd0>
+	DEPENDENCIES
+	_003m, <csdl.core.output.Output object at 0x7fcd797aba50>
+	_normalized_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0a10>
+_003y, <csdl.core.output.Output object at 0x7fcd797abfd0>
+	DEPENDENTS
+	_003B, <csdl.operations.power_combination.power_combination object at 0x7fcd797b81d0>
+	DEPENDENCIES
+	_003x, <csdl.operations.power_combination.power_combination object at 0x7fcd797abf90>
+_003z, <csdl.operations.cos.cos object at 0x7fcd797b80d0>
+	DEPENDENTS
+	_003A, <csdl.core.output.Output object at 0x7fcd797b8150>
+	DEPENDENCIES
+	_theta, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0bd0>
+_003A, <csdl.core.output.Output object at 0x7fcd797b8150>
+	DEPENDENTS
+	_003B, <csdl.operations.power_combination.power_combination object at 0x7fcd797b81d0>
+	DEPENDENCIES
+	_003z, <csdl.operations.cos.cos object at 0x7fcd797b80d0>
+_003B, <csdl.operations.power_combination.power_combination object at 0x7fcd797b81d0>
+	DEPENDENTS
+	_003C, <csdl.core.output.Output object at 0x7fcd797b8250>
+	DEPENDENCIES
+	_003y, <csdl.core.output.Output object at 0x7fcd797abfd0>
+	_003A, <csdl.core.output.Output object at 0x7fcd797b8150>
+_003C, <csdl.core.output.Output object at 0x7fcd797b8250>
+	DEPENDENTS
+	_003D, <csdl.operations.linear_combination.linear_combination object at 0x7fcd797b82d0>
+	DEPENDENCIES
+	_003B, <csdl.operations.power_combination.power_combination object at 0x7fcd797b81d0>
+_003D, <csdl.operations.linear_combination.linear_combination object at 0x7fcd797b82d0>
+	DEPENDENTS
+	_003E, <csdl.core.output.Output object at 0x7fcd797b8350>
+	DEPENDENCIES
+	_003w, <csdl.core.output.Output object at 0x7fcd797abf10>
+	_003C, <csdl.core.output.Output object at 0x7fcd797b8250>
+_003E, <csdl.core.output.Output object at 0x7fcd797b8350>
+	DEPENDENTS
+	_003F, <csdl.operations.linear_combination.linear_combination object at 0x7fcd797b8390>
+	DEPENDENCIES
+	_003D, <csdl.operations.linear_combination.linear_combination object at 0x7fcd797b82d0>
+_003F, <csdl.operations.linear_combination.linear_combination object at 0x7fcd797b8390>
+	DEPENDENTS
+	_003G, <csdl.core.output.Output object at 0x7fcd797b8490>
+	DEPENDENCIES
+	_003E, <csdl.core.output.Output object at 0x7fcd797b8350>
+_003G, <csdl.core.output.Output object at 0x7fcd797b8490>
+	DEPENDENTS
+	_003H, <csdl.operations.power_combination.power_combination object at 0x7fcd797b8510>
+	DEPENDENCIES
+	_003F, <csdl.operations.linear_combination.linear_combination object at 0x7fcd797b8390>
+_angular_speed, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0c50>
+	DEPENDENTS
+	_005a, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8050>
+	_005G, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4050>
+	_005q, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8890>
+	_002T, <csdl.operations.power_combination.power_combination object at 0x7fcd797a0a90>
+	_003H, <csdl.operations.power_combination.power_combination object at 0x7fcd797b8510>
+	DEPENDENCIES
+_003H, <csdl.operations.power_combination.power_combination object at 0x7fcd797b8510>
+	DEPENDENTS
+	_003I, <csdl.core.output.Output object at 0x7fcd797b8590>
+	DEPENDENCIES
+	_003G, <csdl.core.output.Output object at 0x7fcd797b8490>
+	_angular_speed, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0c50>
+_003I, <csdl.core.output.Output object at 0x7fcd797b8590>
+	DEPENDENTS
+	_003J, <csdl.operations.power_combination.power_combination object at 0x7fcd797b8610>
+	DEPENDENCIES
+	_003H, <csdl.operations.power_combination.power_combination object at 0x7fcd797b8510>
+_rotor_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0e90>
+	DEPENDENTS
+	_003J, <csdl.operations.power_combination.power_combination object at 0x7fcd797b8610>
+	_005y, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8c50>
+	_005i, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8490>
+	_005O, <csdl.operations.power_combination.power_combination object at 0x7fcd76c9ba90>
+	_006V, <csdl.operations.sum.sum object at 0x7fcd795f6790>
+	_006x, <csdl.operations.sum.sum object at 0x7fcd795edb50>
+	_007a, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6f90>
+	DEPENDENCIES
+_003J, <csdl.operations.power_combination.power_combination object at 0x7fcd797b8610>
+	DEPENDENTS
+	_ux, <csdl.core.output.Output object at 0x7fcd797b8690>
+	DEPENDENCIES
+	_003I, <csdl.core.output.Output object at 0x7fcd797b8590>
+	_rotor_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0e90>
+_ux, <csdl.core.output.Output object at 0x7fcd797b8690>
+	DEPENDENTS
+	_003L, <csdl.operations.print_var.print_var object at 0x7fcd797b8710>
+	_004D, <csdl.operations.power_combination.power_combination object at 0x7fcd795cd050>
+	_003N, <csdl.operations.power_combination.power_combination object at 0x7fcd797b8850>
+	_004j, <csdl.operations.power_combination.power_combination object at 0x7fcd774b8210>
+	DEPENDENCIES
+	_003J, <csdl.operations.power_combination.power_combination object at 0x7fcd797b8610>
+_003L, <csdl.operations.print_var.print_var object at 0x7fcd797b8710>
+	DEPENDENTS
+	_003K_print, <csdl.core.output.Output object at 0x7fcd797b8750>
+	DEPENDENCIES
+	_ux, <csdl.core.output.Output object at 0x7fcd797b8690>
+_003K_print, <csdl.core.output.Output object at 0x7fcd797b8750>
+	DEPENDENTS
+	DEPENDENCIES
+	_003L, <csdl.operations.print_var.print_var object at 0x7fcd797b8710>
+_re_pitt_peters, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0810>
+	DEPENDENTS
+	_003T, <lsdo_rotor.airfoil.pitt_peters_airfoil_model_2.PittPetersAirfoilModel2 object at 0x7fcd797b8b10>
+	DEPENDENCIES
+_pitch, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0990>
+	DEPENDENTS
+	_003R, <csdl.operations.linear_combination.linear_combination object at 0x7fcd797b83d0>
+	DEPENDENCIES
+_tangential_inflow_velocity, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0b50>
+	DEPENDENTS
+	_004F, <csdl.operations.power_combination.power_combination object at 0x7fcd795cd190>
+	_004l, <csdl.operations.power_combination.power_combination object at 0x7fcd795c1810>
+	_003N, <csdl.operations.power_combination.power_combination object at 0x7fcd797b8850>
+	DEPENDENCIES
+_003N, <csdl.operations.power_combination.power_combination object at 0x7fcd797b8850>
+	DEPENDENTS
+	_003O, <csdl.core.output.Output object at 0x7fcd797b88d0>
+	DEPENDENCIES
+	_ux, <csdl.core.output.Output object at 0x7fcd797b8690>
+	_tangential_inflow_velocity, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0b50>
+_003O, <csdl.core.output.Output object at 0x7fcd797b88d0>
+	DEPENDENTS
+	_003P, <csdl.operations.arctan.arctan object at 0x7fcd797b8950>
+	DEPENDENCIES
+	_003N, <csdl.operations.power_combination.power_combination object at 0x7fcd797b8850>
+_003P, <csdl.operations.arctan.arctan object at 0x7fcd797b8950>
+	DEPENDENTS
+	_003Q, <csdl.core.output.Output object at 0x7fcd797b89d0>
+	DEPENDENCIES
+	_003O, <csdl.core.output.Output object at 0x7fcd797b88d0>
+_003Q, <csdl.core.output.Output object at 0x7fcd797b89d0>
+	DEPENDENTS
+	_0047, <csdl.operations.sin.sin object at 0x7fcd795c1250>
+	_003R, <csdl.operations.linear_combination.linear_combination object at 0x7fcd797b83d0>
+	_003Y, <csdl.operations.cos.cos object at 0x7fcd797b8dd0>
+	_0041, <csdl.operations.sin.sin object at 0x7fcd797b8f90>
+	_004b, <csdl.operations.cos.cos object at 0x7fcd795c13d0>
+	DEPENDENCIES
+	_003P, <csdl.operations.arctan.arctan object at 0x7fcd797b8950>
+_003R, <csdl.operations.linear_combination.linear_combination object at 0x7fcd797b83d0>
+	DEPENDENTS
+	AoA_pitt_peters_2, <csdl.core.output.Output object at 0x7fcd797b8a90>
+	DEPENDENCIES
+	_pitch, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0990>
+	_003Q, <csdl.core.output.Output object at 0x7fcd797b89d0>
+AoA_pitt_peters_2, <csdl.core.output.Output object at 0x7fcd797b8a90>
+	DEPENDENTS
+	_003T, <lsdo_rotor.airfoil.pitt_peters_airfoil_model_2.PittPetersAirfoilModel2 object at 0x7fcd797b8b10>
+	DEPENDENCIES
+	_003R, <csdl.operations.linear_combination.linear_combination object at 0x7fcd797b83d0>
+_003T, <lsdo_rotor.airfoil.pitt_peters_airfoil_model_2.PittPetersAirfoilModel2 object at 0x7fcd797b8b10>
+	DEPENDENTS
+	Cd_pitt_peters_2, <csdl.core.output.Output object at 0x7fcd797b8c90>
+	Cl_pitt_peters_2, <csdl.core.output.Output object at 0x7fcd797b8c50>
+	DEPENDENCIES
+	_re_pitt_peters, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0810>
+	AoA_pitt_peters_2, <csdl.core.output.Output object at 0x7fcd797b8a90>
+Cl_pitt_peters_2, <csdl.core.output.Output object at 0x7fcd797b8c50>
+	DEPENDENTS
+	DEPENDENCIES
+	_003T, <lsdo_rotor.airfoil.pitt_peters_airfoil_model_2.PittPetersAirfoilModel2 object at 0x7fcd797b8b10>
+Cd_pitt_peters_2, <csdl.core.output.Output object at 0x7fcd797b8c90>
+	DEPENDENTS
+	DEPENDENCIES
+	_003T, <lsdo_rotor.airfoil.pitt_peters_airfoil_model_2.PittPetersAirfoilModel2 object at 0x7fcd797b8b10>
+_rho_pitt_peters, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0890>
+	DEPENDENTS
+	_004h, <csdl.operations.power_combination.power_combination object at 0x7fcd795c1690>
+	_005E, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8f50>
+	_004B, <csdl.operations.power_combination.power_combination object at 0x7fcd795c1f50>
+	_0058, <csdl.operations.power_combination.power_combination object at 0x7fcd795cdf50>
+	_005o, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8790>
+	DEPENDENCIES
+_004B, <csdl.operations.power_combination.power_combination object at 0x7fcd795c1f50>
+	DEPENDENTS
+	_004C, <csdl.core.output.Output object at 0x7fcd795c1fd0>
+	DEPENDENCIES
+	_rho_pitt_peters, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0890>
+_004C, <csdl.core.output.Output object at 0x7fcd795c1fd0>
+	DEPENDENTS
+	_004J, <csdl.operations.power_combination.power_combination object at 0x7fcd795cd390>
+	DEPENDENCIES
+	_004B, <csdl.operations.power_combination.power_combination object at 0x7fcd795c1f50>
+_004D, <csdl.operations.power_combination.power_combination object at 0x7fcd795cd050>
+	DEPENDENTS
+	_004E, <csdl.core.output.Output object at 0x7fcd795cd110>
+	DEPENDENCIES
+	_ux, <csdl.core.output.Output object at 0x7fcd797b8690>
+_004E, <csdl.core.output.Output object at 0x7fcd795cd110>
+	DEPENDENTS
+	_004H, <csdl.operations.linear_combination.linear_combination object at 0x7fcd795cd290>
+	DEPENDENCIES
+	_004D, <csdl.operations.power_combination.power_combination object at 0x7fcd795cd050>
+_004F, <csdl.operations.power_combination.power_combination object at 0x7fcd795cd190>
+	DEPENDENTS
+	_004G, <csdl.core.output.Output object at 0x7fcd795cd210>
+	DEPENDENCIES
+	_tangential_inflow_velocity, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0b50>
+_004G, <csdl.core.output.Output object at 0x7fcd795cd210>
+	DEPENDENTS
+	_004H, <csdl.operations.linear_combination.linear_combination object at 0x7fcd795cd290>
+	DEPENDENCIES
+	_004F, <csdl.operations.power_combination.power_combination object at 0x7fcd795cd190>
+_004H, <csdl.operations.linear_combination.linear_combination object at 0x7fcd795cd290>
+	DEPENDENTS
+	_004I, <csdl.core.output.Output object at 0x7fcd795cd310>
+	DEPENDENCIES
+	_004E, <csdl.core.output.Output object at 0x7fcd795cd110>
+	_004G, <csdl.core.output.Output object at 0x7fcd795cd210>
+_004I, <csdl.core.output.Output object at 0x7fcd795cd310>
+	DEPENDENTS
+	_004J, <csdl.operations.power_combination.power_combination object at 0x7fcd795cd390>
+	DEPENDENCIES
+	_004H, <csdl.operations.linear_combination.linear_combination object at 0x7fcd795cd290>
+_004J, <csdl.operations.power_combination.power_combination object at 0x7fcd795cd390>
+	DEPENDENTS
+	_004K, <csdl.core.output.Output object at 0x7fcd795cd410>
+	DEPENDENCIES
+	_004C, <csdl.core.output.Output object at 0x7fcd795c1fd0>
+	_004I, <csdl.core.output.Output object at 0x7fcd795cd310>
+_004K, <csdl.core.output.Output object at 0x7fcd795cd410>
+	DEPENDENTS
+	_004L, <csdl.operations.power_combination.power_combination object at 0x7fcd795cd490>
+	DEPENDENCIES
+	_004J, <csdl.operations.power_combination.power_combination object at 0x7fcd795cd390>
+_chord, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0910>
+	DEPENDENTS
+	_004L, <csdl.operations.power_combination.power_combination object at 0x7fcd795cd490>
+	_004r, <csdl.operations.power_combination.power_combination object at 0x7fcd6bef8dd0>
+	DEPENDENCIES
+_004L, <csdl.operations.power_combination.power_combination object at 0x7fcd795cd490>
+	DEPENDENTS
+	_004M, <csdl.core.output.Output object at 0x7fcd795cd510>
+	DEPENDENCIES
+	_004K, <csdl.core.output.Output object at 0x7fcd795cd410>
+	_chord, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0910>
+_004M, <csdl.core.output.Output object at 0x7fcd795cd510>
+	DEPENDENTS
+	_004N, <csdl.operations.power_combination.power_combination object at 0x7fcd763308d0>
+	DEPENDENCIES
+	_004L, <csdl.operations.power_combination.power_combination object at 0x7fcd795cd490>
+Cl_pitt_peters_2, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd75ff7c50>
+	DEPENDENTS
+	_003_, <csdl.operations.power_combination.power_combination object at 0x7fcd797b8e90>
+	_0049, <csdl.operations.power_combination.power_combination object at 0x7fcd775d35d0>
+	DEPENDENCIES
+_0047, <csdl.operations.sin.sin object at 0x7fcd795c1250>
+	DEPENDENTS
+	_0048, <csdl.core.output.Output object at 0x7fcd795c12d0>
+	DEPENDENCIES
+	_003Q, <csdl.core.output.Output object at 0x7fcd797b89d0>
+_0048, <csdl.core.output.Output object at 0x7fcd795c12d0>
+	DEPENDENTS
+	_0049, <csdl.operations.power_combination.power_combination object at 0x7fcd775d35d0>
+	DEPENDENCIES
+	_0047, <csdl.operations.sin.sin object at 0x7fcd795c1250>
+_0049, <csdl.operations.power_combination.power_combination object at 0x7fcd775d35d0>
+	DEPENDENTS
+	_004a, <csdl.core.output.Output object at 0x7fcd795c1350>
+	DEPENDENCIES
+	Cl_pitt_peters_2, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd75ff7c50>
+	_0048, <csdl.core.output.Output object at 0x7fcd795c12d0>
+_004a, <csdl.core.output.Output object at 0x7fcd795c1350>
+	DEPENDENTS
+	_004f, <csdl.operations.linear_combination.linear_combination object at 0x7fcd795c1590>
+	DEPENDENCIES
+	_0049, <csdl.operations.power_combination.power_combination object at 0x7fcd775d35d0>
+Cd_pitt_peters_2, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797b8d50>
+	DEPENDENTS
+	_004d, <csdl.operations.power_combination.power_combination object at 0x7fcd75cf6710>
+	_0043, <csdl.operations.power_combination.power_combination object at 0x7fcd795c10d0>
+	DEPENDENCIES
+_004b, <csdl.operations.cos.cos object at 0x7fcd795c13d0>
+	DEPENDENTS
+	_004c, <csdl.core.output.Output object at 0x7fcd795c1450>
+	DEPENDENCIES
+	_003Q, <csdl.core.output.Output object at 0x7fcd797b89d0>
+_004c, <csdl.core.output.Output object at 0x7fcd795c1450>
+	DEPENDENTS
+	_004d, <csdl.operations.power_combination.power_combination object at 0x7fcd75cf6710>
+	DEPENDENCIES
+	_004b, <csdl.operations.cos.cos object at 0x7fcd795c13d0>
+_004d, <csdl.operations.power_combination.power_combination object at 0x7fcd75cf6710>
+	DEPENDENTS
+	_004e, <csdl.core.output.Output object at 0x7fcd795c1510>
+	DEPENDENCIES
+	Cd_pitt_peters_2, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797b8d50>
+	_004c, <csdl.core.output.Output object at 0x7fcd795c1450>
+_004e, <csdl.core.output.Output object at 0x7fcd795c1510>
+	DEPENDENTS
+	_004f, <csdl.operations.linear_combination.linear_combination object at 0x7fcd795c1590>
+	DEPENDENCIES
+	_004d, <csdl.operations.power_combination.power_combination object at 0x7fcd75cf6710>
+_004f, <csdl.operations.linear_combination.linear_combination object at 0x7fcd795c1590>
+	DEPENDENTS
+	_004g, <csdl.core.output.Output object at 0x7fcd795c1610>
+	DEPENDENCIES
+	_004a, <csdl.core.output.Output object at 0x7fcd795c1350>
+	_004e, <csdl.core.output.Output object at 0x7fcd795c1510>
+_004g, <csdl.core.output.Output object at 0x7fcd795c1610>
+	DEPENDENTS
+	_004N, <csdl.operations.power_combination.power_combination object at 0x7fcd763308d0>
+	DEPENDENCIES
+	_004f, <csdl.operations.linear_combination.linear_combination object at 0x7fcd795c1590>
+_004N, <csdl.operations.power_combination.power_combination object at 0x7fcd763308d0>
+	DEPENDENTS
+	_004O, <csdl.core.output.Output object at 0x7fcd795cd590>
+	DEPENDENCIES
+	_004M, <csdl.core.output.Output object at 0x7fcd795cd510>
+	_004g, <csdl.core.output.Output object at 0x7fcd795c1610>
+_004O, <csdl.core.output.Output object at 0x7fcd795cd590>
+	DEPENDENTS
+	_004P, <csdl.operations.power_combination.power_combination object at 0x7fcd795cd610>
+	DEPENDENCIES
+	_004N, <csdl.operations.power_combination.power_combination object at 0x7fcd763308d0>
+_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0a50>
+	DEPENDENTS
+	_004P, <csdl.operations.power_combination.power_combination object at 0x7fcd795cd610>
+	_004Z, <csdl.operations.power_combination.power_combination object at 0x7fcd795cda90>
+	_0054, <csdl.operations.power_combination.power_combination object at 0x7fcd795cdd50>
+	DEPENDENCIES
+_004P, <csdl.operations.power_combination.power_combination object at 0x7fcd795cd610>
+	DEPENDENTS
+	_004Q, <csdl.core.output.Output object at 0x7fcd795cd690>
+	DEPENDENCIES
+	_004O, <csdl.core.output.Output object at 0x7fcd795cd590>
+	_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0a50>
+_004Q, <csdl.core.output.Output object at 0x7fcd795cd690>
+	DEPENDENTS
+	_004R, <csdl.operations.power_combination.power_combination object at 0x7fcd773c3d10>
+	DEPENDENCIES
+	_004P, <csdl.operations.power_combination.power_combination object at 0x7fcd795cd610>
+_dr, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0f10>
+	DEPENDENTS
+	_004R, <csdl.operations.power_combination.power_combination object at 0x7fcd773c3d10>
+	_004v, <csdl.operations.power_combination.power_combination object at 0x7fcd795c1c90>
+	DEPENDENCIES
+_004R, <csdl.operations.power_combination.power_combination object at 0x7fcd773c3d10>
+	DEPENDENTS
+	_004S, <csdl.core.output.Output object at 0x7fcd795cd750>
+	DEPENDENCIES
+	_004Q, <csdl.core.output.Output object at 0x7fcd795cd690>
+	_dr, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0f10>
+_004S, <csdl.core.output.Output object at 0x7fcd795cd750>
+	DEPENDENTS
+	_006f, <csdl.operations.sum.sum object at 0x7fcd795ed250>
+	DEPENDENCIES
+	_004R, <csdl.operations.power_combination.power_combination object at 0x7fcd773c3d10>
+_006f, <csdl.operations.sum.sum object at 0x7fcd795ed250>
+	DEPENDENTS
+	_006g, <csdl.core.output.Output object at 0x7fcd795ed2d0>
+	DEPENDENCIES
+	_004S, <csdl.core.output.Output object at 0x7fcd795cd750>
+_006g, <csdl.core.output.Output object at 0x7fcd795ed2d0>
+	DEPENDENTS
+	_006h, <csdl.operations.power_combination.power_combination object at 0x7fcd795ed350>
+	DEPENDENCIES
+	_006f, <csdl.operations.sum.sum object at 0x7fcd795ed250>
+_006h, <csdl.operations.power_combination.power_combination object at 0x7fcd795ed350>
+	DEPENDENTS
+	total_torque, <csdl.core.output.Output object at 0x7fcd795ed3d0>
+	DEPENDENCIES
+	_006g, <csdl.core.output.Output object at 0x7fcd795ed2d0>
+total_torque, <csdl.core.output.Output object at 0x7fcd795ed3d0>
+	DEPENDENTS
+	_006J, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6190>
+	_007o, <csdl.operations.sum.sum object at 0x7fcd7760e6d0>
+	DEPENDENCIES
+	_006h, <csdl.operations.power_combination.power_combination object at 0x7fcd795ed350>
+_007o, <csdl.operations.sum.sum object at 0x7fcd7760e6d0>
+	DEPENDENTS
+	total_torque_all_rotors, <csdl.core.output.Output object at 0x7fcd7760e750>
+	DEPENDENCIES
+	total_torque, <csdl.core.output.Output object at 0x7fcd795ed3d0>
+total_torque_all_rotors, <csdl.core.output.Output object at 0x7fcd7760e750>
+	DEPENDENTS
+	DEPENDENCIES
+	_007o, <csdl.operations.sum.sum object at 0x7fcd7760e6d0>
+_004h, <csdl.operations.power_combination.power_combination object at 0x7fcd795c1690>
+	DEPENDENTS
+	_004i, <csdl.core.output.Output object at 0x7fcd775d3650>
+	DEPENDENCIES
+	_rho_pitt_peters, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0890>
+_004i, <csdl.core.output.Output object at 0x7fcd775d3650>
+	DEPENDENTS
+	_004p, <csdl.operations.power_combination.power_combination object at 0x7fcd795c19d0>
+	DEPENDENCIES
+	_004h, <csdl.operations.power_combination.power_combination object at 0x7fcd795c1690>
+_004j, <csdl.operations.power_combination.power_combination object at 0x7fcd774b8210>
+	DEPENDENTS
+	_004k, <csdl.core.output.Output object at 0x7fcd795c1790>
+	DEPENDENCIES
+	_ux, <csdl.core.output.Output object at 0x7fcd797b8690>
+_004k, <csdl.core.output.Output object at 0x7fcd795c1790>
+	DEPENDENTS
+	_004n, <csdl.operations.linear_combination.linear_combination object at 0x7fcd7757ecd0>
+	DEPENDENCIES
+	_004j, <csdl.operations.power_combination.power_combination object at 0x7fcd774b8210>
+_004l, <csdl.operations.power_combination.power_combination object at 0x7fcd795c1810>
+	DEPENDENTS
+	_004m, <csdl.core.output.Output object at 0x7fcd795c1890>
+	DEPENDENCIES
+	_tangential_inflow_velocity, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0b50>
+_004m, <csdl.core.output.Output object at 0x7fcd795c1890>
+	DEPENDENTS
+	_004n, <csdl.operations.linear_combination.linear_combination object at 0x7fcd7757ecd0>
+	DEPENDENCIES
+	_004l, <csdl.operations.power_combination.power_combination object at 0x7fcd795c1810>
+_004n, <csdl.operations.linear_combination.linear_combination object at 0x7fcd7757ecd0>
+	DEPENDENTS
+	_004o, <csdl.core.output.Output object at 0x7fcd795c1950>
+	DEPENDENCIES
+	_004k, <csdl.core.output.Output object at 0x7fcd795c1790>
+	_004m, <csdl.core.output.Output object at 0x7fcd795c1890>
+_004o, <csdl.core.output.Output object at 0x7fcd795c1950>
+	DEPENDENTS
+	_004p, <csdl.operations.power_combination.power_combination object at 0x7fcd795c19d0>
+	DEPENDENCIES
+	_004n, <csdl.operations.linear_combination.linear_combination object at 0x7fcd7757ecd0>
+_004p, <csdl.operations.power_combination.power_combination object at 0x7fcd795c19d0>
+	DEPENDENTS
+	_004q, <csdl.core.output.Output object at 0x7fcd795c1a50>
+	DEPENDENCIES
+	_004i, <csdl.core.output.Output object at 0x7fcd775d3650>
+	_004o, <csdl.core.output.Output object at 0x7fcd795c1950>
+_004q, <csdl.core.output.Output object at 0x7fcd795c1a50>
+	DEPENDENTS
+	_004r, <csdl.operations.power_combination.power_combination object at 0x7fcd6bef8dd0>
+	DEPENDENCIES
+	_004p, <csdl.operations.power_combination.power_combination object at 0x7fcd795c19d0>
+_004r, <csdl.operations.power_combination.power_combination object at 0x7fcd6bef8dd0>
+	DEPENDENTS
+	_004s, <csdl.core.output.Output object at 0x7fcd795c1b10>
+	DEPENDENCIES
+	_004q, <csdl.core.output.Output object at 0x7fcd795c1a50>
+	_chord, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0910>
+_004s, <csdl.core.output.Output object at 0x7fcd795c1b10>
+	DEPENDENTS
+	_004t, <csdl.operations.power_combination.power_combination object at 0x7fcd795c1b90>
+	DEPENDENCIES
+	_004r, <csdl.operations.power_combination.power_combination object at 0x7fcd6bef8dd0>
+_003Y, <csdl.operations.cos.cos object at 0x7fcd797b8dd0>
+	DEPENDENTS
+	_003Z, <csdl.core.output.Output object at 0x7fcd797b8e50>
+	DEPENDENCIES
+	_003Q, <csdl.core.output.Output object at 0x7fcd797b89d0>
+_003Z, <csdl.core.output.Output object at 0x7fcd797b8e50>
+	DEPENDENTS
+	_003_, <csdl.operations.power_combination.power_combination object at 0x7fcd797b8e90>
+	DEPENDENCIES
+	_003Y, <csdl.operations.cos.cos object at 0x7fcd797b8dd0>
+_003_, <csdl.operations.power_combination.power_combination object at 0x7fcd797b8e90>
+	DEPENDENTS
+	_0040, <csdl.core.output.Output object at 0x7fcd797b8f10>
+	DEPENDENCIES
+	Cl_pitt_peters_2, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd75ff7c50>
+	_003Z, <csdl.core.output.Output object at 0x7fcd797b8e50>
+_0040, <csdl.core.output.Output object at 0x7fcd797b8f10>
+	DEPENDENTS
+	_0045, <csdl.operations.linear_combination.linear_combination object at 0x7fcd795c1150>
+	DEPENDENCIES
+	_003_, <csdl.operations.power_combination.power_combination object at 0x7fcd797b8e90>
+_0041, <csdl.operations.sin.sin object at 0x7fcd797b8f90>
+	DEPENDENTS
+	_0042, <csdl.core.output.Output object at 0x7fcd797b8fd0>
+	DEPENDENCIES
+	_003Q, <csdl.core.output.Output object at 0x7fcd797b89d0>
+_0042, <csdl.core.output.Output object at 0x7fcd797b8fd0>
+	DEPENDENTS
+	_0043, <csdl.operations.power_combination.power_combination object at 0x7fcd795c10d0>
+	DEPENDENCIES
+	_0041, <csdl.operations.sin.sin object at 0x7fcd797b8f90>
+_0043, <csdl.operations.power_combination.power_combination object at 0x7fcd795c10d0>
+	DEPENDENTS
+	_0044, <csdl.core.output.Output object at 0x7fcd776ce2d0>
+	DEPENDENCIES
+	Cd_pitt_peters_2, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797b8d50>
+	_0042, <csdl.core.output.Output object at 0x7fcd797b8fd0>
+_0044, <csdl.core.output.Output object at 0x7fcd776ce2d0>
+	DEPENDENTS
+	_0045, <csdl.operations.linear_combination.linear_combination object at 0x7fcd795c1150>
+	DEPENDENCIES
+	_0043, <csdl.operations.power_combination.power_combination object at 0x7fcd795c10d0>
+_0045, <csdl.operations.linear_combination.linear_combination object at 0x7fcd795c1150>
+	DEPENDENTS
+	_0046, <csdl.core.output.Output object at 0x7fcd795c11d0>
+	DEPENDENCIES
+	_0040, <csdl.core.output.Output object at 0x7fcd797b8f10>
+	_0044, <csdl.core.output.Output object at 0x7fcd776ce2d0>
+_0046, <csdl.core.output.Output object at 0x7fcd795c11d0>
+	DEPENDENTS
+	_004t, <csdl.operations.power_combination.power_combination object at 0x7fcd795c1b90>
+	DEPENDENCIES
+	_0045, <csdl.operations.linear_combination.linear_combination object at 0x7fcd795c1150>
+_004t, <csdl.operations.power_combination.power_combination object at 0x7fcd795c1b90>
+	DEPENDENTS
+	_004u, <csdl.core.output.Output object at 0x7fcd795c1c10>
+	DEPENDENCIES
+	_004s, <csdl.core.output.Output object at 0x7fcd795c1b10>
+	_0046, <csdl.core.output.Output object at 0x7fcd795c11d0>
+_004u, <csdl.core.output.Output object at 0x7fcd795c1c10>
+	DEPENDENTS
+	_004v, <csdl.operations.power_combination.power_combination object at 0x7fcd795c1c90>
+	DEPENDENCIES
+	_004t, <csdl.operations.power_combination.power_combination object at 0x7fcd795c1b90>
+_004v, <csdl.operations.power_combination.power_combination object at 0x7fcd795c1c90>
+	DEPENDENTS
+	dT, <csdl.core.output.Output object at 0x7fcd795c1d10>
+	DEPENDENCIES
+	_004u, <csdl.core.output.Output object at 0x7fcd795c1c10>
+	_dr, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0f10>
+dT, <csdl.core.output.Output object at 0x7fcd795c1d10>
+	DEPENDENTS
+	_0050, <csdl.operations.power_combination.power_combination object at 0x7fcd795cdb90>
+	_0056, <csdl.operations.power_combination.power_combination object at 0x7fcd795cde50>
+	_0058, <csdl.operations.power_combination.power_combination object at 0x7fcd795cdf50>
+	_006b, <csdl.operations.sum.sum object at 0x7fcd795e4fd0>
+	DEPENDENCIES
+	_004v, <csdl.operations.power_combination.power_combination object at 0x7fcd795c1c90>
+_006b, <csdl.operations.sum.sum object at 0x7fcd795e4fd0>
+	DEPENDENTS
+	_006c, <csdl.core.output.Output object at 0x7fcd795ed0d0>
+	DEPENDENCIES
+	dT, <csdl.core.output.Output object at 0x7fcd795c1d10>
+_006c, <csdl.core.output.Output object at 0x7fcd795ed0d0>
+	DEPENDENTS
+	_006d, <csdl.operations.power_combination.power_combination object at 0x7fcd795ed150>
+	DEPENDENCIES
+	_006b, <csdl.operations.sum.sum object at 0x7fcd795e4fd0>
+_006d, <csdl.operations.power_combination.power_combination object at 0x7fcd795ed150>
+	DEPENDENTS
+	total_thrust, <csdl.core.output.Output object at 0x7fcd795ed1d0>
+	DEPENDENCIES
+	_006c, <csdl.core.output.Output object at 0x7fcd795ed0d0>
+total_thrust, <csdl.core.output.Output object at 0x7fcd795ed1d0>
+	DEPENDENTS
+	_006l, <csdl.operations.power_combination.power_combination object at 0x7fcd795ed450>
+	_007q, <csdl.operations.sum.sum object at 0x7fcd7760e7d0>
+	DEPENDENCIES
+	_006d, <csdl.operations.power_combination.power_combination object at 0x7fcd795ed150>
+_007q, <csdl.operations.sum.sum object at 0x7fcd7760e7d0>
+	DEPENDENTS
+	total_thrust_all_rotors, <csdl.core.output.Output object at 0x7fcd7760e850>
+	DEPENDENCIES
+	total_thrust, <csdl.core.output.Output object at 0x7fcd795ed1d0>
+total_thrust_all_rotors, <csdl.core.output.Output object at 0x7fcd7760e850>
+	DEPENDENTS
+	DEPENDENCIES
+	_007q, <csdl.operations.sum.sum object at 0x7fcd7760e7d0>
+_0058, <csdl.operations.power_combination.power_combination object at 0x7fcd795cdf50>
+	DEPENDENTS
+	_0059, <csdl.core.output.Output object at 0x7fcd795cdfd0>
+	DEPENDENCIES
+	dT, <csdl.core.output.Output object at 0x7fcd795c1d10>
+	_rho_pitt_peters, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0890>
+_0059, <csdl.core.output.Output object at 0x7fcd795cdfd0>
+	DEPENDENTS
+	_005g, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8390>
+	DEPENDENCIES
+	_0058, <csdl.operations.power_combination.power_combination object at 0x7fcd795cdf50>
+_005a, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8050>
+	DEPENDENTS
+	_005b, <csdl.core.output.Output object at 0x7fcd795d8110>
+	DEPENDENCIES
+	_angular_speed, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0c50>
+_005b, <csdl.core.output.Output object at 0x7fcd795d8110>
+	DEPENDENTS
+	_005c, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8190>
+	DEPENDENCIES
+	_005a, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8050>
+_005c, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8190>
+	DEPENDENTS
+	_005d, <csdl.core.output.Output object at 0x7fcd795d8210>
+	DEPENDENCIES
+	_005b, <csdl.core.output.Output object at 0x7fcd795d8110>
+_005d, <csdl.core.output.Output object at 0x7fcd795d8210>
+	DEPENDENTS
+	_005e, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8290>
+	DEPENDENCIES
+	_005c, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8190>
+_005e, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8290>
+	DEPENDENTS
+	_005f, <csdl.core.output.Output object at 0x7fcd795d8310>
+	DEPENDENCIES
+	_005d, <csdl.core.output.Output object at 0x7fcd795d8210>
+_005f, <csdl.core.output.Output object at 0x7fcd795d8310>
+	DEPENDENTS
+	_005g, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8390>
+	DEPENDENCIES
+	_005e, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8290>
+_005g, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8390>
+	DEPENDENTS
+	_005h, <csdl.core.output.Output object at 0x7fcd795d8410>
+	DEPENDENCIES
+	_0059, <csdl.core.output.Output object at 0x7fcd795cdfd0>
+	_005f, <csdl.core.output.Output object at 0x7fcd795d8310>
+_005h, <csdl.core.output.Output object at 0x7fcd795d8410>
+	DEPENDENTS
+	_005m, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8690>
+	DEPENDENCIES
+	_005g, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8390>
+_005i, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8490>
+	DEPENDENTS
+	_005j, <csdl.core.output.Output object at 0x7fcd795d8510>
+	DEPENDENCIES
+	_rotor_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0e90>
+_005j, <csdl.core.output.Output object at 0x7fcd795d8510>
+	DEPENDENTS
+	_005k, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8590>
+	DEPENDENCIES
+	_005i, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8490>
+_005k, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8590>
+	DEPENDENTS
+	_005l, <csdl.core.output.Output object at 0x7fcd795d8610>
+	DEPENDENCIES
+	_005j, <csdl.core.output.Output object at 0x7fcd795d8510>
+_005l, <csdl.core.output.Output object at 0x7fcd795d8610>
+	DEPENDENTS
+	_005m, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8690>
+	DEPENDENCIES
+	_005k, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8590>
+_005m, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8690>
+	DEPENDENTS
+	dC_T, <csdl.core.output.Output object at 0x7fcd795d8710>
+	DEPENDENCIES
+	_005h, <csdl.core.output.Output object at 0x7fcd795d8410>
+	_005l, <csdl.core.output.Output object at 0x7fcd795d8610>
+dC_T, <csdl.core.output.Output object at 0x7fcd795d8710>
+	DEPENDENTS
+	_005U, <csdl.operations.sum.sum object at 0x7fcd795e4750>
+	DEPENDENCIES
+	_005m, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8690>
+_005U, <csdl.operations.sum.sum object at 0x7fcd795e4750>
+	DEPENDENTS
+	_005V, <csdl.core.output.Output object at 0x7fcd795e47d0>
+	DEPENDENCIES
+	dC_T, <csdl.core.output.Output object at 0x7fcd795d8710>
+_005V, <csdl.core.output.Output object at 0x7fcd795e47d0>
+	DEPENDENTS
+	_005W, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4850>
+	DEPENDENCIES
+	_005U, <csdl.operations.sum.sum object at 0x7fcd795e4750>
+_005W, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4850>
+	DEPENDENTS
+	_005X, <csdl.core.output.Output object at 0x7fcd795e48d0>
+	DEPENDENCIES
+	_005V, <csdl.core.output.Output object at 0x7fcd795e47d0>
+_005X, <csdl.core.output.Output object at 0x7fcd795e48d0>
+	DEPENDENTS
+	_005Y, <csdl.operations.reshape.reshape object at 0x7fcd795e4950>
+	DEPENDENCIES
+	_005W, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4850>
+_005Y, <csdl.operations.reshape.reshape object at 0x7fcd795e4950>
+	DEPENDENTS
+	C_T, <csdl.core.output.Output object at 0x7fcd795e49d0>
+	DEPENDENCIES
+	_005X, <csdl.core.output.Output object at 0x7fcd795e48d0>
+C_T, <csdl.core.output.Output object at 0x7fcd795e49d0>
+	DEPENDENTS
+	DEPENDENCIES
+	_005Y, <csdl.operations.reshape.reshape object at 0x7fcd795e4950>
+_006l, <csdl.operations.power_combination.power_combination object at 0x7fcd795ed450>
+	DEPENDENTS
+	_006m, <csdl.core.output.Output object at 0x7fcd795ed5d0>
+	DEPENDENCIES
+	total_thrust, <csdl.core.output.Output object at 0x7fcd795ed1d0>
+_006m, <csdl.core.output.Output object at 0x7fcd795ed5d0>
+	DEPENDENTS
+	_006v, <csdl.operations.power_combination.power_combination object at 0x7fcd795eda50>
+	DEPENDENCIES
+	_006l, <csdl.operations.power_combination.power_combination object at 0x7fcd795ed450>
+_002T, <csdl.operations.power_combination.power_combination object at 0x7fcd797a0a90>
+	DEPENDENTS
+	_002U, <csdl.core.output.Output object at 0x7fcd797a0d10>
+	DEPENDENCIES
+	_angular_speed, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0c50>
+_002U, <csdl.core.output.Output object at 0x7fcd797a0d10>
+	DEPENDENTS
+	_002V, <csdl.operations.power_combination.power_combination object at 0x7fcd797a0d90>
+	DEPENDENCIES
+	_002T, <csdl.operations.power_combination.power_combination object at 0x7fcd797a0a90>
+_002V, <csdl.operations.power_combination.power_combination object at 0x7fcd797a0d90>
+	DEPENDENTS
+	_002W, <csdl.core.output.Output object at 0x7fcd797a0e10>
+	DEPENDENCIES
+	_002U, <csdl.core.output.Output object at 0x7fcd797a0d10>
+_002W, <csdl.core.output.Output object at 0x7fcd797a0e10>
+	DEPENDENTS
+	_006L, <csdl.operations.sum.sum object at 0x7fcd795f6290>
+	_006n, <csdl.operations.sum.sum object at 0x7fcd795ed650>
+	_0078, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6e90>
+	DEPENDENCIES
+	_002V, <csdl.operations.power_combination.power_combination object at 0x7fcd797a0d90>
+_006n, <csdl.operations.sum.sum object at 0x7fcd795ed650>
+	DEPENDENTS
+	_006o, <csdl.core.output.Output object at 0x7fcd795ed6d0>
+	DEPENDENCIES
+	_002W, <csdl.core.output.Output object at 0x7fcd797a0e10>
+_006o, <csdl.core.output.Output object at 0x7fcd795ed6d0>
+	DEPENDENTS
+	_006p, <csdl.operations.power_combination.power_combination object at 0x7fcd795ed750>
+	DEPENDENCIES
+	_006n, <csdl.operations.sum.sum object at 0x7fcd795ed650>
+_006p, <csdl.operations.power_combination.power_combination object at 0x7fcd795ed750>
+	DEPENDENTS
+	_006q, <csdl.core.output.Output object at 0x7fcd795ed7d0>
+	DEPENDENCIES
+	_006o, <csdl.core.output.Output object at 0x7fcd795ed6d0>
+_006q, <csdl.core.output.Output object at 0x7fcd795ed7d0>
+	DEPENDENTS
+	_006r, <csdl.operations.power_combination.power_combination object at 0x7fcd795ed850>
+	DEPENDENCIES
+	_006p, <csdl.operations.power_combination.power_combination object at 0x7fcd795ed750>
+_006r, <csdl.operations.power_combination.power_combination object at 0x7fcd795ed850>
+	DEPENDENTS
+	_006s, <csdl.core.output.Output object at 0x7fcd795ed8d0>
+	DEPENDENCIES
+	_006q, <csdl.core.output.Output object at 0x7fcd795ed7d0>
+_006s, <csdl.core.output.Output object at 0x7fcd795ed8d0>
+	DEPENDENTS
+	_006t, <csdl.operations.power_combination.power_combination object at 0x7fcd795ed950>
+	DEPENDENCIES
+	_006r, <csdl.operations.power_combination.power_combination object at 0x7fcd795ed850>
+_006t, <csdl.operations.power_combination.power_combination object at 0x7fcd795ed950>
+	DEPENDENTS
+	_006u, <csdl.core.output.Output object at 0x7fcd795ed9d0>
+	DEPENDENCIES
+	_006s, <csdl.core.output.Output object at 0x7fcd795ed8d0>
+_006u, <csdl.core.output.Output object at 0x7fcd795ed9d0>
+	DEPENDENTS
+	_006v, <csdl.operations.power_combination.power_combination object at 0x7fcd795eda50>
+	DEPENDENCIES
+	_006t, <csdl.operations.power_combination.power_combination object at 0x7fcd795ed950>
+_006v, <csdl.operations.power_combination.power_combination object at 0x7fcd795eda50>
+	DEPENDENTS
+	_006w, <csdl.core.output.Output object at 0x7fcd795edad0>
+	DEPENDENCIES
+	_006m, <csdl.core.output.Output object at 0x7fcd795ed5d0>
+	_006u, <csdl.core.output.Output object at 0x7fcd795ed9d0>
+_006w, <csdl.core.output.Output object at 0x7fcd795edad0>
+	DEPENDENTS
+	_006H, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6050>
+	DEPENDENCIES
+	_006v, <csdl.operations.power_combination.power_combination object at 0x7fcd795eda50>
+_006x, <csdl.operations.sum.sum object at 0x7fcd795edb50>
+	DEPENDENTS
+	_006y, <csdl.core.output.Output object at 0x7fcd795edbd0>
+	DEPENDENCIES
+	_rotor_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0e90>
+_006y, <csdl.core.output.Output object at 0x7fcd795edbd0>
+	DEPENDENTS
+	_006z, <csdl.operations.power_combination.power_combination object at 0x7fcd795edc50>
+	DEPENDENCIES
+	_006x, <csdl.operations.sum.sum object at 0x7fcd795edb50>
+_006z, <csdl.operations.power_combination.power_combination object at 0x7fcd795edc50>
+	DEPENDENTS
+	_006A, <csdl.core.output.Output object at 0x7fcd795edcd0>
+	DEPENDENCIES
+	_006y, <csdl.core.output.Output object at 0x7fcd795edbd0>
+_006A, <csdl.core.output.Output object at 0x7fcd795edcd0>
+	DEPENDENTS
+	_006B, <csdl.operations.power_combination.power_combination object at 0x7fcd795edd50>
+	DEPENDENCIES
+	_006z, <csdl.operations.power_combination.power_combination object at 0x7fcd795edc50>
+_006B, <csdl.operations.power_combination.power_combination object at 0x7fcd795edd50>
+	DEPENDENTS
+	_006C, <csdl.core.output.Output object at 0x7fcd795eddd0>
+	DEPENDENCIES
+	_006A, <csdl.core.output.Output object at 0x7fcd795edcd0>
+_006C, <csdl.core.output.Output object at 0x7fcd795eddd0>
+	DEPENDENTS
+	_006D, <csdl.operations.power_combination.power_combination object at 0x7fcd795ede50>
+	DEPENDENCIES
+	_006B, <csdl.operations.power_combination.power_combination object at 0x7fcd795edd50>
+_006D, <csdl.operations.power_combination.power_combination object at 0x7fcd795ede50>
+	DEPENDENTS
+	_006E, <csdl.core.output.Output object at 0x7fcd795eded0>
+	DEPENDENCIES
+	_006C, <csdl.core.output.Output object at 0x7fcd795eddd0>
+_006E, <csdl.core.output.Output object at 0x7fcd795eded0>
+	DEPENDENTS
+	_006F, <csdl.operations.power_combination.power_combination object at 0x7fcd795edf50>
+	DEPENDENCIES
+	_006D, <csdl.operations.power_combination.power_combination object at 0x7fcd795ede50>
+_006F, <csdl.operations.power_combination.power_combination object at 0x7fcd795edf50>
+	DEPENDENTS
+	_006G, <csdl.core.output.Output object at 0x7fcd795edfd0>
+	DEPENDENCIES
+	_006E, <csdl.core.output.Output object at 0x7fcd795eded0>
+_006G, <csdl.core.output.Output object at 0x7fcd795edfd0>
+	DEPENDENTS
+	_006H, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6050>
+	DEPENDENCIES
+	_006F, <csdl.operations.power_combination.power_combination object at 0x7fcd795edf50>
+_006H, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6050>
+	DEPENDENTS
+	C_T_2, <csdl.core.output.Output object at 0x7fcd795f6110>
+	DEPENDENCIES
+	_006w, <csdl.core.output.Output object at 0x7fcd795edad0>
+	_006G, <csdl.core.output.Output object at 0x7fcd795edfd0>
+C_T_2, <csdl.core.output.Output object at 0x7fcd795f6110>
+	DEPENDENTS
+	_007k, <csdl.operations.power_combination.power_combination object at 0x7fcd7760e4d0>
+	DEPENDENCIES
+	_006H, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6050>
+_axial_inflow_velocity, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0fd0>
+	DEPENDENTS
+	_0078, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6e90>
+	DEPENDENCIES
+_0078, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6e90>
+	DEPENDENTS
+	_0079, <csdl.core.output.Output object at 0x7fcd795f6f10>
+	DEPENDENCIES
+	_axial_inflow_velocity, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0fd0>
+	_002W, <csdl.core.output.Output object at 0x7fcd797a0e10>
+_0079, <csdl.core.output.Output object at 0x7fcd795f6f10>
+	DEPENDENTS
+	_007c, <csdl.operations.power_combination.power_combination object at 0x7fcd7760e0d0>
+	DEPENDENCIES
+	_0078, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6e90>
+_007a, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6f90>
+	DEPENDENTS
+	_007b, <csdl.core.output.Output object at 0x7fcd795f6fd0>
+	DEPENDENCIES
+	_rotor_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0e90>
+_007b, <csdl.core.output.Output object at 0x7fcd795f6fd0>
+	DEPENDENTS
+	_007c, <csdl.operations.power_combination.power_combination object at 0x7fcd7760e0d0>
+	DEPENDENCIES
+	_007a, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6f90>
+_007c, <csdl.operations.power_combination.power_combination object at 0x7fcd7760e0d0>
+	DEPENDENTS
+	_007d, <csdl.core.output.Output object at 0x7fcd7760e150>
+	DEPENDENCIES
+	_0079, <csdl.core.output.Output object at 0x7fcd795f6f10>
+	_007b, <csdl.core.output.Output object at 0x7fcd795f6fd0>
+_007d, <csdl.core.output.Output object at 0x7fcd7760e150>
+	DEPENDENTS
+	_007e, <csdl.operations.sum.sum object at 0x7fcd7760e1d0>
+	DEPENDENCIES
+	_007c, <csdl.operations.power_combination.power_combination object at 0x7fcd7760e0d0>
+_007e, <csdl.operations.sum.sum object at 0x7fcd7760e1d0>
+	DEPENDENTS
+	_007f, <csdl.core.output.Output object at 0x7fcd7760e250>
+	DEPENDENCIES
+	_007d, <csdl.core.output.Output object at 0x7fcd7760e150>
+_007f, <csdl.core.output.Output object at 0x7fcd7760e250>
+	DEPENDENTS
+	_007g, <csdl.operations.power_combination.power_combination object at 0x7fcd7760e2d0>
+	DEPENDENCIES
+	_007e, <csdl.operations.sum.sum object at 0x7fcd7760e1d0>
+_007g, <csdl.operations.power_combination.power_combination object at 0x7fcd7760e2d0>
+	DEPENDENTS
+	_007h, <csdl.core.output.Output object at 0x7fcd7760e350>
+	DEPENDENCIES
+	_007f, <csdl.core.output.Output object at 0x7fcd7760e250>
+_007h, <csdl.core.output.Output object at 0x7fcd7760e350>
+	DEPENDENTS
+	_007i, <csdl.operations.power_combination.power_combination object at 0x7fcd7760e3d0>
+	DEPENDENCIES
+	_007g, <csdl.operations.power_combination.power_combination object at 0x7fcd7760e2d0>
+_007i, <csdl.operations.power_combination.power_combination object at 0x7fcd7760e3d0>
+	DEPENDENTS
+	J, <csdl.core.output.Output object at 0x7fcd7760e450>
+	DEPENDENCIES
+	_007h, <csdl.core.output.Output object at 0x7fcd7760e350>
+J, <csdl.core.output.Output object at 0x7fcd7760e450>
+	DEPENDENTS
+	_007k, <csdl.operations.power_combination.power_combination object at 0x7fcd7760e4d0>
+	DEPENDENCIES
+	_007i, <csdl.operations.power_combination.power_combination object at 0x7fcd7760e3d0>
+_007k, <csdl.operations.power_combination.power_combination object at 0x7fcd7760e4d0>
+	DEPENDENTS
+	_007l, <csdl.core.output.Output object at 0x7fcd7760e550>
+	DEPENDENCIES
+	C_T_2, <csdl.core.output.Output object at 0x7fcd795f6110>
+	J, <csdl.core.output.Output object at 0x7fcd7760e450>
+_007l, <csdl.core.output.Output object at 0x7fcd7760e550>
+	DEPENDENTS
+	_007m, <csdl.operations.power_combination.power_combination object at 0x7fcd7760e5d0>
+	DEPENDENCIES
+	_007k, <csdl.operations.power_combination.power_combination object at 0x7fcd7760e4d0>
+_006J, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6190>
+	DEPENDENTS
+	_006K, <csdl.core.output.Output object at 0x7fcd795f6210>
+	DEPENDENCIES
+	total_torque, <csdl.core.output.Output object at 0x7fcd795ed3d0>
+_006K, <csdl.core.output.Output object at 0x7fcd795f6210>
+	DEPENDENTS
+	_006T, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6690>
+	DEPENDENCIES
+	_006J, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6190>
+_006L, <csdl.operations.sum.sum object at 0x7fcd795f6290>
+	DEPENDENTS
+	_006M, <csdl.core.output.Output object at 0x7fcd795f6310>
+	DEPENDENCIES
+	_002W, <csdl.core.output.Output object at 0x7fcd797a0e10>
+_006M, <csdl.core.output.Output object at 0x7fcd795f6310>
+	DEPENDENTS
+	_006N, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6390>
+	DEPENDENCIES
+	_006L, <csdl.operations.sum.sum object at 0x7fcd795f6290>
+_006N, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6390>
+	DEPENDENTS
+	_006O, <csdl.core.output.Output object at 0x7fcd795f6410>
+	DEPENDENCIES
+	_006M, <csdl.core.output.Output object at 0x7fcd795f6310>
+_006O, <csdl.core.output.Output object at 0x7fcd795f6410>
+	DEPENDENTS
+	_006P, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6490>
+	DEPENDENCIES
+	_006N, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6390>
+_006P, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6490>
+	DEPENDENTS
+	_006Q, <csdl.core.output.Output object at 0x7fcd795f6510>
+	DEPENDENCIES
+	_006O, <csdl.core.output.Output object at 0x7fcd795f6410>
+_006Q, <csdl.core.output.Output object at 0x7fcd795f6510>
+	DEPENDENTS
+	_006R, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6590>
+	DEPENDENCIES
+	_006P, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6490>
+_006R, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6590>
+	DEPENDENTS
+	_006S, <csdl.core.output.Output object at 0x7fcd795f6610>
+	DEPENDENCIES
+	_006Q, <csdl.core.output.Output object at 0x7fcd795f6510>
+_006S, <csdl.core.output.Output object at 0x7fcd795f6610>
+	DEPENDENTS
+	_006T, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6690>
+	DEPENDENCIES
+	_006R, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6590>
+_006T, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6690>
+	DEPENDENTS
+	_006U, <csdl.core.output.Output object at 0x7fcd795f6710>
+	DEPENDENCIES
+	_006K, <csdl.core.output.Output object at 0x7fcd795f6210>
+	_006S, <csdl.core.output.Output object at 0x7fcd795f6610>
+_006U, <csdl.core.output.Output object at 0x7fcd795f6710>
+	DEPENDENTS
+	_0074, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6c90>
+	DEPENDENCIES
+	_006T, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6690>
+_006V, <csdl.operations.sum.sum object at 0x7fcd795f6790>
+	DEPENDENTS
+	_006W, <csdl.core.output.Output object at 0x7fcd795f6810>
+	DEPENDENCIES
+	_rotor_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0e90>
+_006W, <csdl.core.output.Output object at 0x7fcd795f6810>
+	DEPENDENTS
+	_006X, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6890>
+	DEPENDENCIES
+	_006V, <csdl.operations.sum.sum object at 0x7fcd795f6790>
+_006X, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6890>
+	DEPENDENTS
+	_006Y, <csdl.core.output.Output object at 0x7fcd795f6910>
+	DEPENDENCIES
+	_006W, <csdl.core.output.Output object at 0x7fcd795f6810>
+_006Y, <csdl.core.output.Output object at 0x7fcd795f6910>
+	DEPENDENTS
+	_006Z, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6990>
+	DEPENDENCIES
+	_006X, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6890>
+_006Z, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6990>
+	DEPENDENTS
+	_006_, <csdl.core.output.Output object at 0x7fcd795f6a10>
+	DEPENDENCIES
+	_006Y, <csdl.core.output.Output object at 0x7fcd795f6910>
+_006_, <csdl.core.output.Output object at 0x7fcd795f6a10>
+	DEPENDENTS
+	_0070, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6a90>
+	DEPENDENCIES
+	_006Z, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6990>
+_0070, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6a90>
+	DEPENDENTS
+	_0071, <csdl.core.output.Output object at 0x7fcd795f6b10>
+	DEPENDENCIES
+	_006_, <csdl.core.output.Output object at 0x7fcd795f6a10>
+_0071, <csdl.core.output.Output object at 0x7fcd795f6b10>
+	DEPENDENTS
+	_0072, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6b90>
+	DEPENDENCIES
+	_0070, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6a90>
+_0072, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6b90>
+	DEPENDENTS
+	_0073, <csdl.core.output.Output object at 0x7fcd795f6c10>
+	DEPENDENCIES
+	_0071, <csdl.core.output.Output object at 0x7fcd795f6b10>
+_0073, <csdl.core.output.Output object at 0x7fcd795f6c10>
+	DEPENDENTS
+	_0074, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6c90>
+	DEPENDENCIES
+	_0072, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6b90>
+_0074, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6c90>
+	DEPENDENTS
+	C_Q, <csdl.core.output.Output object at 0x7fcd795f6d10>
+	DEPENDENCIES
+	_006U, <csdl.core.output.Output object at 0x7fcd795f6710>
+	_0073, <csdl.core.output.Output object at 0x7fcd795f6c10>
+C_Q, <csdl.core.output.Output object at 0x7fcd795f6d10>
+	DEPENDENTS
+	_0076, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6d90>
+	DEPENDENCIES
+	_0074, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6c90>
+_0076, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6d90>
+	DEPENDENTS
+	C_P, <csdl.core.output.Output object at 0x7fcd795f6e10>
+	DEPENDENCIES
+	C_Q, <csdl.core.output.Output object at 0x7fcd795f6d10>
+C_P, <csdl.core.output.Output object at 0x7fcd795f6e10>
+	DEPENDENTS
+	_007m, <csdl.operations.power_combination.power_combination object at 0x7fcd7760e5d0>
+	DEPENDENCIES
+	_0076, <csdl.operations.power_combination.power_combination object at 0x7fcd795f6d90>
+_007m, <csdl.operations.power_combination.power_combination object at 0x7fcd7760e5d0>
+	DEPENDENTS
+	eta, <csdl.core.output.Output object at 0x7fcd7760e650>
+	DEPENDENCIES
+	_007l, <csdl.core.output.Output object at 0x7fcd7760e550>
+	C_P, <csdl.core.output.Output object at 0x7fcd795f6e10>
+eta, <csdl.core.output.Output object at 0x7fcd7760e650>
+	DEPENDENTS
+	DEPENDENCIES
+	_007m, <csdl.operations.power_combination.power_combination object at 0x7fcd7760e5d0>
+_004X, <csdl.operations.sin.sin object at 0x7fcd795cd990>
+	DEPENDENTS
+	_004Y, <csdl.core.output.Output object at 0x7fcd795cda10>
+	DEPENDENCIES
+	_theta, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0bd0>
+_004Y, <csdl.core.output.Output object at 0x7fcd795cda10>
+	DEPENDENTS
+	_004Z, <csdl.operations.power_combination.power_combination object at 0x7fcd795cda90>
+	DEPENDENCIES
+	_004X, <csdl.operations.sin.sin object at 0x7fcd795cd990>
+_004Z, <csdl.operations.power_combination.power_combination object at 0x7fcd795cda90>
+	DEPENDENTS
+	_004_, <csdl.core.output.Output object at 0x7fcd795cdb10>
+	DEPENDENCIES
+	_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0a50>
+	_004Y, <csdl.core.output.Output object at 0x7fcd795cda10>
+_004_, <csdl.core.output.Output object at 0x7fcd795cdb10>
+	DEPENDENTS
+	_0050, <csdl.operations.power_combination.power_combination object at 0x7fcd795cdb90>
+	DEPENDENCIES
+	_004Z, <csdl.operations.power_combination.power_combination object at 0x7fcd795cda90>
+_0050, <csdl.operations.power_combination.power_combination object at 0x7fcd795cdb90>
+	DEPENDENTS
+	_0051, <csdl.core.output.Output object at 0x7fcd795cdc10>
+	DEPENDENCIES
+	_004_, <csdl.core.output.Output object at 0x7fcd795cdb10>
+	dT, <csdl.core.output.Output object at 0x7fcd795c1d10>
+_0051, <csdl.core.output.Output object at 0x7fcd795cdc10>
+	DEPENDENTS
+	_005o, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8790>
+	DEPENDENCIES
+	_0050, <csdl.operations.power_combination.power_combination object at 0x7fcd795cdb90>
+_005o, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8790>
+	DEPENDENTS
+	_005p, <csdl.core.output.Output object at 0x7fcd795d8810>
+	DEPENDENCIES
+	_0051, <csdl.core.output.Output object at 0x7fcd795cdc10>
+	_rho_pitt_peters, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0890>
+_005p, <csdl.core.output.Output object at 0x7fcd795d8810>
+	DEPENDENTS
+	_005w, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8b50>
+	DEPENDENCIES
+	_005o, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8790>
+_005q, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8890>
+	DEPENDENTS
+	_005r, <csdl.core.output.Output object at 0x7fcd795d8910>
+	DEPENDENCIES
+	_angular_speed, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0c50>
+_005r, <csdl.core.output.Output object at 0x7fcd795d8910>
+	DEPENDENTS
+	_005s, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8990>
+	DEPENDENCIES
+	_005q, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8890>
+_005s, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8990>
+	DEPENDENTS
+	_005t, <csdl.core.output.Output object at 0x7fcd776ce250>
+	DEPENDENCIES
+	_005r, <csdl.core.output.Output object at 0x7fcd795d8910>
+_005t, <csdl.core.output.Output object at 0x7fcd776ce250>
+	DEPENDENTS
+	_005u, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8a50>
+	DEPENDENCIES
+	_005s, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8990>
+_005u, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8a50>
+	DEPENDENTS
+	_005v, <csdl.core.output.Output object at 0x7fcd795d8ad0>
+	DEPENDENCIES
+	_005t, <csdl.core.output.Output object at 0x7fcd776ce250>
+_005v, <csdl.core.output.Output object at 0x7fcd795d8ad0>
+	DEPENDENTS
+	_005w, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8b50>
+	DEPENDENCIES
+	_005u, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8a50>
+_005w, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8b50>
+	DEPENDENTS
+	_005x, <csdl.core.output.Output object at 0x7fcd795d8bd0>
+	DEPENDENCIES
+	_005p, <csdl.core.output.Output object at 0x7fcd795d8810>
+	_005v, <csdl.core.output.Output object at 0x7fcd795d8ad0>
+_005x, <csdl.core.output.Output object at 0x7fcd795d8bd0>
+	DEPENDENTS
+	_005C, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8e50>
+	DEPENDENCIES
+	_005w, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8b50>
+_005y, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8c50>
+	DEPENDENTS
+	_005z, <csdl.core.output.Output object at 0x7fcd795d8cd0>
+	DEPENDENCIES
+	_rotor_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0e90>
+_005z, <csdl.core.output.Output object at 0x7fcd795d8cd0>
+	DEPENDENTS
+	_005A, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8d50>
+	DEPENDENCIES
+	_005y, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8c50>
+_005A, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8d50>
+	DEPENDENTS
+	_005B, <csdl.core.output.Output object at 0x7fcd795d8dd0>
+	DEPENDENCIES
+	_005z, <csdl.core.output.Output object at 0x7fcd795d8cd0>
+_005B, <csdl.core.output.Output object at 0x7fcd795d8dd0>
+	DEPENDENTS
+	_005C, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8e50>
+	DEPENDENCIES
+	_005A, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8d50>
+_005C, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8e50>
+	DEPENDENTS
+	_005D, <csdl.core.output.Output object at 0x7fcd795d8ed0>
+	DEPENDENCIES
+	_005x, <csdl.core.output.Output object at 0x7fcd795d8bd0>
+	_005B, <csdl.core.output.Output object at 0x7fcd795d8dd0>
+_005D, <csdl.core.output.Output object at 0x7fcd795d8ed0>
+	DEPENDENTS
+	_005_, <csdl.operations.sum.sum object at 0x7fcd774b81d0>
+	DEPENDENCIES
+	_005C, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8e50>
+_005_, <csdl.operations.sum.sum object at 0x7fcd774b81d0>
+	DEPENDENTS
+	_0060, <csdl.core.output.Output object at 0x7fcd795e4a90>
+	DEPENDENCIES
+	_005D, <csdl.core.output.Output object at 0x7fcd795d8ed0>
+_0060, <csdl.core.output.Output object at 0x7fcd795e4a90>
+	DEPENDENTS
+	_0061, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4b10>
+	DEPENDENCIES
+	_005_, <csdl.operations.sum.sum object at 0x7fcd774b81d0>
+_0061, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4b10>
+	DEPENDENTS
+	_0062, <csdl.core.output.Output object at 0x7fcd795e4b90>
+	DEPENDENCIES
+	_0060, <csdl.core.output.Output object at 0x7fcd795e4a90>
+_0062, <csdl.core.output.Output object at 0x7fcd795e4b90>
+	DEPENDENTS
+	_0063, <csdl.operations.reshape.reshape object at 0x7fcd795e4c10>
+	DEPENDENCIES
+	_0061, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4b10>
+_0063, <csdl.operations.reshape.reshape object at 0x7fcd795e4c10>
+	DEPENDENTS
+	C_L, <csdl.core.output.Output object at 0x7fcd795e4c90>
+	DEPENDENCIES
+	_0062, <csdl.core.output.Output object at 0x7fcd795e4b90>
+C_L, <csdl.core.output.Output object at 0x7fcd795e4c90>
+	DEPENDENTS
+	DEPENDENCIES
+	_0063, <csdl.operations.reshape.reshape object at 0x7fcd795e4c10>
+_0052, <csdl.operations.cos.cos object at 0x7fcd795cdc90>
+	DEPENDENTS
+	_0053, <csdl.core.output.Output object at 0x7fcd777124d0>
+	DEPENDENCIES
+	_theta, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0bd0>
+_0053, <csdl.core.output.Output object at 0x7fcd777124d0>
+	DEPENDENTS
+	_0054, <csdl.operations.power_combination.power_combination object at 0x7fcd795cdd50>
+	DEPENDENCIES
+	_0052, <csdl.operations.cos.cos object at 0x7fcd795cdc90>
+_0054, <csdl.operations.power_combination.power_combination object at 0x7fcd795cdd50>
+	DEPENDENTS
+	_0055, <csdl.core.output.Output object at 0x7fcd795cddd0>
+	DEPENDENCIES
+	_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0a50>
+	_0053, <csdl.core.output.Output object at 0x7fcd777124d0>
+_0055, <csdl.core.output.Output object at 0x7fcd795cddd0>
+	DEPENDENTS
+	_0056, <csdl.operations.power_combination.power_combination object at 0x7fcd795cde50>
+	DEPENDENCIES
+	_0054, <csdl.operations.power_combination.power_combination object at 0x7fcd795cdd50>
+_0056, <csdl.operations.power_combination.power_combination object at 0x7fcd795cde50>
+	DEPENDENTS
+	_0057, <csdl.core.output.Output object at 0x7fcd795cded0>
+	DEPENDENCIES
+	_0055, <csdl.core.output.Output object at 0x7fcd795cddd0>
+	dT, <csdl.core.output.Output object at 0x7fcd795c1d10>
+_0057, <csdl.core.output.Output object at 0x7fcd795cded0>
+	DEPENDENTS
+	_005E, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8f50>
+	DEPENDENCIES
+	_0056, <csdl.operations.power_combination.power_combination object at 0x7fcd795cde50>
+_005E, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8f50>
+	DEPENDENTS
+	_005F, <csdl.core.output.Output object at 0x7fcd795d8fd0>
+	DEPENDENCIES
+	_0057, <csdl.core.output.Output object at 0x7fcd795cded0>
+	_rho_pitt_peters, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0890>
+_005F, <csdl.core.output.Output object at 0x7fcd795d8fd0>
+	DEPENDENTS
+	_005M, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4390>
+	DEPENDENCIES
+	_005E, <csdl.operations.power_combination.power_combination object at 0x7fcd795d8f50>
+_005G, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4050>
+	DEPENDENTS
+	_005H, <csdl.core.output.Output object at 0x7fcd795e4110>
+	DEPENDENCIES
+	_angular_speed, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0c50>
+_005H, <csdl.core.output.Output object at 0x7fcd795e4110>
+	DEPENDENTS
+	_005I, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4190>
+	DEPENDENCIES
+	_005G, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4050>
+_005I, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4190>
+	DEPENDENTS
+	_005J, <csdl.core.output.Output object at 0x7fcd795e4210>
+	DEPENDENCIES
+	_005H, <csdl.core.output.Output object at 0x7fcd795e4110>
+_005J, <csdl.core.output.Output object at 0x7fcd795e4210>
+	DEPENDENTS
+	_005K, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4290>
+	DEPENDENCIES
+	_005I, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4190>
+_005K, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4290>
+	DEPENDENTS
+	_005L, <csdl.core.output.Output object at 0x7fcd795e4310>
+	DEPENDENCIES
+	_005J, <csdl.core.output.Output object at 0x7fcd795e4210>
+_005L, <csdl.core.output.Output object at 0x7fcd795e4310>
+	DEPENDENTS
+	_005M, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4390>
+	DEPENDENCIES
+	_005K, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4290>
+_005M, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4390>
+	DEPENDENTS
+	_005N, <csdl.core.output.Output object at 0x7fcd795e4410>
+	DEPENDENCIES
+	_005F, <csdl.core.output.Output object at 0x7fcd795d8fd0>
+	_005L, <csdl.core.output.Output object at 0x7fcd795e4310>
+_005N, <csdl.core.output.Output object at 0x7fcd795e4410>
+	DEPENDENTS
+	_005S, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4650>
+	DEPENDENCIES
+	_005M, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4390>
+_005O, <csdl.operations.power_combination.power_combination object at 0x7fcd76c9ba90>
+	DEPENDENTS
+	_005P, <csdl.core.output.Output object at 0x7fcd795e44d0>
+	DEPENDENCIES
+	_rotor_radius, <csdl.core.declared_variable.DeclaredVariable object at 0x7fcd797a0e90>
+_005P, <csdl.core.output.Output object at 0x7fcd795e44d0>
+	DEPENDENTS
+	_005Q, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4550>
+	DEPENDENCIES
+	_005O, <csdl.operations.power_combination.power_combination object at 0x7fcd76c9ba90>
+_005Q, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4550>
+	DEPENDENTS
+	_005R, <csdl.core.output.Output object at 0x7fcd795e45d0>
+	DEPENDENCIES
+	_005P, <csdl.core.output.Output object at 0x7fcd795e44d0>
+_005R, <csdl.core.output.Output object at 0x7fcd795e45d0>
+	DEPENDENTS
+	_005S, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4650>
+	DEPENDENCIES
+	_005Q, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4550>
+_005S, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4650>
+	DEPENDENTS
+	_005T, <csdl.core.output.Output object at 0x7fcd795e46d0>
+	DEPENDENCIES
+	_005N, <csdl.core.output.Output object at 0x7fcd795e4410>
+	_005R, <csdl.core.output.Output object at 0x7fcd795e45d0>
+_005T, <csdl.core.output.Output object at 0x7fcd795e46d0>
+	DEPENDENTS
+	_0065, <csdl.operations.sum.sum object at 0x7fcd795e4d10>
+	DEPENDENCIES
+	_005S, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4650>
+_0065, <csdl.operations.sum.sum object at 0x7fcd795e4d10>
+	DEPENDENTS
+	_0066, <csdl.core.output.Output object at 0x7fcd795e4d90>
+	DEPENDENCIES
+	_005T, <csdl.core.output.Output object at 0x7fcd795e46d0>
+_0066, <csdl.core.output.Output object at 0x7fcd795e4d90>
+	DEPENDENTS
+	_0067, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4e10>
+	DEPENDENCIES
+	_0065, <csdl.operations.sum.sum object at 0x7fcd795e4d10>
+_0067, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4e10>
+	DEPENDENTS
+	_0068, <csdl.core.output.Output object at 0x7fcd795e4e90>
+	DEPENDENCIES
+	_0066, <csdl.core.output.Output object at 0x7fcd795e4d90>
+_0068, <csdl.core.output.Output object at 0x7fcd795e4e90>
+	DEPENDENTS
+	_0069, <csdl.operations.reshape.reshape object at 0x7fcd795e4f10>
+	DEPENDENCIES
+	_0067, <csdl.operations.power_combination.power_combination object at 0x7fcd795e4e10>
+_0069, <csdl.operations.reshape.reshape object at 0x7fcd795e4f10>
+	DEPENDENTS
+	C_M, <csdl.core.output.Output object at 0x7fcd795e4f90>
+	DEPENDENCIES
+	_0068, <csdl.core.output.Output object at 0x7fcd795e4e90>
+C_M, <csdl.core.output.Output object at 0x7fcd795e4f90>
+	DEPENDENTS
+	DEPENDENCIES
+	_0069, <csdl.operations.reshape.reshape object at 0x7fcd795e4f10>

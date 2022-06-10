@@ -6,39 +6,53 @@ class ILDMBackCompGroup(Model):
 
     def initialize(self):
         self.parameters.declare('rotor')
-        self.parameters.declare('shape', types = tuple)
+        self.parameters.declare('shape', types=tuple)
 
     def define(self):
         rotor = self.parameters['rotor']
         shape = self.parameters['shape']
 
-        Vx = self.declare_variable('_axial_inflow_velocity', shape=shape)
-        Vx_ref = self.declare_variable('reference_axial_inflow_velocity')
-        Vt = self.declare_variable('_tangential_inflow_velocity', shape=shape)
-        n = self.declare_variable('reference_rotational_speed')
-
-        eta = self.declare_variable('eta_2', shape=shape)
-        dr = self.declare_variable('_slice_thickness', shape = shape)
-        rotor_radius = self.declare_variable('_rotor_radius', shape=shape)
-        radius = self.declare_variable('_radius', shape = shape)
-        hub_radius = self.declare_variable('_hub_radius', shape = shape)
-        c_ref = rotor['c_ref']
-        # c_ref_exp = csdl.expand(csdl.reshape(c_ref, (1,)), shape)
-        rho = self.declare_variable('rho_ildm', shape = shape)
-
-
-        Cl_ref_chord = rotor['ideal_Cl_ref_chord']
-        Cd_ref_chord = rotor['ideal_Cd_ref_chord']
-        alpha_ref_chord = rotor['ideal_alpha_ref_chord']
         num_blades = rotor['num_blades']
 
+        Vx = self.declare_variable('_axial_inflow_velocity', shape=shape)
+        Vt = self.declare_variable('_tangential_inflow_velocity', shape=shape)
+
+        eta = self.declare_variable('eta_2', shape=shape)
+        dr = self.declare_variable('_dr', shape=shape)
+        rotor_radius = self.declare_variable('_rotor_radius', shape=shape)
+        radius = self.declare_variable('_radius', shape=shape)
+        hub_radius = self.declare_variable('_hub_radius', shape=shape)
+        
+        chord  = self.declare_variable('reference_chord', shape = (shape[0],))
+        # c_ref = rotor['c_ref']
+        c_ref = csdl.expand(chord, shape, 'i->ijk')
+        rho = self.declare_variable('rho_ildm', shape=shape)
+
+
+        Cl = self.declare_variable('Cl_max_ildm', shape = (shape[0],))
+        Cd = self.declare_variable('Cd_min_ildm', shape = (shape[0],))
+        Cl_ref_chord = csdl.expand(Cl, shape, 'i->ijk')
+        Cd_ref_chord = csdl.expand(Cd, shape, 'i->ijk')
+        # Cl_ref_chord = rotor['ideal_Cl_ref_chord']
+        # Cd_ref_chord = rotor['ideal_Cd_ref_chord']
+        alpha_max_LD = self.declare_variable('alpha_max_LD', shape = (shape[0],))
+        alpha_ref_chord = csdl.expand(alpha_max_LD, shape, 'i->ijk')
+
+        # alpha_ref_chord = rotor['ideal_alpha_ref_chord']
+        
         a = 2 * Cl_ref_chord
         b = 2 * Cd_ref_chord * Vt - 2 * Cl_ref_chord * Vx
         c = - 2 * Vt * eta * (Cd_ref_chord * Vx + Cl_ref_chord * Vt - Cl_ref_chord * Vt * eta)
+        
+        self.register_output('c',c)
+        self.register_output('b',b)
 
-        ux = (-b + (b**2 - 4 * a * c)**0.5)/ (2 * a)
+        ux_num = (-b + (b**2 -4 * a * c)**0.5)
+        ux_den = (2 * a)
+        
+        ux =  (-b + (b**2 -4 * a * c)**0.5)/ (2 * a)
         ut = 2 * Vt * (1 + (-1 * eta))
-        # 2 * Vt * (-1 * (eta - 1)) try this 
+        # ut =  2 * Vt * (-1 * (eta - 1)) #try this 
         
         phi = csdl.arctan(ux/(Vt - 0.5*ut)) 
 
@@ -48,19 +62,29 @@ class ILDMBackCompGroup(Model):
         F_tip = 2 / np.pi * csdl.arccos(csdl.exp(-f_tip))
         F_hub = 2 / np.pi * csdl.arccos(csdl.exp(-f_hub))
         F = F_tip * F_hub
+        self.register_output('F_dist',F)
 
         dT = 4 * np.pi * rho * ux * (ux-Vx) * radius * F *  dr
-        T = csdl.sum(dT)
+        T = csdl.sum(dT, axes = (1,))
        
         dQ = 2 * np.pi * rho * ux * ut * radius**2 * F * dr
-        Q = csdl.sum(dQ)
+        Q = csdl.sum(dQ, axes = (1,))
         
+        
+
         dE = 2 * np.pi * radius * rho * (Vt * ux * ut - 2 * Vx * ux**2 + 2 * Vx**2 * ux) * F * dr
-        E = csdl.sum(dE)
+        E = csdl.sum(dE, axes = (1,))
 
         # eta_total_rotor = T * Vx_ref / (Q * n * 2 * np.pi)
 
         c = 2 * dQ / (rho * dr * num_blades * (ux**2 + (Vt - 0.5 * ut)**2) * radius * (Cl_ref_chord * csdl.sin(phi) + Cd_ref_chord * csdl.cos(phi)))
+        
+
+        Cx = Cl_ref_chord * csdl.cos(phi) - Cd_ref_chord * csdl.sin(phi)
+        Ct = Cl_ref_chord * csdl.sin(phi) + Cd_ref_chord * csdl.cos(phi)
+        dT2 = num_blades * Cx * 0.5 * rho * (ux**2 + (Vt - 0.5 * ut)**2) * c * dr
+        dQ2 = num_blades * Ct * 0.5 * rho * (ux**2 + (Vt - 0.5 * ut)**2) * c * dr * radius
+
         theta = (phi + alpha_ref_chord)
 
         weights_1 = csdl.exp(-5.5 * radius)
@@ -74,6 +98,12 @@ class ILDMBackCompGroup(Model):
         
         self.register_output('_local_torque', dQ)
         self.register_output('total_torque', Q)
+
+        self.register_output('_local_thrust_2', dT2)
+        self.register_output('total_thrust_2', csdl.sum(dT2,axes = (1,)))
+        
+        self.register_output('_local_torque_2', dQ2)
+        self.register_output('total_torque_2', csdl.sum(dQ2,axes = (1,)))
 
         self.register_output('_local_inflow_angle',phi)
         self.register_output('_local_twist_angle', theta)

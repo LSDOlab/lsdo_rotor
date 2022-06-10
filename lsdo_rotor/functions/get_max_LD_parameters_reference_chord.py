@@ -19,11 +19,12 @@ def get_max_LD_parameters_reference_chord(interp_object, reference_chord, refere
     S1          = 110.4
     h           = altitude * 1e-3
     T           = T0 - L * h
-    P           = P0 * (T/T0)**(g0/L/R)
+    P           = P0 * (T/T0)**(g0/(L * 1e-3)/R)
     rho         = P/R/T  
     mu          = mu0 * (T/T0)**(3/2) * (T0 + S1)/(T + S1) 
     W           = (Vx**2 + Vt**2)**0.5  
     Re          = rho * W * reference_chord / mu
+    # print(Re, 'Reference_reynolds_number')
 
     # Finding max L/D and corresponding AoA, Cl, Cd 
     alpha_range                     = np.linspace(-2*np.pi/180,10*np.pi/180,100)

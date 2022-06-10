@@ -8,35 +8,42 @@ import openmdao.api as om
 
 class AirfoilSurrogateModelGroup(csdl.CustomExplicitOperation):
     def initialize(self):
-        self.parameters.declare('shape')#, types = tuple)
-        self.parameters.declare('rotor')#, types = RotorParameters)
+        self.parameters.declare('shape', types=tuple)
+        self.parameters.declare('rotor', types=RotorParameters)
     
     def define(self):
         shape = self.parameters['shape']
         rotor = self.parameters['rotor']
         
-        self.add_input('Re', shape = shape)
-        self.add_input('alpha_distribution', shape = shape)
-        # self.add_input('AoA', shape = shape)
-        self.add_input('chord_distribution', shape = shape)
+        self.add_input('Re', shape=shape)
+        self.add_input('alpha_distribution', shape=shape)
+        # self.add_input('AoA', shape=shape)
+        self.add_input('_chord', shape=shape)
         
 
-        self.add_output('Cl', shape = shape)
-        # self.add_output('Cl_2', shape = shape)
+        self.add_output('Cl', shape=shape)
+        # self.add_output('Cl_2', shape=shape)
         
-        self.add_output('Cd', shape = shape)
-        # self.add_output('Cd_2', shape = shape)
+        self.add_output('Cd', shape=shape)
+        # self.add_output('Cd_2', shape=shape)
 
         indices = np.arange(shape[0] * shape[1] * shape[2])
-        self.declare_derivatives ('Cl', 'Re', rows = indices, cols = indices)
-        self.declare_derivatives ('Cl', 'alpha_distribution', rows = indices, cols = indices)
-        # self.declare_derivatives ('Cl_2', 'Re', rows = indices, cols = indices)
-        # self.declare_derivatives ('Cl_2', 'AoA', rows = indices, cols = indices)
+        # print(indices,'INDICES')
+        # self.declare_derivatives('Cl', 'Re')
+        # self.declare_derivatives('Cl', 'alpha_distribution')
+        self.declare_derivatives('Cl', 'Re', rows=indices, cols=indices)
+        self.declare_derivatives('Cl', 'alpha_distribution', rows=indices, cols=indices)
+       
+        # self.declare_derivatives ('Cl_2', 'Re', rows=indices, cols=indices)
+        # self.declare_derivatives ('Cl_2', 'AoA', rows=indices, cols=indices)
         
-        self.declare_derivatives ('Cd', 'Re', rows = indices, cols = indices)
-        self.declare_derivatives ('Cd', 'alpha_distribution', rows = indices, cols = indices)
-        # self.declare_derivatives ('Cd_2', 'Re', rows = indices, cols = indices)
-        # self.declare_derivatives ('Cd_2', 'AoA', rows = indices, cols = indices)
+        # self.declare_derivatives('Cd', 'Re')
+        # self.declare_derivatives('Cd', 'alpha_distribution')
+        self.declare_derivatives('Cd', 'Re', rows=indices, cols=indices)
+        self.declare_derivatives('Cd', 'alpha_distribution', rows=indices, cols=indices)
+        
+        # self.declare_derivatives ('Cd_2', 'Re', rows=indices, cols=indices)
+        # self.declare_derivatives ('Cd_2', 'AoA', rows=indices, cols=indices)
 
         self.x_1 = np.zeros((shape[0] * shape[1] * shape[2], 2))
         # self.x_2 = np.zeros((shape[0] * shape[1] * shape[2], 2))
@@ -48,7 +55,7 @@ class AirfoilSurrogateModelGroup(csdl.CustomExplicitOperation):
         rotor       = self.parameters['rotor']
         interp      = rotor['interp']
 
-        chord       = inputs['chord_distribution'].flatten()
+        chord       = inputs['_chord'].flatten()
         alpha       = inputs['alpha_distribution'].flatten()
         Re          = inputs['Re'].flatten()
         # AoA         = inputs['AoA'].flatten()
@@ -86,6 +93,8 @@ class AirfoilSurrogateModelGroup(csdl.CustomExplicitOperation):
 
         dy_dalpha = interp.predict_derivatives(self.x_1, 0)
         dy_dRe = interp.predict_derivatives(self.x_1, 1)
+        # print(dy_dRe.shape,'DERIVATIVES')
+        # print(derivatives['Cl', 'alpha_distribution'].shape,'TARGET SHAPE')
 
         derivatives['Cl', 'alpha_distribution'] = dy_dalpha[:, 0]
         derivatives['Cd', 'alpha_distribution'] = dy_dalpha[:, 1]

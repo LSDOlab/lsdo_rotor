@@ -16,8 +16,8 @@ class PrandtlLossFactorGroup(Model):
 
         radius = self.declare_variable('_radius',shape= shape)
         rotor_radius = self.declare_variable('_rotor_radius', shape= shape)
-        hub_radius = self.declare_variable('_hub_radius', shape = shape)
-        phi = self.declare_variable('phi_distribution', shape = shape)
+        hub_radius = self.declare_variable('_hub_radius', shape=shape)
+        phi = self.declare_variable('phi_distribution', shape=shape)
         
 
         f_tip = B / 2 * (rotor_radius - radius) / radius / csdl.sin(phi)

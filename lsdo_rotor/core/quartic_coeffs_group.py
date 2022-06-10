@@ -6,7 +6,7 @@ class QuarticCoeffsGroup(Model):
 
     def initialize(self):
         self.parameters.declare('rotor')
-        self.parameters.declare('shape', types = tuple)
+        self.parameters.declare('shape', types=tuple)
 
     def define(self):
         rotor = self.parameters['rotor']
@@ -14,12 +14,20 @@ class QuarticCoeffsGroup(Model):
 
         Vx = self.declare_variable('_axial_inflow_velocity', shape=shape)
         Vt = self.declare_variable('_tangential_inflow_velocity', shape=shape)
-        S = self.declare_variable('ideal_loading_constant')
+        S = self.declare_variable('ideal_loading_constant', shape = (shape[0],))
 
-        Cl_ref_chord = rotor['ideal_Cl_ref_chord']
-        Cd_ref_chord = rotor['ideal_Cd_ref_chord']
+        # Cl_ref_chord = rotor['ideal_Cl_ref_chord']
+        # Cd_ref_chord = rotor['ideal_Cd_ref_chord']
 
-        C = csdl.expand(csdl.reshape(S, (1,)), shape)
+        Cl = self.declare_variable('Cl_max_ildm', shape = (shape[0],))
+        Cd = self.declare_variable('Cd_min_ildm', shape = (shape[0],))
+
+        # C = csdl.expand(csdl.reshape(S, (1,)), shape)
+
+        C = csdl.expand(S, shape, 'i->ijk')
+        Cl_ref_chord = csdl.expand(Cl, shape, 'i->ijk')
+        Cd_ref_chord = csdl.expand(Cd, shape, 'i->ijk')
+
 
         coeff_0 = (Vt**2*(2*Vt**2 + 2*Vx**2 + C*Vx)*(4*Cd_ref_chord**2*Vt**2 - 10*Cd_ref_chord*Cl_ref_chord*Vt*Vx - 2*C*Cd_ref_chord*Cl_ref_chord*Vt - 2*Cl_ref_chord**2*Vt**2 + 4*Cl_ref_chord**2*Vx**2 + C*Cl_ref_chord**2*Vx))/Cl_ref_chord**2
         coeff_1 = (Vt**2*(- 16*Cd_ref_chord**2*C*Vt**2*Vx - 24*Cd_ref_chord**2*Vt**4 - 24*Cd_ref_chord**2*Vt**2*Vx**2 + 12*Cd_ref_chord*Cl_ref_chord*C**2*Vt*Vx + 12*Cd_ref_chord*Cl_ref_chord*C*Vt**3 + 68*Cd_ref_chord*Cl_ref_chord*C*Vt*Vx**2 + 84*Cd_ref_chord*Cl_ref_chord*Vt**3*Vx + 84*Cd_ref_chord*Cl_ref_chord*Vt*Vx**3 + 4*Cl_ref_chord**2*C**2*Vt**2 - 4*Cl_ref_chord**2*C**2*Vx**2 + 24*Cl_ref_chord**2*C*Vt**2*Vx - 20*Cl_ref_chord**2*C*Vx**3 + 40*Cl_ref_chord**2*Vt**4 + 16*Cl_ref_chord**2*Vt**2*Vx**2 - 24*Cl_ref_chord**2*Vx**4))/Cl_ref_chord**2
