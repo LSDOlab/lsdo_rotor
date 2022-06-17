@@ -484,6 +484,9 @@ class PittPetersCustomImplicitOperation(csdl.CustomImplicitOperation):
         twist = inputs['_pitch']
         Vt = inputs['_tangential_inflow_velocity']
         Omega = inputs['_angular_speed']
+
+        # compute solidity 
+        sigma = B * chord / 2 / np.pi / r 
         
         normalized_radial_discretization = 1. / nr / 2. \
         + np.linspace(0., 1. - 1. / nr, nr)
@@ -506,8 +509,9 @@ class PittPetersCustomImplicitOperation(csdl.CustomImplicitOperation):
 
         self.airfoil_model_inputs[:,1] = Re.flatten() / 2e6
 
+        Cl = 0
         for j in range(500):
-            print(j,'iteration')
+            # print(j,'iteration')
             lambda_0_exp = np.einsum(
                 'i,ijk->ijk',
                 lambda_0,
@@ -530,8 +534,10 @@ class PittPetersCustomImplicitOperation(csdl.CustomImplicitOperation):
             self.ux = (self.lamb_exp + mu_z_exp) * Omega * R
             # Compute inflow angle self.phi (ne, nr, nt)
             # ignore u_theta
-            self.phi = np.arctan(self.ux / Vt)
-
+            self.phi = np.arctan(self.ux / Vt * (1 + sigma * Cl / 4))
+            # self.phi = np.arctan(self.ux / Vt)
+            u_theta = 2 * sigma * Cl * np.sin(self.phi) * Vt / (4 * np.sin(self.phi) * np.cos(self.phi) + sigma * Cl * np.sin(self.phi))
+            # print(u_theta, 'u_theta')
             # Compute sectional AoA (ne, nr, nt)
             alpha = twist - self.phi 
 
@@ -541,10 +547,11 @@ class PittPetersCustomImplicitOperation(csdl.CustomImplicitOperation):
             Cl = airfoil_model_outputs[:,:,:,0]
             Cd = airfoil_model_outputs[:,:,:,1]
 
-            self.dT = 0.5 * B * rho * (self.ux**2 + Vt**2) * chord * (Cl * np.cos(self.phi) - Cd * np.sin(self.phi)) * dr
+            self.dT = 0.5 * B * rho * (self.ux**2 + (Vt - 0.5 * u_theta)**2) * chord * (Cl * np.cos(self.phi) - Cd * np.sin(self.phi)) * dr
+            # self.dT = 0.5 * B * rho * (self.ux**2 + (Vt)**2) * chord * (Cl * np.cos(self.phi) - Cd * np.sin(self.phi)) * dr
             self.dC_T = self.dT / (rho * np.pi * R[0,0,0]**2 * (Omega[0,0,0] * R[0,0,0])**2)
             T = np.sum(np.sum(self.dT,axis=1),axis=1) / shape[2]
-            print(T)
+            # print(T)
             # self.dQ = 0.5 * B * rho * (self.ux**2 + Vt**2) * chord * (Cl * np.sin(self.phi) + Cd * np.cos(self.phi)) * r * dr
             # Q = np.sum(np.sum(self.dQ,axis=1),axis=1) / shape[2]
             
@@ -612,19 +619,20 @@ class PittPetersCustomImplicitOperation(csdl.CustomImplicitOperation):
                 print('Pitt-Peters ODE solved for steady state')
                 break
 
-            print(np.linalg.norm(self.lamb.flatten()-self.lamb_new))
+            # print(np.linalg.norm(self.lamb.flatten()-self.lamb_new))
             self.lamb = self.lamb_new.reshape((shape[0],3))
             
             lambda_0 = self.lamb[:,0]
             lambda_c = self.lamb[:,1]
             lambda_s = self.lamb[:,2]
-        print(Cl)
-        print(Cl.shape)
-        # np.savetxt('lift_distribution.txt',Cl.flatten() )
-        # np.savetxt('drag_distribution.txt',Cd.flatten() )
-        np.savetxt('phi_distribution.txt',self.phi.flatten() )
-        # np.savetxt('section_thrust_distribution.txt',self.dT.flatten() )
-        # np.savetxt('ux_distribution.txt',self.ux.flatten() )
+        # print(Cl)
+        # print(Cl.shape)
+        # np.savetxt('txt_files/lift_distribution.txt',Cl.flatten() )
+        # np.savetxt('txt_files/drag_distribution.txt',Cd.flatten() )
+        # np.savetxt('txt_files/phi_distribution.txt',self.phi.flatten() )
+        # print(self.phi.shape)
+        # np.savetxt('txt_files/section_thrust_distribution.txt',self.dT.flatten() )
+        # np.savetxt('txt_files/ux_distribution.txt',self.ux.flatten() )
         # np.savetxt('sectional_CT.txt',self.dC_T.flatten())
         outputs['_lambda'] = self.lamb    
 

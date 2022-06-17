@@ -39,16 +39,16 @@ from functions.get_max_LD_parameters_reference_chord import get_max_LD_parameter
         2 --> BEM
         3 --> Dynamic Inflow 1: Pitt-Peters
 """
-mode = 3
+mode = 2
 
 # The following airfoils are currently available: 'NACA_4412', 'Clark_Y', 'NACA_0012', 'mh117'; We recommend 'NACA_4412' or 'Clark_Y'
-airfoil = 'NACA_4412_extended_range' 
+airfoil = 'NACA_4412' 
 interp = get_surrogate_model(airfoil)
 ne = 1
 diameter_vec = 2 * np.ones((ne,))#np.array([2,2])                 # Rotor diameter in (m)
 RPM_vec = 1000 * np.ones((ne,))#np.array([1000,1000])
 Omega_vec = RPM_vec * 2 * np.pi / 60                                                    
-V_inf_vec = np.linspace(0,40,ne)#np.array([40,40])              # Cruise speed in (m/s)
+V_inf_vec = -10# np.linspace(0,40,ne)#np.array([40,40])              # Cruise speed in (m/s)
 
 i_vec = 90 * np.ones((ne,))#np.array([45,90])              # Rotor disk tilt angle in (deg); 
 #   --> 90 degrees means purely axial inflow
@@ -83,7 +83,7 @@ tip_twist           = 20        # Twist angle at the blade tip (deg)
 # Consider the following two lines if you want to use an exiting rotor geometry:
 # IMPORTANT: you can only use mode if you want to use an exiting rotor geometry.
 use_external_rotor_geometry = 'n'           # [y/n] If you want to use an existing rotor geometry 
-geom_data = np.loadtxt('ildm_geometry_1.txt')  # if 'y', make sure you have the right .txt file with the chord distribution in the
+geom_data = np.loadtxt('txt_files/ildm_geometry_1.txt')  # if 'y', make sure you have the right .txt file with the chord distribution in the
                                             # second column and the twist distribution in the third column
 
 # The following parameters specify the radial and tangential mesh as well as the
@@ -122,13 +122,21 @@ rotor_model = RotorModel(
 model.add(rotor_model,'rotor_model')#, promotes = ['*'])
 
 
-import csdl_lite 
+# from csdl_lite import Simulator
 
-# sim = csdl_lite.Simulator(
+# sim = Simulator(
 #     rotor_model,
 #     analytics=True,
-#     node_rvs=['inflow_velocity','rotational_speed','_rho_pitt_peters','rotor_radius'],
+#     node_rvs=['inflow_velocity','chord'],
+#     num_multi_pts=4,
 #     )
+
+# sim = Simulator(rotor_model, node_rvs=['inflow_velocity', 'chord'], num_multi_pts=4)
+# sim = Simulator(rotor_model, node_rvs=['inflow_velocity', 'chord'], num_multi_pts=4,dependence_fig=True)
+# sim = Simulator(rotor_model, node_rvs=['inflow_velocity', ], num_multi_pts=2, p_bar_list=[5])
+# sim = Simulator(rotor_model, node_rvs=['inflow_velocity', 'chord'], num_multi_pts=2, p_bar_list=[5])
+# sim = Simulator(rotor_model, node_rvs=['inflow_velocity', 'chord', 'rotor_radius'], num_multi_pts=2, p_bar_list=[5])
+# sim = Simulator(rotor_model, node_rvs=['inflow_velocity', 'chord', 'rotor_radius', 'rotational_speed'], num_multi_pts=2, p_bar_list=[5])
 
 # exit()
 sim = Simulator(model)
@@ -199,8 +207,8 @@ sim.run()
 
 # import matplotlib.pyplot as plt 
 # fig, axs = plt.subplots(3,1,figsize=(8, 9))
-# T = sim['total_thrust']
-# Q = sim['total_torque']
+T = sim['total_thrust']
+Q = sim['total_torque']
 
 # np.savetxt('PP_thrust.txt',T.flatten())
 # np.savetxt('PP_torque.txt',T.flatten())
@@ -220,9 +228,9 @@ sim.run()
 # print(eta)
 # print(J)
 
-# print(T)
-# # print(ux)
-# print(Q)
+print(T)
+print(sim['_ux'])
+print(Q)
 # plt.show()
 # sim.prob.run_driver()
 # sim.prob.check_partials(compact_print=True,step=1e-5, form='central')

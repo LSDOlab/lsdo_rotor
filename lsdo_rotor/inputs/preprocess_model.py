@@ -88,7 +88,7 @@ class PreprocessModel(Model):
 
         self.register_output(
             '_tangential_inflow_velocity', 
-            _direction * _inflow_y * csdl.cos(_theta) - 
+            _direction * _inflow_y * csdl.cos(_theta) + 
             _direction * _inflow_z * csdl.sin(_theta) + 
             _radius * _angular_speed
         )

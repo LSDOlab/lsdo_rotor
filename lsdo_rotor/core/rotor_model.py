@@ -15,8 +15,8 @@ from lsdo_rotor.core.quartic_coeffs_group import QuarticCoeffsGroup
 from lsdo_rotor.core.quartic_solver_group import QuarticSolverGroup
 from lsdo_rotor.core.prandtl_loss_factor_group import PrandtlLossFactorGroup
 
-from lsdo_rotor.core.pitt_peters import PittPeters
-from lsdo_rotor.core.pitt_peters_group import PittPetersGroup
+# from lsdo_rotor.core.pitt_peters import PittPeters
+# from lsdo_rotor.core.pitt_peters_group import PittPetersGroup
 from lsdo_rotor.core.pitt_peters_post_process_model import PittPetersPostProcessModel
 from lsdo_rotor.core.pitt_peters_custom_implicit_operation import PittPetersCustomImplicitOperation
 

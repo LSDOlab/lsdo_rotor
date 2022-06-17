@@ -40,7 +40,7 @@ def get_simulator(analysis_dict,rotor_dict,operating_dict):
     print(Vx_vec,'Vx')
     Vy_vec = operating_dict['Vy']#V_inf_vec * np.cos(i_vec * np.pi/180)
     print(Vy_vec,'Vy')
-    Vz_vec = np.zeros((ne,))#np.array([0,0])
+    Vz_vec = operating_dict['Vz']#np.zeros((ne,))#np.array([0,0])
 
 
 
@@ -59,7 +59,7 @@ def get_simulator(analysis_dict,rotor_dict,operating_dict):
     # Consider the following two lines if you want to use an exiting rotor geometry:
     # IMPORTANT: you can only use mode if you want to use an exiting rotor geometry.
     use_external_rotor_geometry = 'n'           # [y/n] If you want to use an existing rotor geometry 
-    geom_data = np.loadtxt('ildm_geometry_1.txt')  # if 'y', make sure you have the right .txt file with the chord distribution in the
+    geom_data = np.loadtxt('txt_files/ildm_geometry_1.txt')  # if 'y', make sure you have the right .txt file with the chord distribution in the
                                                 # second column and the twist distribution in the third column
 
     # The following parameters specify the radial and tangential mesh as well as the
@@ -131,7 +131,7 @@ def get_simulator(analysis_dict,rotor_dict,operating_dict):
                 sim['inflow_velocity'][i, j, k, :] = [Vx_vec[i], Vy_vec[i], Vz_vec[i]]
         sim['rotational_speed'][i] = RPM_vec[i] /60.
         sim['rotor_radius'][i] = diameter_vec[i] / 2
-        sim['hub_radius'][i]   = 0.15 * diameter_vec[i] / 2
+        sim['hub_radius'][i]   = 0.2 * diameter_vec[i] / 2
         sim['dr'][i] = ((diameter_vec[i] / 2)-(0.2 * diameter_vec[i] / 2))/ (num_radial -1)
 
         # ILDM parameters     

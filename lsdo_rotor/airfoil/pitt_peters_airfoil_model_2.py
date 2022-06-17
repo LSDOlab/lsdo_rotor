@@ -2,6 +2,7 @@ import numpy as np
 from csdl import Model
 import csdl
 from lsdo_rotor.rotor_parameters import RotorParameters
+from lsdo_rotor.core.pitt_peters.pitt_peters_rotor_parameters import PittPetersRotorParameters
 import openmdao.api as om
 
 
@@ -9,7 +10,7 @@ import openmdao.api as om
 class PittPetersAirfoilModel2(csdl.CustomExplicitOperation):
     def initialize(self):
         self.parameters.declare('shape', types=tuple)
-        self.parameters.declare('rotor', types=RotorParameters)
+        self.parameters.declare('rotor', types=PittPetersRotorParameters)
     
     def define(self):
         shape = self.parameters['shape']
@@ -49,6 +50,7 @@ class PittPetersAirfoilModel2(csdl.CustomExplicitOperation):
 
         alpha       = inputs['AoA_pitt_peters_2'].flatten()
         Re          = inputs['_re_pitt_peters'].flatten()
+        # print(Re)
         # AoA         = inputs['AoA'].flatten()
 
         self.x_1[:, 0] = alpha

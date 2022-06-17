@@ -2,11 +2,11 @@ import numpy as np
 from get_simulator import get_simulator
 
 num_evaluations = 1
-num_radial = 50
-num_azimuthal = 150
+num_radial = 5
+num_azimuthal = 5
 
-apc_geom_data = np.loadtxt('APC_19_12_thin_electric_geom.txt')
-apc_perform_data = np.loadtxt('APC_19_12_thin_electric_perform.txt')
+apc_geom_data = np.loadtxt('txt_files/APC_19_12_thin_electric_geom.txt')
+apc_perform_data = np.loadtxt('txt_files/APC_19_12_thin_electric_perform.txt')
 
 apc_J = apc_perform_data[:,0]
 apc_C_T = apc_perform_data[:,1]
@@ -33,7 +33,7 @@ apc_twist_interp = f_twist(np.linspace(0.15,1,num_radial))
 
 analysis_dict = {
     'rotor_model': 2,
-    'airfoil': 'NACA_4412_extended_range',#'Clark_Y', #E63_low_Re
+    'airfoil': 'NACA_4412',#'Clark_Y', #E63_low_Re
     'num_evaluations': num_evaluations,
     'num_radial': num_radial,
     'num_azimuthal': num_azimuthal,  
@@ -41,7 +41,7 @@ analysis_dict = {
 
 analysis_dict2 = {
     'rotor_model': 3,
-    'airfoil':'NACA_4412_extended_range',#NACA_4412_extended_range
+    'airfoil':'NACA_4412',#NACA_4412_extended_range
     'num_evaluations': num_evaluations,
     'num_radial': num_radial,
     'num_azimuthal': num_azimuthal,  
@@ -64,9 +64,10 @@ rotor_dict = {
 operating_dict = {
     'V_inf': 20 * np.ones(num_evaluations,),
     'RPM': 1200 * np.ones((num_evaluations,)),
-    'rotor_disk_tilt_angle': np.array([0]),
-    'Vx': np.array([0]),
-    'Vy': np.array([5]),#np.linspace(0,50,num_evaluations),
+    'rotor_disk_tilt_angle': np.array([90]),
+    'Vx': np.array([10]),
+    'Vy': np.array([0]),#np.linspace(0,50,num_evaluations),
+    'Vz': np.array([0]),
     'altitude': 10,
 }
 
@@ -77,13 +78,35 @@ operating_dict = {
 #     'altitude': 10,
 # }
 
+import time 
 
-sim = get_simulator(analysis_dict,rotor_dict,operating_dict)
+t1 = time.time()
+
+# sim = get_simulator(analysis_dict,rotor_dict,operating_dict)
 sim2 = get_simulator(analysis_dict2,rotor_dict,operating_dict)
-sim.run()
+# sim.run()
 sim2.run()
+t2 = time.time()
+sim2.prob.check_partials()
+sim2.prob.check_totals()
 
+print(t2-t1)
+exit()
+# print(sim['total_thrust'])
+# print(sim['Re'],'Reynolds number')
+print(sim['total_thrust'])
+print(sim['total_thrust_2'])
 
+print(sim['Re'])
+# print(sim['rho'])
+print(sim['hub_radius'])
+# print(sim['_angular_speed'])
+# print(sim['_tangential_inflow_velocity'])
+# print(sim2['total_thrust'])
+# print(sim['total_thrust_2'])
+# exit()
+# exit()
+# print(sim2)
 # rotor_output = np.zeros((num_evaluations,7))
 # rotor_output_2 = np.zeros((num_evaluations,5))
 # C_T_BEM = sim['C_T'].flatten()
@@ -98,22 +121,24 @@ Vt = sim2['_tangential_inflow_velocity'][0,:,:].T
 # print(sim2['_ux'][0,15,:])
 
 
-Cl_dist_pp = np.loadtxt('lift_distribution.txt').reshape(num_radial,num_azimuthal)
+Cl_dist_pp = np.loadtxt('txt_files/lift_distribution.txt').reshape(num_radial,num_azimuthal)
 Cl_dist_BEM = sim['Cl_2'].reshape(num_radial,num_azimuthal)
 
-Cd_dist_pp = np.loadtxt('drag_distribution.txt').reshape(num_radial,num_azimuthal)
+Cd_dist_pp = np.loadtxt('txt_files/drag_distribution.txt').reshape(num_radial,num_azimuthal)
 Cd_dist_BEM = sim['Cd_2'].reshape(num_radial,num_azimuthal)
 
-dT_dist_pp = np.loadtxt('section_thrust_distribution.txt').reshape(num_radial,num_azimuthal)
+dT_dist_pp = np.loadtxt('txt_files/section_thrust_distribution.txt').reshape(num_radial,num_azimuthal)
+print(np.sum(dT_dist_pp)/num_azimuthal,'T_pp')
 dT_dist_BEM = sim['_local_thrust'].reshape(num_radial,num_azimuthal)
+print(np.sum(dT_dist_BEM)/num_azimuthal,'T_BEM')
 
-CT_dist_pp = np.loadtxt('sectional_CT.txt').reshape(num_radial,num_azimuthal)
+CT_dist_pp = np.loadtxt('txt_files/sectional_CT.txt').reshape(num_radial,num_azimuthal)
 CT_dist_BEM = sim['dC_T'].reshape(num_radial,num_azimuthal)
 
-phi_dist_pp = np.loadtxt('phi_distribution.txt').reshape(num_radial,num_azimuthal)
+phi_dist_pp = np.loadtxt('txt_files/phi_distribution.txt').reshape(num_radial,num_azimuthal)
 phi_dist_BEM = sim['phi_distribution'].reshape(num_radial,num_azimuthal)
 
-ux_dist_pp = np.loadtxt('ux_distribution.txt').reshape(num_radial,num_azimuthal)
+ux_dist_pp = np.loadtxt('txt_files/ux_distribution.txt').reshape(num_radial,num_azimuthal)
 ux_BEM = sim['_ux'].reshape(num_radial,num_azimuthal)
 # ux_PP = sim2['_ux']
 # ux_2 = sim['_ux_2']
@@ -135,59 +160,59 @@ print(th.shape)
 print(r.shape)
 import matplotlib.pyplot as plt 
 
-# fig, axs = plt.subplots(3,2, figsize=(15,10), subplot_kw={'polar':'polar'})
+fig, axs = plt.subplots(3,2, figsize=(15,10), subplot_kw={'polar':'polar'})
 
-# # plt.subplot(projection='polar')
-# # p1 = axs[0].pcolormesh(th,r,ux_PP[0,:,:].T)#, shading='auto')
-# # p1 = axs[0].pcolormesh(th,r,dT_dist_pp.T)
-# # axs[0].plot(azimuth,r, color='k', ls='none')
-# # axs[0].set_yticklabels([])
-# # axs[0].set_title('Pitt-Peters Dynamic Inflow Cl distribution')
+# plt.subplot(projection='polar')
+# p1 = axs[0].pcolormesh(th,r,ux_PP[0,:,:].T)#, shading='auto')
+# p1 = axs[0].pcolormesh(th,r,dT_dist_pp.T)
+# axs[0].plot(azimuth,r, color='k', ls='none')
+# axs[0].set_yticklabels([])
+# axs[0].set_title('Pitt-Peters Dynamic Inflow Cl distribution')
 
-# # # p2 = axs[1].pcolormesh(th,r,ux_BEM[0,:,:].T)#, shading='auto')
-# # p2 = axs[1].pcolormesh(th,r,dT_dist_BEM.T)
-# # axs[1].plot(azimuth,r, color='k', ls='none')
-# # axs[1].set_yticklabels([])
-# # axs[1].set_title('BEM Inflow Cl distribution')
-# vmin1 = np.min(np.array([dT_dist_pp,dT_dist_BEM]))
-# vmax1 = np.max(np.array([dT_dist_pp,dT_dist_BEM]))
-# p1 = axs[0,0].pcolormesh(th,r,dT_dist_pp.T)#, vmin=vmin1, vmax=vmax1, shading='auto')
-# axs[0,0].plot(azimuth,r, color='k', ls='none')
-# axs[0,0].set_yticklabels([])
-# # axs[0,0].set_title('Pitt-Peters sectional thrust coefficient')
-# axs[0,0].set_title('Pitt–Peters sectional thrust')
+# # p2 = axs[1].pcolormesh(th,r,ux_BEM[0,:,:].T)#, shading='auto')
+# p2 = axs[1].pcolormesh(th,r,dT_dist_BEM.T)
+# axs[1].plot(azimuth,r, color='k', ls='none')
+# axs[1].set_yticklabels([])
+# axs[1].set_title('BEM Inflow Cl distribution')
+vmin1 = np.min(np.array([dT_dist_pp,dT_dist_BEM]))
+vmax1 = np.max(np.array([dT_dist_pp,dT_dist_BEM]))
+p1 = axs[0,0].pcolormesh(th,r,dT_dist_pp.T)#, vmin=vmin1, vmax=vmax1, shading='auto')
+axs[0,0].plot(azimuth,r, color='k', ls='none')
+axs[0,0].set_yticklabels([])
+# axs[0,0].set_title('Pitt-Peters sectional thrust coefficient')
+axs[0,0].set_title('Pitt–Peters sectional thrust')
 
-# p2 = axs[0,1].pcolormesh(th,r,dT_dist_BEM.T)#, vmin=vmin1, vmax=vmax1, shading='auto')
-# axs[0,1].plot(azimuth,r, color='k', ls='none')
-# axs[0,1].set_yticklabels([])
-# # axs[0,1].set_title('BEM sectional thrust coefficient')
-# axs[0,1].set_title('BEM sectional thrust')
+p2 = axs[0,1].pcolormesh(th,r,dT_dist_BEM.T)#, vmin=vmin1, vmax=vmax1, shading='auto')
+axs[0,1].plot(azimuth,r, color='k', ls='none')
+axs[0,1].set_yticklabels([])
+# axs[0,1].set_title('BEM sectional thrust coefficient')
+axs[0,1].set_title('BEM sectional thrust')
 
-# vmin2 = np.min(np.array([Cl_dist_pp,Cl_dist_BEM]))
-# vmax2 = np.max(np.array([Cl_dist_pp,Cl_dist_BEM]))
-# p3 = axs[1,0].pcolormesh(th,r,Cl_dist_pp.T)#,vmin=vmin2,vmax=vmax2, shading='auto')
-# axs[1,0].plot(azimuth,r, color='k', ls='none')
-# axs[1,0].set_yticklabels([])
-# axs[1,0].set_title('Pitt-Peters sectional lift coefficient')
+vmin2 = np.min(np.array([Cl_dist_pp,Cl_dist_BEM]))
+vmax2 = np.max(np.array([Cl_dist_pp,Cl_dist_BEM]))
+p3 = axs[1,0].pcolormesh(th,r,Cl_dist_pp.T)#,vmin=vmin2,vmax=vmax2, shading='auto')
+axs[1,0].plot(azimuth,r, color='k', ls='none')
+axs[1,0].set_yticklabels([])
+axs[1,0].set_title('Pitt-Peters sectional lift coefficient')
 
-# p4 = axs[1,1].pcolormesh(th,r,Cl_dist_BEM.T)#,vmin=vmin2,vmax=vmax2, shading='auto')
-# axs[1,1].plot(azimuth,r, color='k', ls='none')
-# axs[1,1].set_yticklabels([])
-# axs[1,1].set_title('BEM sectional lift coefficient')
+p4 = axs[1,1].pcolormesh(th,r,Cl_dist_BEM.T)#,vmin=vmin2,vmax=vmax2, shading='auto')
+axs[1,1].plot(azimuth,r, color='k', ls='none')
+axs[1,1].set_yticklabels([])
+axs[1,1].set_title('BEM sectional lift coefficient')
 
-# vmin3 = np.min(np.array([ux_dist_pp,ux_BEM]))
-# vmax3 = np.max(np.array([ux_dist_pp,ux_BEM]))
-# # p5 = axs[2,0].pcolormesh(th,r,ux_dist_pp.T)#, vmin=vmin3,vmax=vmax3, shading='auto')
-# p5 = axs[2,0].pcolormesh(th,r,Cd_dist_pp.T)
-# axs[2,0].plot(azimuth,r, color='k', ls='none')
-# axs[2,0].set_yticklabels([])
-# axs[2,0].set_title('Pitt–Peters sectional drag coefficient')
+vmin3 = np.min(np.array([ux_dist_pp,ux_BEM]))
+vmax3 = np.max(np.array([ux_dist_pp,ux_BEM]))
+# p5 = axs[2,0].pcolormesh(th,r,ux_dist_pp.T)#, vmin=vmin3,vmax=vmax3, shading='auto')
+p5 = axs[2,0].pcolormesh(th,r,Cd_dist_pp.T)
+axs[2,0].plot(azimuth,r, color='k', ls='none')
+axs[2,0].set_yticklabels([])
+axs[2,0].set_title('Pitt–Peters sectional drag coefficient')
 
-# # p6 = axs[2,1].pcolormesh(th,r,ux_BEM.T)#, vmin=vmin3,vmax=vmax3, shading='auto')
-# p6 = axs[2,1].pcolormesh(th,r,Cd_dist_BEM.T)
-# axs[2,1].plot(azimuth,r, color='k', ls='none')
-# axs[2,1].set_yticklabels([])
-# axs[2,1].set_title('BEM sectional drag coefficient')
+# p6 = axs[2,1].pcolormesh(th,r,ux_BEM.T)#, vmin=vmin3,vmax=vmax3, shading='auto')
+p6 = axs[2,1].pcolormesh(th,r,Cd_dist_BEM.T)
+axs[2,1].plot(azimuth,r, color='k', ls='none')
+axs[2,1].set_yticklabels([])
+axs[2,1].set_title('BEM sectional drag coefficient')
 
 
 # plt.annotate('pixel offset from axes fraction',
@@ -220,15 +245,15 @@ import matplotlib.pyplot as plt
 # cb5 = fig.colorbar(p5, ax=axs[2,0], label='axial inflow [m/s]')
 # cb6 = fig.colorbar(p6, ax=axs[2,1], label='axial inflow [m/s]')
 
-# cb1 = fig.colorbar(p1, ax=axs[0,0], label='dT [N]')
-# cb2 = fig.colorbar(p2, ax=axs[0,1],  label='dT [N]')
-# cb3 = fig.colorbar(p3, ax=axs[1,0],  label=r'$C_{l}$')
-# cb4 = fig.colorbar(p4, ax=axs[1,1],  label=r'$C_{l}$')
-# # cb5 = fig.colorbar(p5, ax=axs[2,0], label='Axial induced inflow [m/s]')
-# # cb6 = fig.colorbar(p6, ax=axs[2,1], label='Axial induced inflow [m/s]')
-# cb5 = fig.colorbar(p5, ax=axs[2,0], label=r'$C_{d}$')
-# cb6 = fig.colorbar(p6, ax=axs[2,1], label=r'$C_{d}$')
-# plt.tight_layout()
+cb1 = fig.colorbar(p1, ax=axs[0,0], label='dT [N]')
+cb2 = fig.colorbar(p2, ax=axs[0,1],  label='dT [N]')
+cb3 = fig.colorbar(p3, ax=axs[1,0],  label=r'$C_{l}$')
+cb4 = fig.colorbar(p4, ax=axs[1,1],  label=r'$C_{l}$')
+# cb5 = fig.colorbar(p5, ax=axs[2,0], label='Axial induced inflow [m/s]')
+# cb6 = fig.colorbar(p6, ax=axs[2,1], label='Axial induced inflow [m/s]')
+cb5 = fig.colorbar(p5, ax=axs[2,0], label=r'$C_{d}$')
+cb6 = fig.colorbar(p6, ax=axs[2,1], label=r'$C_{d}$')
+plt.tight_layout()
 # plt.show()
 
 
