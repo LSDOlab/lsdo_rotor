@@ -4,7 +4,7 @@ import numpy as np
 from csdl import Model
 import csdl
 
-from lsdo_rotor.rotor_parameters import RotorParameters
+# from lsdo_rotor.rotor_parameters import RotorParameters
 from lsdo_rotor.core.BEM.inputs.BEM_external_inputs_model import BEMExternalInputsModel
 from lsdo_rotor.core.BEM.inputs.BEM_core_inputs_model import BEMCoreInputsModel
 from lsdo_rotor.core.BEM.inputs.BEM_pre_process_model import BEMPreprocessModel
