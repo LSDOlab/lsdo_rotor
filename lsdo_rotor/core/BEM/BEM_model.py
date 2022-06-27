@@ -1,5 +1,3 @@
-from this import s
-from webbrowser import get
 import numpy as np
 from csdl import Model
 import csdl
