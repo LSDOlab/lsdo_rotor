@@ -32,9 +32,9 @@ class BEMInducedVelocityModel(Model):
         dr = self.declare_variable('_dr', shape=shape)
         
         rho_exp = csdl.expand(self.declare_variable('density', shape=(shape[0],)),shape,'i->ijk')
-        self.print_var(rho_exp)
+        # self.print_var(rho_exp)
         rho = self.declare_variable('density', shape=(shape[0],))
-        self.print_var(rho)
+        # self.print_var(rho)
         F = self.declare_variable('prandtl_loss_factor', shape=shape)
 
 

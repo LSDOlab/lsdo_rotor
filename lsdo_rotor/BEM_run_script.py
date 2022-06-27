@@ -69,6 +69,7 @@ sim.run()
 t2 = time.time()
 
 print(t2-t1)
+print('Thrust: ',sim['T'])
 exit()
 
 print(sim['T'].shape)
