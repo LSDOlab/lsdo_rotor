@@ -32,27 +32,27 @@ class BEMExternalInputsModel(Model):
        
 
         rotor_radius = self.declare_variable(name='propeller_radius', shape=(1,), units='m')
-        self.print_var(rotor_radius)
+        # self.print_var(rotor_radius)
 
         # Inputs changing across conditions (segments)
         omega = self.declare_variable('omega', shape=(num_nodes, 1), units='rpm')
-        self.print_var(omega)
+        # self.print_var(omega)
 
         u = self.declare_variable(name='u', shape=(num_nodes, 1), units='m/s') * -1
-        self.print_var(u)
+        # self.print_var(u)
         v = self.declare_variable(name='v', shape=(num_nodes, 1), units='m/s') 
-        self.print_var(v)
+        # self.print_var(v)
         w = self.declare_variable(name='w', shape=(num_nodes, 1), units='m/s') 
-        self.print_var(w)
+        # self.print_var(w)
 
         V = self.create_output('velocity_vector', shape=(num_nodes,3), units='m/s')
 
         p = self.declare_variable(name='p', shape=(num_nodes, 1), units='rad/s')
-        self.print_var(p)
+        self.register_output('p1',p*1)
         q = self.declare_variable(name='q', shape=(num_nodes, 1), units='rad/s')
-        self.print_var(q)
+        self.register_output('q1',q*1)
         r = self.declare_variable(name='r', shape=(num_nodes, 1), units='rad/s')
-        self.print_var(r)
+        self.register_output('r1',r*1)
 
         # normal_vec = self.declare_variable('thrust_vector', shape=(num_nodes,3))
         normal_vec = self.declare_variable('thrust_vector_test', shape=(num_nodes,3),val=np.tile(np.array([[1,0,0]]),(num_nodes,1)))

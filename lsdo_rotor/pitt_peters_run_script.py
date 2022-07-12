@@ -9,13 +9,13 @@ from lsdo_rotor.core.pitt_peters.pitt_peters_model import PittPetersModel
 
 
 
-num_nodes = 2
+num_nodes = 1
 num_radial = 30
 num_tangential = num_azimuthal = 50
 
-thrust_vector = np.array([0,0,-1])
+thrust_vector = np.array([[0,0,-1]])
 
-thrust_origin=np.array([8.5, 0, 5], dtype=float)
+thrust_origin=np.array([[8.5, 0, 5]], dtype=float)
 reference_point = np.array([4.5, 0, 5])
 
 shape = (num_nodes,num_radial,num_tangential)
@@ -32,7 +32,7 @@ class RunModel(Model):
         self.create_input('omega', shape=(num_nodes,  1), units='rpm', val=1500)
         # self.add_design_variable('omega')
 
-        self.create_input(name='u', shape=(num_nodes, 1), units='m/s', val=np.array([[0,10]]).T)
+        self.create_input(name='u', shape=(num_nodes, 1), units='m/s', val=np.array([[10]]).T)
         self.create_input(name='v', shape=(num_nodes, 1), units='m/s', val=0)
         self.create_input(name='w', shape=(num_nodes, 1), units='m/s', val=0)
 
