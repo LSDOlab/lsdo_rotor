@@ -13,7 +13,7 @@ class BEMCoreInputsModel(Model):
         num_evaluations, num_radial, num_tangential = shape[0], shape[1], shape[2]
 
         hub_radius = self.declare_variable('hub_radius', shape=(1,))
-        rotor_radius = self.declare_variable('rotor_radius', shape=(1,))
+        rotor_radius = self.declare_variable('propeller_radius', shape=(1,))
         dr = self.declare_variable('dr', shape=(1,))
         
         rotational_speed = self.declare_variable('rotational_speed', shape=(num_evaluations,))
@@ -28,6 +28,9 @@ class BEMCoreInputsModel(Model):
         
         pitch = self.declare_variable('twist_profile', shape=(num_radial,))
         chord = self.declare_variable('chord_profile', shape=(num_radial,))
+
+        # self.print_var(chord)
+        # self.print_var(pitch)
         
         direction = self.create_input('direction', val=1., shape=num_evaluations)
         

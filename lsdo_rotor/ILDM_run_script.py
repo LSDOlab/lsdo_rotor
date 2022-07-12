@@ -31,9 +31,9 @@ class RunModel(Model):
         self.create_input(name='reference_chord', val=reference_chord)
         self.create_input(name='reference_radius', val=reference_radius)
 
-        self.create_input('omega', shape=(num_nodes, ), units='rpm', val=rpm)
-        self.create_input(name='u', shape=(num_nodes, ), units='m/s', val=Vx)
-        self.create_input(name='z', shape=(num_nodes, ), units='m', val=altitude)
+        self.create_input('omega', shape=(num_nodes,  1), units='rpm', val=rpm)
+        self.create_input(name='u', shape=(num_nodes,  1), units='m/s', val=Vx)
+        self.create_input(name='z', shape=(num_nodes,  1), units='m', val=altitude)
                 
         self.add(ILDMModel(   
             name='propulsion',

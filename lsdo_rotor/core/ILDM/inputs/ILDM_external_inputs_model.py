@@ -13,12 +13,12 @@ class ILDMExternalInputsModel(Model):
     def define(self):
         shape = self.parameters['shape']
         shape = (shape[0], shape[1], shape[2])
-        normal_vector = self.parameters['thrust_vector'].reshape(1,3)
-        normal_vector_axial_induced = -normal_vector
+        thrust_vector = self.parameters['thrust_vector'].reshape(1,3)
+        thrust_vector_axial_induced = -thrust_vector
         num_blades = self.parameters['num_blades']
 
 
-        if (normal_vector[0,0] == 1) or (normal_vector[0,0] == -1):
+        if (thrust_vector[0,0] == 1) or (thrust_vector[0,0] == -1):
             proj_vec = np.array([0,1,0]).reshape(1,3)
         else:
             proj_vec = np.array([1,0,0]).reshape(1,3)
@@ -34,7 +34,7 @@ class ILDMExternalInputsModel(Model):
         ref_radius = self.declare_variable('reference_radius', shape=(num_nodes,))
         ref_chord = self.declare_variable('reference_chord', shape=(num_nodes,))
 
-        omega = self.declare_variable('omega', shape=(num_nodes, ), units='rpm')
+        omega = self.declare_variable('omega', shape=(num_nodes,  1), units='rpm')
 
         u = self.declare_variable(name='u', shape=(num_nodes, 1), units='m/s') * -1
         v = self.declare_variable(name='v', shape=(num_nodes, 1), units='m/s', val=0) 
@@ -43,8 +43,8 @@ class ILDMExternalInputsModel(Model):
         V = self.create_output('velocity_vector', shape=(num_nodes,3), units='m/s')
 
 
-        normal_vec = self.create_input('normal_vector', val=normal_vector)
-        normal_vec_axial_induced = self.create_input('normal_vector_axial_induced', val=normal_vector_axial_induced)
+        normal_vec = self.create_input('thrust_vector', val=thrust_vector)
+        normal_vec_axial_induced = self.create_input('thrust_vector_axial_induced', val=thrust_vector_axial_induced)
         projection_vec = self.create_input('projection_vector',val=proj_vec)
         
         in_plane_1 = projection_vec - csdl.expand(csdl.dot(projection_vec,normal_vec,axis=1),(1,3) ) * normal_vec

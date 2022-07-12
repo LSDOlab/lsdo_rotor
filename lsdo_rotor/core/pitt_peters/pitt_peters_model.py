@@ -46,7 +46,7 @@ class PittPetersModel(Model):
         prop_radius = self.declare_variable(name='propeller_radius', shape=(1, ), units='m')
 
         # Inputs changing across conditions (segments)
-        omega = self.declare_variable('omega', shape=(num_nodes, ), units='rpm')
+        omega = self.declare_variable('omega', shape=(num_nodes,  1), units='rpm')
 
         self.declare_variable(name='u', shape=(num_nodes, 1), units='m/s', val=1)
         self.declare_variable(name='v', shape=(num_nodes, 1), units='m/s', val=0)
@@ -60,9 +60,9 @@ class PittPetersModel(Model):
         self.declare_variable(name='Theta',shape=(num_nodes, 1), units='rad', val=0)
         self.declare_variable(name='Psi', shape=(num_nodes, 1), units='rad', val=0)
 
-        self.declare_variable(name='x', shape=(num_nodes, ), units='m', val=0)
-        self.declare_variable(name='y', shape=(num_nodes, ), units='m', val=0)
-        self.declare_variable(name='z', shape=(num_nodes, ), units='m', val=0)
+        self.declare_variable(name='x', shape=(num_nodes,  1), units='m', val=0)
+        self.declare_variable(name='y', shape=(num_nodes,  1), units='m', val=0)
+        self.declare_variable(name='z', shape=(num_nodes,  1), units='m', val=0)
 
         self.add(PittPetersExternalInputsModel(
             shape=shape,
@@ -143,7 +143,7 @@ class PittPetersModel(Model):
         self.print_var(T)
         F = self.create_output('F', shape=(num_nodes,3))
         M = self.create_output('M', shape=(num_nodes,3))
-        n = self.declare_variable('normal_vector', shape=(1,3))
+        n = self.declare_variable('thrust_vector', shape=(1,3))
         for i in range(num_nodes):
             F[i,:] = csdl.expand(T[i],(1,3)) * n
             M[i,0] = F[i,2] * (thrust_origin[1] - ref_pt[1])

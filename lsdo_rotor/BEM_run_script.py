@@ -1,5 +1,8 @@
 import numpy as np 
+import csdl
 from csdl import Model
+from lsdo_utils.comps.bspline_comp import   get_bspline_mtx
+from lsdo_rotor.core.BEM.BEM_b_spline_comp import BsplineComp
 try:
     from csdl_om import Simulator
 except:
@@ -13,10 +16,20 @@ num_nodes = 1
 num_radial = 30
 num_tangential = num_azimuthal = 1
 
-# normal_vector = np.array([1/2**0.5,0,-1/2**0.5])
-normal_vector = np.array([1,0,0])
+# thrust_vector = np.array([[1/2**0.5,0,-1/2**0.5]])
+# thrust_vector = np.array([[0,0,-1]])
+thrust_vector = np.array([[1,0,0]])
 
-thrust_origin=np.array([8.5, 0, 5], dtype=float)
+# thrust_vector = np.array([[1,0,0],
+#                           [0,0,-1],
+#                           [1/2**0.5,0,-1/2**0.5]])
+
+thrust_origin=np.array([[8.5, 0, 5]])
+
+# thrust_origin=np.array([[8.5, 0, 5],
+#                         [8.5, 0, 5],
+#                         [8.5, 0, 5]], dtype=float)
+
 reference_point = np.array([4.5, 0, 5])
 
 shape = (num_nodes,num_radial,num_tangential)
@@ -24,11 +37,11 @@ shape = (num_nodes,num_radial,num_tangential)
 class RunModel(Model):
     def define(self):
         # Inputs not changing across conditions (segments)
-        self.create_input(name='rotor_radius', shape=(1, ), units='m', val=1)
+        self.create_input(name='propeller_radius', shape=(1, ), units='m', val=0.94)
         self.create_input(name='chord_profile', shape=(num_radial,), units='m', val=np.linspace(0.2,0.1,num_radial))
-        self.create_input(name='twist_profile', shape=(num_radial,), units='rad', val=np.linspace(50,10,num_radial)*np.pi/180)
-
-
+        # self.create_input(name='twist_profile', shape=(num_radial,), units='rad', val=np.linspace(50,10,num_radial)*np.pi/180)
+        pitch_cp = self.create_input(name='pitch_cp', shape=(4,), units='rad', val=np.linspace(50,10,4)*np.pi/180)
+        self.add_design_variable('pitch_cp', lower=5*np.pi/180,upper=60*np.pi/180)
         # Inputs changing across conditions (segments)
         self.create_input('omega', shape=(num_nodes, 1), units='rpm', val=1500)
 
@@ -44,18 +57,22 @@ class RunModel(Model):
         self.create_input(name='Theta', shape=(num_nodes, 1), units='rad', val=0)
         self.create_input(name='Psi', shape=(num_nodes, 1), units='rad', val=0)
 
-        self.create_input(name='x', shape=(num_nodes, ), units='m', val=0)
-        self.create_input(name='y', shape=(num_nodes, ), units='m', val=0)
-        self.create_input(name='z', shape=(num_nodes, ), units='m', val=1000)
-                
+        self.create_input(name='x', shape=(num_nodes,  1), units='m', val=0)
+        self.create_input(name='y', shape=(num_nodes,  1), units='m', val=0)
+        self.create_input(name='z', shape=(num_nodes,  1), units='m', val=1000)
+
+        self.create_input(name='thrust_vector', shape=(num_nodes,3), val=thrust_vector)
+        self.create_input(name='thrust_origin', shape=(num_nodes,3), val=thrust_origin)
+    
+
         self.add(BEMModel(   
             name='propulsion',
             num_nodes=num_nodes,
             num_radial=num_radial,
             num_tangential=num_azimuthal,
             airfoil='NACA_4412',
-            thrust_vector=normal_vector,
-            thrust_origin=thrust_origin,
+            # thrust_vector=thrust_vector,
+            # thrust_origin=thrust_origin,
             ref_pt=reference_point,
             num_blades=3,
         ),name='BEM_model')
@@ -70,16 +87,61 @@ t2 = time.time()
 
 print(t2-t1)
 print('Thrust: ',sim['T'])
-exit()
+print('Thrust: ',sim['total_thrust_2'])
+print('Torque: ',sim['total_torque'])
+print('Torque: ',sim['total_torque_2'])
+print('in_plane_ey: ', sim['in_plane_ey'])
+print('in_plane_ex: ', sim['in_plane_ex'])
+# exit()
 
-print(sim['T'].shape)
-print(sim['total_thrust_2'])
-print(sim['normal_vector'])
-print(sim['F'])
-print(sim['M'])
+# print(sim['T'].shape)
+# print(sim['total_thrust_2'])
+print('normal vectors: ',sim['thrust_vector'])
+print('Forces:',sim['F'])
+print('Moments: ',sim['M'])
+pitch_1 = sim['_pitch'][0,:,0].flatten()*180/np.pi
+pitch_cp_1 = sim['pitch_cp'].flatten()
+print('\n')
+print(sim['propeller_radius'])
+print(sim['_radius'])
+
 # print(sim['_in_plane_inflow_velocity'])
 # print(sim['inflow_z'])
+# sim.prob.check_partials(compact_print=True)
+# sim.prob.check_totals()
+exit()
+from modopt.scipy_library import SLSQP
+from modopt.csdl_library import CSDLProblem
+# Instantiate your problem using the csdl Simulator object and name your problem
+prob = CSDLProblem(problem_name='Sample BEM optimization', simulator=sim)
+# Setup your preferred optimizer (SLSQP) with the Problem object
+optimizer = SLSQP(prob, maxiter=100, ftol=1e-10)
+# Solve your optimization problem
+optimizer.solve()
+# Print results of optimization
+optimizer.print_results()
 
+print(sim['total_torque'])
+print(sim['T'])
+pitch_2 = sim['_pitch'][0,:,0].flatten()*180/np.pi
+pitch_cp_2 = sim['pitch_cp'].flatten()
+r_hub = sim['_radius'][0,0,0].flatten()
+r_tip = sim['_radius'][0,-1,0].flatten()
+pitch_cp_x = np.linspace(r_hub,r_tip,4)
+# exit()
+# print(sim['twist_profile'])
+import matplotlib.pyplot as plt 
+
+plt.plot(sim['_radius'][0,:,0].flatten(), pitch_2,color='navy',label='optimized curve points')
+plt.scatter(pitch_cp_x, pitch_cp_2*180/np.pi,color='navy',label='optimized control points')
+plt.plot(sim['_radius'][0,:,0].flatten(), pitch_1, color='maroon',label='original curve points')
+plt.scatter(pitch_cp_x, pitch_cp_1*180/np.pi,color='maroon',label='original control points')
+plt.legend()
+plt.xlabel('radius (m)')
+plt.ylabel('twist angle (deg)')
+plt.title('Blade twist optimization with 4 B-spline control points in cruise')
+plt.savefig('sample_blade_twist_optimization_cruise_2.png')
+plt.show()
 exit()
 azimuth = np.linspace(0,2*np.pi,num_azimuthal) #sim2['_theta'][0,0,:].flatten()
 radius = sim['_radius'][0,:,0].flatten()

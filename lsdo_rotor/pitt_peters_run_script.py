@@ -13,7 +13,7 @@ num_nodes = 2
 num_radial = 30
 num_tangential = num_azimuthal = 50
 
-normal_vector = np.array([0,0,-1])
+thrust_vector = np.array([0,0,-1])
 
 thrust_origin=np.array([8.5, 0, 5], dtype=float)
 reference_point = np.array([4.5, 0, 5])
@@ -29,7 +29,7 @@ class RunModel(Model):
         # self.add_design_variable('chord_profile',lower = 0.02, upper=0.3)
         # self.add_design_variable('twist_profile',lower = 10 * np.pi/180, upper=60*np.pi/180)
 
-        self.create_input('omega', shape=(num_nodes, ), units='rpm', val=1500)
+        self.create_input('omega', shape=(num_nodes,  1), units='rpm', val=1500)
         # self.add_design_variable('omega')
 
         self.create_input(name='u', shape=(num_nodes, 1), units='m/s', val=np.array([[0,10]]).T)
@@ -44,9 +44,9 @@ class RunModel(Model):
         self.create_input(name='Theta', shape=(num_nodes, 1), units='rad', val=0)
         self.create_input(name='Psi', shape=(num_nodes, 1), units='rad', val=0)
 
-        self.create_input(name='x', shape=(num_nodes, ), units='m', val=0)
-        self.create_input(name='y', shape=(num_nodes, ), units='m', val=0)
-        self.create_input(name='z', shape=(num_nodes, ), units='m', val=1000)
+        self.create_input(name='x', shape=(num_nodes,  1), units='m', val=0)
+        self.create_input(name='y', shape=(num_nodes,  1), units='m', val=0)
+        self.create_input(name='z', shape=(num_nodes,  1), units='m', val=1000)
                 
         self.add(PittPetersModel(   
             name='propulsion',
@@ -54,7 +54,7 @@ class RunModel(Model):
             num_radial=num_radial,
             num_tangential=num_azimuthal,
             airfoil='NACA_4412',
-            thrust_vector=normal_vector,
+            thrust_vector=thrust_vector,
             thrust_origin=thrust_origin,
             ref_pt=reference_point,
             num_blades=3,
@@ -98,7 +98,7 @@ print(sim['total_torque'])
 
 # print(sim['T'].shape)
 # print(sim['total_thrust_2'])
-# print(sim['normal_vector'])
+# print(sim['thrust_vector'])
 # print(sim['F'])
 # print(sim['M'])
 # # print(sim['_in_plane_inflow_velocity'])

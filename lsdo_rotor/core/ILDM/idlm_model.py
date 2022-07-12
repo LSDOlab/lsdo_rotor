@@ -120,7 +120,7 @@ class ILDMModel(Model):
         # T = self.declare_variable('T', shape=(num_nodes,))
         # F = self.create_output('F', shape=(num_nodes,3))
         # M = self.create_output('M', shape=(num_nodes,3))
-        # n = self.declare_variable('normal_vector', shape=(1,3))
+        # n = self.declare_variable('thrust_vector', shape=(1,3))
         # for i in range(num_nodes):
         #     F[i,:] = csdl.expand(T[i],(1,3)) * n
         #     M[i,0] = F[i,2] * (thrust_origin[1] - ref_pt[1])
