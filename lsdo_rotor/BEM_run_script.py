@@ -1,8 +1,6 @@
 import numpy as np 
 import csdl
 from csdl import Model
-from lsdo_utils.comps.bspline_comp import   get_bspline_mtx
-from lsdo_rotor.core.BEM.BEM_b_spline_comp import BsplineComp
 try:
     from csdl_om import Simulator
 except:
