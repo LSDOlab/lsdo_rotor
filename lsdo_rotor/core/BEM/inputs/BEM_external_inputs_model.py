@@ -35,8 +35,8 @@ class BEMExternalInputsModel(Model):
         # self.print_var(rotor_radius)
 
         # Inputs changing across conditions (segments)
-        omega = self.declare_variable('omega', shape=(num_nodes, 1), units='rpm')
-        # self.print_var(omega)
+        omega = self.declare_variable('omega', shape=(num_nodes, 1), units='rpm/1000') * 1000
+        self.print_var(omega)
 
         u = self.declare_variable(name='u', shape=(num_nodes, 1), units='m/s') * -1
         # self.print_var(u)

@@ -20,7 +20,7 @@ class BEMCoreInputsModel(Model):
         
 
 
-        position = self.declare_variable('position', shape=(num_evaluations,3))
+        # position = self.declare_variable('position', shape=(num_evaluations,3))
         x_dir = self.declare_variable('x_dir', shape=(num_evaluations, 3))
         y_dir = self.declare_variable('y_dir', shape=(num_evaluations, 3))
         z_dir = self.declare_variable('z_dir', shape=(num_evaluations, 3))
@@ -41,7 +41,7 @@ class BEMCoreInputsModel(Model):
         
         self.register_output('_rotational_speed', csdl.expand(rotational_speed, shape,'i->ijk'))
 
-        self.register_output('_position', csdl.expand(position, shape + (3,), 'il->ijkl'))
+        # self.register_output('_position', csdl.expand(position, shape + (3,), 'il->ijkl'))
         self.register_output('_x_dir', csdl.expand(x_dir, shape + (3,), 'il->ijkl'))
         self.register_output('_y_dir', csdl.expand(y_dir, shape + (3,), 'il->ijkl'))
         self.register_output('_z_dir', csdl.expand(z_dir, shape + (3,), 'il->ijkl'))

@@ -25,7 +25,7 @@ class BEMPreprocessModel(Model):
         _x_dir = self.declare_variable('_x_dir', shape=shape + (3,))
         _y_dir = self.declare_variable('_y_dir', shape=shape + (3,))
         _z_dir = self.declare_variable('_z_dir', shape=shape + (3,))
-        _direction = self.declare_variable('_direction', shape=shape)
+        # _direction = self.declare_variable('_direction', shape=shape)
 
         # -----
         _angular_speed = 2 * np.pi * _rotational_speed
@@ -47,8 +47,8 @@ class BEMPreprocessModel(Model):
         
         self.register_output(
             '_tangential_inflow_velocity', 
-            _direction * _inflow_z * csdl.cos(_theta) + 
-            _direction * _inflow_y * csdl.sin(_theta) + 
+            1 * _inflow_z * csdl.cos(_theta) + 
+            1 * _inflow_y * csdl.sin(_theta) + 
             _radius * _angular_speed
         )
 
