@@ -10,7 +10,7 @@ from lsdo_rotor.core.BEM.BEM_model import BEMModel
 
 
 
-num_nodes = 1
+num_nodes = 2
 num_radial = 30
 num_tangential = num_azimuthal = 1
 
@@ -59,8 +59,8 @@ class RunModel(Model):
         self.create_input(name='y', shape=(num_nodes,  1), units='m', val=0)
         self.create_input(name='z', shape=(num_nodes,  1), units='m', val=1000)
 
-        self.create_input(name='thrust_vector', shape=(num_nodes,3), val=thrust_vector)
-        self.create_input(name='thrust_origin', shape=(num_nodes,3), val=thrust_origin)
+        self.create_input(name='thrust_vector', shape=(num_nodes,3), val=np.tile(thrust_vector,(num_nodes,1)))
+        self.create_input(name='thrust_origin', shape=(num_nodes,3), val=np.tile(thrust_origin,(num_nodes,1)))
     
 
         self.add(BEMModel(   

@@ -6,6 +6,7 @@ import csdl
 class BEMExternalInputsModel(Model):
     def initialize(self):
         self.parameters.declare('shape', types=tuple)
+        self.parameters.declare('T_v_list', types=list)
         # self.parameters.declare('thrust_vector', types=np.ndarray)
 
     def define(self):
@@ -16,6 +17,8 @@ class BEMExternalInputsModel(Model):
         num_radial = shape[1]
         num_tangential = shape[2]
         
+        thrust_vector_list= self.parameters['T_v_list']
+
         # thrust_vector = self.parameters['thrust_vector'].reshape(1,3)
         # thrust_vector_axial_induced = - thrust_vector
         
@@ -36,7 +39,7 @@ class BEMExternalInputsModel(Model):
 
         # Inputs changing across conditions (segments)
         omega = self.declare_variable('omega', shape=(num_nodes, 1), units='rpm/1000') * 1000
-        self.print_var(omega)
+        # self.print_var(omega)
 
         u = self.declare_variable(name='u', shape=(num_nodes, 1), units='m/s') * -1
         # self.print_var(u)
@@ -55,8 +58,10 @@ class BEMExternalInputsModel(Model):
         self.register_output('r1',r*1)
 
         # normal_vec = self.declare_variable('thrust_vector', shape=(num_nodes,3))
-        normal_vec = self.declare_variable('thrust_vector_test', shape=(num_nodes,3),val=np.tile(np.array([[1,0,0]]),(num_nodes,1)))
+        # normal_vec = self.declare_variable('thrust_vector_test', shape=(num_nodes,3),val=np.tile(np.array([[1,0,0]]),(num_nodes,1)))
+        thrust_vector = normal_vec = thrust_vector_list[0]
         # self.print_var(normal_vec)
+        # self.print_var(thrust_vector)
         normal_vec_axial_induced = -1 * normal_vec 
         projection_vec = self.create_input('projection_vector',val=proj_vec)
         
