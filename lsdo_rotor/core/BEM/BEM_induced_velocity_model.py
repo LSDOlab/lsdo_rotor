@@ -83,7 +83,7 @@ class BEMInducedVelocityModel(Model):
         self.register_output('_local_thrust', dT)
         # self.register_output('total_thrust', T)
         self.register_output('T', T)
-        self.print_var(T)
+        # self.print_var(T)
         self.register_output('dC_T',dC_T)
         
         self.register_output('_local_thrust_2', dT2)
