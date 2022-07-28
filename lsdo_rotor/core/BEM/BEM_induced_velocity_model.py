@@ -44,6 +44,9 @@ class BEMInducedVelocityModel(Model):
         Cx1 = Cl * csdl.cos(phi) - Cd * csdl.sin(phi)
         Ct1 = Cl * csdl.sin(phi) + Cd * csdl.cos(phi)
 
+        Cx2 = Cl * csdl.cos(phi)
+        Ct2 = Cl * csdl.sin(phi)
+
 
         ux = (4 * F * Vt * csdl.sin(phi)**2) / (4 * F * csdl.sin(phi) * csdl.cos(phi) +  sigma * Ct1)
         ux_2 = Vx + sigma * Cx1 * Vt / (4 * F * csdl.sin(phi) * csdl.cos(phi) + sigma * Ct1)
@@ -56,6 +59,9 @@ class BEMInducedVelocityModel(Model):
 
         dT2 = num_blades * Cx1 * 0.5 * rho_exp * (ux_2**2 + (Vt - 0.5 * ut)**2) * chord * dr
         dQ2 = num_blades * Ct1 * 0.5 * rho_exp * (ux_2**2 + (Vt - 0.5 * ut)**2) * chord * dr * radius
+
+        dT_induced = num_blades * Cx2 * 0.5 * rho_exp * (ux_2**2 + (Vt - 0.5 * ut)**2) * chord * dr
+        dQ_induced = num_blades * Ct2 * 0.5 * rho_exp * (ux_2**2 + (Vt - 0.5 * ut)**2) * chord * dr
 
         T2 = csdl.sum(dT2, axes = (1,2)) / shape[2]
         Q2 = csdl.sum(dQ2, axes = (1,2)) / shape[2]
@@ -71,6 +77,9 @@ class BEMInducedVelocityModel(Model):
         E = csdl.sum(dE)
 
         C_T = T / rho / (csdl.sum(n,axes=(1,2))/shape[1]/shape[2])**2 / (2 * csdl.sum(rotor_radius,axes=(1,2))/shape[1]/shape[2])**4
+        T_C = C_T / (np.pi**3 / 4)
+        # C_T = T/ ( rho * np.pi R^2 * Omega^2 * R^2) 
+        # self.print_var(C_T)
         C_Q = Q / rho / (csdl.sum(n,axes=(1,2))/shape[1]/shape[2])**2 / (2 * csdl.sum(rotor_radius,axes=(1,2))/shape[1]/shape[2])**5
         C_P = 2 * np.pi * C_Q
         J = csdl.sum((Vx / n /  (2 * rotor_radius)),axes=(1,2))/shape[1]/shape[2]
@@ -81,6 +90,7 @@ class BEMInducedVelocityModel(Model):
         self.register_output('_ut', ut)
 
         self.register_output('_local_thrust', dT)
+        self.register_output('_local_thrust_induced', dT_induced)
         # self.register_output('total_thrust', T)
         self.register_output('T', T)
         # self.print_var(T)
@@ -90,6 +100,7 @@ class BEMInducedVelocityModel(Model):
         self.register_output('total_thrust_2', T2)
 
         self.register_output('_local_torque', dQ)
+        self.register_output('_local_torque_induced', dQ_induced)
         self.register_output('total_torque', Q)
         
         self.register_output('_local_torque_2', dQ2)
@@ -98,7 +109,8 @@ class BEMInducedVelocityModel(Model):
         self.register_output('_local_energy_loss', dE)
         self.register_output('total_energy_loss', E)
         
-        self.register_output('C_T',C_T)
+        # self.register_output('C_T',C_T)
+        self.register_output('C_T',T_C)
         self.register_output('C_Q',C_Q)
         self.register_output('C_P',C_P)
         self.register_output('eta',eta)
