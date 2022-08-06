@@ -70,6 +70,7 @@ class BEMModel(Model):
 
         prop_radius = self.declare_variable(name='propeller_radius', shape=(1, ), units='m')
         pitch_cp = self.declare_variable(name='pitch_cp', shape=(4,), units='rad', val=np.linspace(50,10,4)*np.pi/180)
+        chord_cp = self.declare_variable(name='chord_cp', shape=(2,), units='rad', val=np.array([0.3,0.1]))
         # self.add_design_variable('pitch_cp', lower=5*np.pi/180,upper=60*np.pi/180)
         # Inputs changing across conditions (segments)
         omega = self.declare_variable('omega', shape=(num_nodes, 1), units='rpm')
@@ -98,14 +99,26 @@ class BEMModel(Model):
             jac=pitch_A,
             out_name='twist_profile',
         ))
+        self.register_output('twist_profile', comp)
+
+        chord_A = get_bspline_mtx(2, num_radial, order=2)
+        comp_chord = csdl.custom(chord_cp,op=BsplineComp(
+            num_pt=num_radial,
+            num_cp=2,
+            in_name='chord_cp',
+            jac=chord_A,
+            out_name='chord_profile',
+        ))
+        self.register_output('chord_profile', comp_chord)
+
         # self.print_var(comp)
         # self.create_input(name='twist_profile', shape=(num_radial,), units='rad',val=comp)
-        self.register_output('twist_profile', comp)
+        
         # self.add('pitch_bspline_comp', comp, promotes = ['*'])
 
         self.add(BEMExternalInputsModel(
             shape=shape,
-            # thrust_vector=thrust_vector,
+            T_v_name_list=['testing']
         ), name='BEM_external_inputs_model')#, promotes = ['*'])
 
         self.add(BEMCoreInputsModel(

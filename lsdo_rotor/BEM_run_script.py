@@ -35,15 +35,16 @@ shape = (num_nodes,num_radial,num_tangential)
 class RunModel(Model):
     def define(self):
         # Inputs not changing across conditions (segments)
-        self.create_input(name='propeller_radius', shape=(1, ), units='m', val=0.94)
-        self.create_input(name='chord_profile', shape=(num_radial,), units='m', val=np.linspace(0.2,0.1,num_radial))
+        self.create_input(name='propeller_radius', shape=(1, ), units='m', val=1.2)
+        # self.create_input(name='chord_profile', shape=(num_radial,), units='m', val=np.linspace(0.2,0.1,num_radial))
         # self.create_input(name='twist_profile', shape=(num_radial,), units='rad', val=np.linspace(50,10,num_radial)*np.pi/180)
         pitch_cp = self.create_input(name='pitch_cp', shape=(4,), units='rad', val=np.array([8.60773973e-01,6.18472835e-01,3.76150609e-01,1.88136239e-01]))#np.linspace(35,10,4)*np.pi/180)
+        chord_cp = self.create_input(name='chord_cp', shape=(2,), units='rad', val=np.array([0.3,0.1]))
         self.add_design_variable('pitch_cp', lower=5*np.pi/180,upper=60*np.pi/180)
         # Inputs changing across conditions (segments)
-        self.create_input('omega', shape=(num_nodes, 1), units='rpm/1000', val=1.44764202)
+        self.create_input('omega', shape=(num_nodes, 1), units='rpm/1000', val=1447)
 
-        self.create_input(name='u', shape=(num_nodes, 1), units='m/s', val=50.39014388)
+        self.create_input(name='u', shape=(num_nodes, 1), units='m/s', val=40.39014388)
         self.create_input(name='v', shape=(num_nodes, 1), units='m/s', val=0)
         self.create_input(name='w', shape=(num_nodes, 1), units='m/s', val=2.75142193)
 
@@ -93,6 +94,8 @@ print('eta', sim['eta'])
 # print('in_plane_ey: ', sim['in_plane_ey'])
 # print('in_plane_ex: ', sim['in_plane_ex'])
 # # exit()
+import matplotlib.pyplot as plt
+
 
 # # print(sim['T'].shape)
 # # print(sim['total_thrust_2'])
