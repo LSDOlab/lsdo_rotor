@@ -33,8 +33,8 @@ class BEMExternalInputsModel(Model):
         # proj_vec = np.array([1/(2**0.5),1/(2**0.5),0]).reshape(1,3)
 
        
-
-        rotor_radius = self.declare_variable(name='propeller_radius', shape=(1,), units='m')
+        ft2m = 1/3.281
+        rotor_radius = self.declare_variable(name='propeller_radius', shape=(1,), units='m') * ft2m / 2
         # self.print_var(rotor_radius)
 
         # Inputs changing across conditions (segments)
