@@ -12,9 +12,9 @@ class PittPetersCoreInputsModel(Model):
         shape = self.parameters['shape']
         num_evaluations, num_radial, num_tangential = shape[0], shape[1], shape[2]
 
-        hub_radius = self.declare_variable('hub_radius', shape=(num_evaluations,))
-        rotor_radius = self.declare_variable('rotor_radius', shape=(1,))
-        dr = self.declare_variable('dr', shape=(num_evaluations,))
+        hub_radius = self.declare_variable('hub_radius', shape=(1,))
+        rotor_radius = self.declare_variable('propeller_radius', shape=(1,))
+        dr = self.declare_variable('dr', shape=(1,))
         
         rotational_speed = self.declare_variable('rotational_speed', shape=(num_evaluations,))
         

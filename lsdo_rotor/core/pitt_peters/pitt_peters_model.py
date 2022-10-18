@@ -33,40 +33,51 @@ class PittPetersModel(Model):
         num_radial = self.parameters['num_radial']
         num_tangential = self.parameters['num_tangential']
         airfoil = self.parameters['airfoil']
+        # shape = self.parameters['shape']
         
-        thrust_vector = self.parameters['thrust_vector']
-        thrust_origin = self.parameters['thrust_origin']
-        ref_pt = self.parameters['ref_pt']
-        num_blades = self.parameters['num_blades']
+        reference_point = self.parameters['ref_pt']
+        t_v = self.parameters['thrust_vector']
+        print(t_v)
+        t_o = self.parameters['thrust_origin']
+        print(t_o)
+        if len(t_v.shape) == 1:
+            n = 1
+            self.create_input('thrust_vector', shape=(num_nodes,3), val=np.tile(t_v,(num_nodes,1)))
+        elif len(t_v.shape) > 2:
+            raise ValueError('Thrust vector cannot be a tensor; It must be at most a matrix of size (num_nodes,3')
+        elif t_v.shape[1] != 3:
+            raise ValueError('Thrust vector matrix must have shape (num_nodes,3')
+        else:
+            n = t_v.shape[0]
+            if n != num_nodes:
+                raise ValueError('If number of thrust vectors is greater than 1, it must be equal to num_nodes')
+            else:
+                self.create_input('thrust_vector',shape=(num_nodes,3),val=t_v)
 
+
+        if len(t_o.shape) == 1:
+            m = 1
+            self.create_input('thrust_origin', shape=(num_nodes,3), val=np.tile(t_o,(num_nodes,1)))
+        elif len(t_o.shape) > 2:
+            raise ValueError('Thrust origin cannot be a tensor; It must be at most a matrix of size (num_nodes,3')
+        elif t_o.shape[1] != 3:
+            raise ValueError('Thrust origin matrix must have shape (num_nodes,3')
+        else:
+            m = t_o.shape[0]
+            if m != num_nodes:
+                raise ValueError('If number of thrust origin vector is greater than 1, it must be equal to num_nodes')
+            else:
+                self.create_input('thrust_origin',shape=(num_nodes,3),val=t_o)
+        
+        num_blades = self.parameters['num_blades']
         shape = (num_nodes, num_radial, num_tangential)       
         
         interp = get_surrogate_model(airfoil)
         
         prop_radius = self.declare_variable(name='propeller_radius', shape=(1, ), units='m')
 
-        # Inputs changing across conditions (segments)
-        omega = self.declare_variable('omega', shape=(num_nodes,  1), units='rpm')
-
-        self.declare_variable(name='u', shape=(num_nodes, 1), units='m/s', val=1)
-        self.declare_variable(name='v', shape=(num_nodes, 1), units='m/s', val=0)
-        self.declare_variable(name='w', shape=(num_nodes, 1), units='m/s', val=0)
-
-        self.declare_variable(name='p', shape=(num_nodes, 1), units='rad/s', val=0)
-        self.declare_variable(name='q', shape=(num_nodes, 1), units='rad/s', val=0)
-        self.declare_variable(name='r', shape=(num_nodes, 1), units='rad/s', val=0)
-
-        self.declare_variable(name='Phi', shape=(num_nodes, 1), units='rad', val=0)
-        self.declare_variable(name='Theta',shape=(num_nodes, 1), units='rad', val=0)
-        self.declare_variable(name='Psi', shape=(num_nodes, 1), units='rad', val=0)
-
-        self.declare_variable(name='x', shape=(num_nodes,  1), units='m', val=0)
-        self.declare_variable(name='y', shape=(num_nodes,  1), units='m', val=0)
-        self.declare_variable(name='z', shape=(num_nodes,  1), units='m', val=0)
-
         self.add(PittPetersExternalInputsModel(
             shape=shape,
-            thrust_vector=thrust_vector,
         ), name = 'pitt_peters_external_inputs_model')
       
         normal_inflow = self.declare_variable('normal_inflow', shape=(num_nodes,))
@@ -140,12 +151,20 @@ class PittPetersModel(Model):
 
         # Post-Processing
         T = self.declare_variable('T', shape=(num_nodes,))
-        self.print_var(T)
         F = self.create_output('F', shape=(num_nodes,3))
         M = self.create_output('M', shape=(num_nodes,3))
-        n = self.declare_variable('thrust_vector', shape=(1,3))
+        thrust_vector = self.declare_variable('thrust_vector', shape=(num_nodes,3))
+        thrust_origin = self.declare_variable('thrust_origin', shape=(num_nodes,3))
+        ref_pt = self.declare_variable('reference_point',shape=(num_nodes,3),val=np.tile(reference_point,(num_nodes,1)))
+        # loop over pt set list 
         for i in range(num_nodes):
-            F[i,:] = csdl.expand(T[i],(1,3)) * n
-            M[i,0] = F[i,2] * (thrust_origin[1] - ref_pt[1])
-            M[i,1] = F[i,2] * (thrust_origin[0] - ref_pt[0])
-            M[i,2] = F[i,0] * (thrust_origin[1] - ref_pt[1])
+            # F[i,:] = csdl.expand(T[i],(1,3)) * n[i,:]
+            F[i, 0] = csdl.reshape(T[i], (1, 1)) * thrust_vector[i, 0] #- 9 * hub_drag[i,0]
+            F[i, 1] = csdl.reshape(T[i], (1, 1)) * thrust_vector[i, 1]
+            F[i, 2] = csdl.reshape(T[i], (1, 1)) * thrust_vector[i, 2]
+            
+
+        moments = csdl.cross(thrust_origin-ref_pt, F, axis=1)
+        M[:,0] = moments[:,0]
+        M[:,1] = moments[:,1]
+        M[:,2] = moments[:,2]

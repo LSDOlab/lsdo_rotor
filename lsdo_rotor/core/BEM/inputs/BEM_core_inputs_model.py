@@ -14,7 +14,7 @@ class BEMCoreInputsModel(Model):
         num_evaluations, num_radial, num_tangential = shape[0], shape[1], shape[2]
 
         hub_radius = self.declare_variable('hub_radius', shape=(1,))
-        rotor_radius = self.declare_variable('propeller_radius', shape=(1,)) * ft2m / 2
+        rotor_radius = self.declare_variable('propeller_radius', shape=(1,)) # * ft2m / 2
         # self.print_var(rotor_radius)
         dr = self.declare_variable('dr', shape=(1,))
         
