@@ -10,8 +10,8 @@ def test_UIUC_prop_validation():
     T = sim['T'].flatten()
     T_0 = T[0]
     T_end = T[-1]
-    assert pytest.approx(T_end,rel=1e-5) == 0.54827259
-    assert pytest.approx(T_0, rel=1e-5) == 10.42765851 # 10.427658510860592
+    assert pytest.approx(T_end,rel=1e-3) == 0.54827259
+    assert pytest.approx(T_0, rel=1e-3) == 10.42765851 # 10.427658510860592
     
     print(T_0)
     print(T_end)
