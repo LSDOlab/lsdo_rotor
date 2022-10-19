@@ -5,4 +5,4 @@ numpy
 openmdao==3.10.0
 pytest
 -e git+https://github.com/LSDOlab/python_csdl_backend.git@master#egg=python_csdl_backend
-scipy==1.8.1
+scipy==1.8.0
