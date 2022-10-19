@@ -1,5 +1,5 @@
--e git+https://github.com/LSDOlab/csdl.git@master#egg=csdl
--e git+https://github.com/LSDOlab/csdl_om.git@master#egg=csdl_om
+-e git+https://github.com/LSDOlab/csdl.git@bfbbd74e682d00dc5d46c2ca9430363b7928aa29#egg=csdl
+-e git+https://github.com/LSDOlab/csdl_om.git@bdc1c8d3539dbdd3f934562ddee30e4361447adc#egg=csdl_om
 Deprecated==1.2.13
 numpy
 openmdao==3.10.0
@@ -8,3 +8,5 @@ pytest
 scipy==1.8.0
 sympy==1.10.1
 python-utils==2.5.6
+-e git+https://github.com/MariusLRuh/lsdo_atmos.git
+
