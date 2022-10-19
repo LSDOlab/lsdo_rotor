@@ -6,10 +6,13 @@ import csdl
 class BEMExternalInputsModel(Model):
     def initialize(self):
         self.parameters.declare('shape', types=tuple)
+        self.parameters.declare('hub_radius_percent')
 
     def define(self):
         shape = self.parameters['shape']
         shape = (shape[0], shape[1], shape[2])
+        
+        r_h_percent = self.parameters['hub_radius_percent']
         
         num_nodes = num_evaluations = shape[0]
         num_radial = shape[1]
@@ -46,7 +49,7 @@ class BEMExternalInputsModel(Model):
         z_dir = np.zeros((num_evaluations,3))
        
 
-        R_h = 0.2 * rotor_radius
+        R_h = r_h_percent * rotor_radius
         self.register_output('hub_radius',R_h)
         dr = ((rotor_radius)-(0.2 * rotor_radius))/ (num_radial - 1)
         self.register_output('dr',dr)

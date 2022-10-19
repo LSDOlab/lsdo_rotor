@@ -109,8 +109,8 @@ class BEMInducedVelocityModel(Model):
         self.register_output('_local_energy_loss', dE)
         self.register_output('total_energy_loss', E)
         
-        # self.register_output('C_T',C_T)
-        self.register_output('C_T',T_C)
+        self.register_output('C_T',C_T)
+        # self.register_output('C_T',T_C)
         self.register_output('C_Q',C_Q)
         self.register_output('C_P',C_P)
         self.register_output('eta',eta)
