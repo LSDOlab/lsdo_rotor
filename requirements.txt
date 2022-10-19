@@ -6,3 +6,5 @@ openmdao==3.10.0
 pytest
 -e git+https://github.com/LSDOlab/python_csdl_backend.git@master#egg=python_csdl_backend
 scipy==1.8.0
+sympy==1.10.1
+python-utils==2.5.6
