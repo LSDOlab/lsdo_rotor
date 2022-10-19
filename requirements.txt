@@ -1,7 +1,7 @@
 -e git+https://github.com/LSDOlab/csdl.git@bfbbd74e682d00dc5d46c2ca9430363b7928aa29#egg=csdl
 -e git+https://github.com/LSDOlab/csdl_om.git@bdc1c8d3539dbdd3f934562ddee30e4361447adc#egg=csdl_om
 Deprecated==1.2.13
-numpy
+numpy==1.23.0
 openmdao==3.10.0
 pytest
 -e git+https://github.com/LSDOlab/python_csdl_backend.git@master#egg=python_csdl_backend
