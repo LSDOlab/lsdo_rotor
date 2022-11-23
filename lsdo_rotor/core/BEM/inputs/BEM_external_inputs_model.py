@@ -33,19 +33,21 @@ class BEMExternalInputsModel(Model):
         # proj_vec = np.array([1/(2**0.5),1/(2**0.5),0]).reshape(1,3)
 
        
-        ft2m = 1/3.281
-        rotor_radius = self.declare_variable(name='propeller_radius', shape=(1,), units='m') * ft2m / 2
-        # self.print_var(rotor_radius)
+        # ft2m = 1/3.281  # October 21
+        rotor_radius = self.declare_variable(name='propeller_radius', shape=(1,), units='m') # * ft2m / 2    October 21
+    # self.print_var(rotor_radius)
 
         # Inputs changing across conditions (segments)
-        omega = self.declare_variable('omega', shape=(num_nodes, 1), units='rpm') #* 1000
+        omega = self.declare_variable('omega', shape=(num_nodes, 1), units='rpm') * 1000
         # self.print_var(omega)
 
-        u = self.declare_variable(name='u', shape=(num_nodes, 1), units='m/s') * -1
+        u = self.declare_variable(name='u', shape=(num_nodes, 1), units='m/s')  * -1
         # self.print_var(u)
         v = self.declare_variable(name='v', shape=(num_nodes, 1), units='m/s') 
         # self.print_var(v)
-        w = self.declare_variable(name='w', shape=(num_nodes, 1), units='m/s') 
+        w = self.declare_variable(name='w', shape=(num_nodes, 1), units='m/s') # * -1
+
+        self.print_var(w)
         # self.print_var(w)
 
         V = self.create_output('velocity_vector', shape=(num_nodes,3), units='m/s')

@@ -23,6 +23,7 @@ class BEMInducedVelocityModel(Model):
 
         angular_speed = self.declare_variable('_angular_speed', shape=shape)
         n = angular_speed / 2 / np.pi
+        # self.print_var(n)
         # print(( (csdl.sum(n,axes=(1,2))/shape[1]/shape[2])**2).shape,'BEM test SHAPE')
         
         sigma = self.declare_variable('_blade_solidity', shape=shape)
