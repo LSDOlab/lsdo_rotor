@@ -34,7 +34,7 @@ class ILDMExternalInputsModel(Model):
         ref_radius = self.declare_variable('reference_radius', shape=(num_nodes,))
         ref_chord = self.declare_variable('reference_chord', shape=(num_nodes,))
 
-        omega = self.declare_variable('omega', shape=(num_nodes,  1), units='rpm')
+        omega = self.declare_variable('omega', shape=(num_nodes, ), units='rpm')
 
         u = self.declare_variable(name='u', shape=(num_nodes, 1), units='m/s') * -1
         v = self.declare_variable(name='v', shape=(num_nodes, 1), units='m/s', val=0) 

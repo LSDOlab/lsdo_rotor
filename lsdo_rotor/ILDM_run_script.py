@@ -1,12 +1,12 @@
 import numpy as np 
 from csdl import Model
-try:
-    from csdl_om import Simulator
-except:
-    raise ModuleNotFoundError("This run file requires a backend for CSDL")
+# try:
+#     from csdl_om import Simulator
+# except:
+#     raise ModuleNotFoundError("This run file requires a backend for CSDL")
 
 from lsdo_rotor.core.ILDM.idlm_model import ILDMModel
-
+from python_csdl_backend import Simulator
 
 # Design parameters
 rotor_radius = np.array([1])
@@ -31,9 +31,9 @@ class RunModel(Model):
         self.create_input(name='reference_chord', val=reference_chord)
         self.create_input(name='reference_radius', val=reference_radius)
 
-        self.create_input('omega', shape=(num_nodes,  1), units='rpm', val=rpm)
-        self.create_input(name='u', shape=(num_nodes,  1), units='m/s', val=Vx)
-        self.create_input(name='z', shape=(num_nodes,  1), units='m', val=altitude)
+        self.create_input('omega', shape=(num_nodes,  ), units='rpm', val=rpm)
+        self.create_input(name='u', shape=(num_nodes, ), units='m/s', val=Vx)
+        self.create_input(name='z', shape=(num_nodes, ), units='m', val=altitude)
                 
         self.add(ILDMModel(   
             name='propulsion',
