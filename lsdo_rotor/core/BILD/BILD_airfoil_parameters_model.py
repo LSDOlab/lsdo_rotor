@@ -4,7 +4,7 @@ import csdl
 from lsdo_rotor.core.BEM.BEM_rotor_parameters import BEMRotorParameters
 import openmdao.api as om
 
-class ILDMAirfoilParametersModel(csdl.CustomExplicitOperation):
+class BILDAirfoilParametersModel(csdl.CustomExplicitOperation):
     def initialize(self):
         self.parameters.declare('shape', types=tuple)
         self.parameters.declare('rotor', types=BEMRotorParameters)
@@ -13,10 +13,10 @@ class ILDMAirfoilParametersModel(csdl.CustomExplicitOperation):
         shape = self.parameters['shape']
         rotor = self.parameters['rotor']
 
-        self.add_input('Re_ildm', shape = (shape[0],))
+        self.add_input('Re_BILD', shape = (shape[0],))
         
-        self.add_output('Cl_max_ildm', shape = (shape[0],))
-        self.add_output('Cd_min_ildm', shape = (shape[0],))
+        self.add_output('Cl_max_BILD', shape = (shape[0],))
+        self.add_output('Cd_min_BILD', shape = (shape[0],))
         self.add_output('alpha_max_LD', shape = (shape[0],))
 
         self.x = np.zeros((shape[0], 2))
@@ -27,7 +27,7 @@ class ILDMAirfoilParametersModel(csdl.CustomExplicitOperation):
         rotor = self.parameters['rotor']
         interp = rotor['interp']
 
-        Re = inputs['Re_ildm'].flatten()
+        Re = inputs['Re_BILD'].flatten()
         alpha_range                     = np.linspace(-2*np.pi/180,10*np.pi/180,100)
         Re_alpha_design_space           = np.zeros((len(alpha_range),2))
         Re_alpha_design_space[:,0]      = alpha_range
@@ -54,8 +54,8 @@ class ILDMAirfoilParametersModel(csdl.CustomExplicitOperation):
             
         Cl_Cd_prediction                = interp.predict_values(self.x)
         
-        outputs['Cl_max_ildm']          = Cl_Cd_prediction[:,0]
-        outputs['Cd_min_ildm']          = Cl_Cd_prediction[:,1]
+        outputs['Cl_max_BILD']          = Cl_Cd_prediction[:,0]
+        outputs['Cd_min_BILD']          = Cl_Cd_prediction[:,1]
         outputs['alpha_max_LD']         = alpha_max_LD
 
         # TO DO: Derivatives!

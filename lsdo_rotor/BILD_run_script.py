@@ -5,7 +5,9 @@ try:
 except:
     raise ModuleNotFoundError("This run file requires a backend for CSDL")
 
-from lsdo_rotor.core.ILDM.idlm_model import ILDMModel
+from python_csdl_backend import Simulator
+
+from lsdo_rotor.core.BILD.BILD_model import BILDModel
 
 
 # Design parameters
@@ -16,7 +18,7 @@ num_blades = 3
 
 # Operating conditions
 rpm = np.array([1500])
-Vx = np.array([0])
+Vx = np.array([20])
 altitude = np.array([1000]) # in (m)
 
 # Visualize optimal blade design
@@ -27,15 +29,15 @@ num_nodes = len(rotor_radius)
 
 class RunModel(Model):
     def define(self):
-        self.create_input(name='rotor_radius', val=rotor_radius)
+        self.create_input(name='propeller_radius', val=rotor_radius)
         self.create_input(name='reference_chord', val=reference_chord)
         self.create_input(name='reference_radius', val=reference_radius)
 
-        self.create_input('omega', shape=(num_nodes,  1), units='rpm', val=rpm)
-        self.create_input(name='u', shape=(num_nodes,  1), units='m/s', val=Vx)
-        self.create_input(name='z', shape=(num_nodes,  1), units='m', val=altitude)
+        self.create_input('omega', shape=(num_nodes, ), units='rpm', val=rpm)
+        self.create_input(name='u', shape=(num_nodes, ), units='m/s', val=Vx)
+        self.create_input(name='z', shape=(num_nodes, ), units='m', val=altitude)
                 
-        self.add(ILDMModel(   
+        self.add(BILDModel(   
             name='propulsion',
             num_nodes=num_nodes,
             num_radial=40,
@@ -53,5 +55,5 @@ sim.run()
 
 
 if visualize_blade_design == 'y':
-    from lsdo_rotor.core.ILDM.functions.plot_ideal_loading_blade_shape import plot_ideal_loading_blade_shape
+    from lsdo_rotor.core.BILD.functions.plot_ideal_loading_blade_shape import plot_ideal_loading_blade_shape
     plot_ideal_loading_blade_shape(sim)

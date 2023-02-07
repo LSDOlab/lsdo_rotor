@@ -44,7 +44,7 @@ class RunModel(Model):
         # Inputs changing across conditions (segments), 
         #   - If the quantities are scalars, they will be expanded into shape (num_nodes,1)
         #   - If the quantities are vectors (numpy arrays), they must be specified s.t. they have shape (num_nodes,1)
-        self.create_input('omega', shape=(num_nodes, 1), units='rpm/1000', val=1500)
+        self.create_input('omega', shape=(num_nodes, 1), units='rpm', val=1500)
 
         self.create_input(name='u', shape=(num_nodes, 1), units='m/s', val=np.array([[0],[0]]))#np.linspace(0,100,num_nodes).reshape(num_nodes,1))
         self.create_input(name='v', shape=(num_nodes, 1), units='m/s', val=0)

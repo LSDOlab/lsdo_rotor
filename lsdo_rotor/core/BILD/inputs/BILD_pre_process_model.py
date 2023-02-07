@@ -3,7 +3,7 @@ from csdl import Model
 import csdl
 
 
-class ILDMPreprocessModel(Model):
+class BILDPreprocessModel(Model):
 
     def initialize(self):
         self.parameters.declare('shape', types=tuple)

@@ -3,7 +3,7 @@ from csdl import Model
 import csdl
 
 
-class ILDMCoreInputsModel(Model):
+class BILDCoreInputsModel(Model):
     def initialize(self):
         self.parameters.declare('shape', types=tuple)
 

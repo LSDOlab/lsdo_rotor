@@ -4,7 +4,7 @@ from csdl import Model
 import csdl
 
 
-class ILDMExternalInputsModel(Model):
+class BILDExternalInputsModel(Model):
     def initialize(self):
         self.parameters.declare('shape', types=tuple)
         self.parameters.declare('thrust_vector', types=np.ndarray)
@@ -29,12 +29,12 @@ class ILDMExternalInputsModel(Model):
         num_radial = shape[1]
         num_tangential = shape[2]
 
-        radius = self.declare_variable(name='propeller_radius', shape=(num_nodes,), units='m')
+        radius = self.declare_variable(name='propeller_radius', shape=(1,), units='m')
         rotor_radius = csdl.expand(radius,(num_nodes,))
         ref_radius = self.declare_variable('reference_radius', shape=(num_nodes,))
         ref_chord = self.declare_variable('reference_chord', shape=(num_nodes,))
 
-        omega = self.declare_variable('omega', shape=(num_nodes,  1), units='rpm')
+        omega = self.declare_variable('omega', shape=(num_nodes, ), units='rpm')
 
         u = self.declare_variable(name='u', shape=(num_nodes, 1), units='m/s') * -1
         v = self.declare_variable(name='v', shape=(num_nodes, 1), units='m/s', val=0) 
@@ -63,7 +63,7 @@ class ILDMExternalInputsModel(Model):
         dr = ((rotor_radius)-(0.2 * rotor_radius))/ (num_radial - 1)
         self.register_output('dr',dr)
 
-        ildm_Vt = self.create_output('ildm_tangential_inflow_velocity', shape=(num_nodes,))
+        BILD_Vt = self.create_output('BILD_tangential_inflow_velocity', shape=(num_nodes,))
         ref_sigma = self.create_output('reference_blade_solidity', shape=(num_nodes,))
 
         n = self.create_output('rotational_speed', shape=(num_evaluations,))
@@ -74,7 +74,7 @@ class ILDMExternalInputsModel(Model):
             z_dir[i,2] = 1
             
             n[i] = omega[i] / 60
-            ildm_Vt[i] = omega[i] / 60 * 2 * np.pi * ref_radius[i]
+            BILD_Vt[i] = omega[i] / 60 * 2 * np.pi * ref_radius[i]
             ref_sigma[i] = num_blades * ref_chord[i] / 2 / np.pi / ref_radius[i]
             
             V[i,0] = u[i,0]

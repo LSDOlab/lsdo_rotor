@@ -2,7 +2,7 @@ import numpy as np
 from csdl import Model
 import csdl
 
-class ILDMBackCompModel(Model):
+class BILDBackCompModel(Model):
 
     def initialize(self):
         self.parameters.declare('num_blades', types=int)
@@ -24,11 +24,11 @@ class ILDMBackCompModel(Model):
         chord  = self.declare_variable('reference_chord', shape = (shape[0],))
         # c_ref = rotor['c_ref']
         c_ref = csdl.expand(chord, shape, 'i->ijk')
-        rho = self.declare_variable('rho_ildm', shape=shape)
+        rho = self.declare_variable('rho_BILD', shape=shape)
 
 
-        Cl = self.declare_variable('Cl_max_ildm', shape = (shape[0],))
-        Cd = self.declare_variable('Cd_min_ildm', shape = (shape[0],))
+        Cl = self.declare_variable('Cl_max_BILD', shape = (shape[0],))
+        Cd = self.declare_variable('Cd_min_BILD', shape = (shape[0],))
         Cl_ref_chord = csdl.expand(Cl, shape, 'i->ijk')
         Cd_ref_chord = csdl.expand(Cd, shape, 'i->ijk')
 

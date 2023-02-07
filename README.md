@@ -23,7 +23,7 @@ Please follow the installation instructions provided in the above links. Once th
 
 The user will only have to change parameters in the `run.py` file, which has comments to explain how to properly use the code. Currently, our rotor analysis tool currently supports two modes of operation:
 
-1) Ideal-loading design method [`ILDM`](https://arc.aiaa.org/doi/abs/10.2514/6.2021-2598):
+1) BEM-based ideal-loading design [`ILDM`](https://arc.aiaa.org/doi/abs/10.2514/6.2021-2598) method:
   This is a rotor DESIGN tool to efficiently compute the most aerodynamic blade geometry of a rotor for given operating conditions. Unless otherwise indicated, all quantities have SI units. The following parameters can be adjusted in the run.py file:
     * `Vx` This is the axial inflow velocity perpendicular to the rotor disc. `Vx [m/s]` can be any reasonable number greater or equal to 0. (Note: If `Vx = 0` the aircraft is hovering) 
     * `Vy` `Vz` These are "sideslip" velocity components in the rotor plane. Because the `ILDM` is based on  BEM theory, the deisgn are most reliable if there is no sideslip. Therefore, we recommend `Vx = Vy = 0` if the user wants to use this design tool. 
