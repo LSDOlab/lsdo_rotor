@@ -47,7 +47,7 @@ class RunModel(Model):
             thrust_origin=np.array([8.5, 0, 5], dtype=float),
             ref_pt=np.array([4.5, 0, 5]),
             num_blades=num_blades,
-        ),name='BEM_model')
+        ),name='BILD_model')
 
 
 sim = Simulator(RunModel())

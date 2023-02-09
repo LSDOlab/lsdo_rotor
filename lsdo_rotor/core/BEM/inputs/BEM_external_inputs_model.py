@@ -31,8 +31,8 @@ class BEMExternalInputsModel(Model):
         omega = self.declare_variable('omega', shape=(num_nodes, 1), units='rpm') #* 1000
 
         u = self.declare_variable(name='u', shape=(num_nodes, 1), units='m/s') * -1
-        v = self.declare_variable(name='v', shape=(num_nodes, 1), units='m/s') 
-        w = self.declare_variable(name='w', shape=(num_nodes, 1), units='m/s') 
+        v = self.declare_variable(name='v', shape=(num_nodes, 1), units='m/s', val=0) 
+        w = self.declare_variable(name='w', shape=(num_nodes, 1), units='m/s', val=0) 
 
         V = self.create_output('velocity_vector', shape=(num_nodes,3), units='m/s')
 

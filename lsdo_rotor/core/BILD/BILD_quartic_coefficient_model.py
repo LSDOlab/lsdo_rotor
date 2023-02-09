@@ -18,6 +18,8 @@ class BILDQuarticCoeffsModel(Model):
         Cl = self.declare_variable('Cl_max_BILD', shape=(num_nodes,))
         Cd = self.declare_variable('Cd_min_BILD', shape=(num_nodes,))
 
+        self.print_var(Cl/Cd)
+
         # C = csdl.expand(csdl.reshape(S, (1,)), shape)
 
         C = csdl.expand(S, shape, 'i->ijk')

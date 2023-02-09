@@ -95,12 +95,12 @@ class BEMModel(Model):
         chord_b_spline = self.parameters['chord_b_spline']
 
         if pitch_b_spline == True:
-            pitch_cp = self.declare_variable(name='pitch_cp', shape=(4,), units='rad', val=np.linspace(50,10,4)*np.pi/180)
+            pitch_cp = self.declare_variable(name='pitch_cp', shape=(8,), units='rad', val=np.linspace(50, 10, 8) *np.pi/180)
             
-            pitch_A = get_bspline_mtx(4, num_radial, order=4)
+            pitch_A = get_bspline_mtx(8, num_radial, order=5)
             comp = csdl.custom(pitch_cp,op=BsplineComp(
                 num_pt=num_radial,
-                num_cp=4,
+                num_cp=8,
                 in_name='pitch_cp',
                 jac=pitch_A,
                 out_name='twist_profile',
@@ -110,11 +110,11 @@ class BEMModel(Model):
             pass
 
         if chord_b_spline == True:
-            chord_cp = self.declare_variable(name='chord_cp', shape=(2,), units='rad', val=np.array([0.3,0.1]))
-            chord_A = get_bspline_mtx(2, num_radial, order=2)
+            chord_cp = self.declare_variable(name='chord_cp', shape=(8,), units='rad', val=np.linspace(0.3, 0.1, 8))
+            chord_A = get_bspline_mtx(8, num_radial, order=5)
             comp_chord = csdl.custom(chord_cp,op=BsplineComp(
                 num_pt=num_radial,
-                num_cp=2,
+                num_cp=8,
                 in_name='chord_cp',
                 jac=chord_A,
                 out_name='chord_profile',

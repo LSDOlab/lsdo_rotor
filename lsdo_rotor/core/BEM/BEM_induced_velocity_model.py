@@ -28,7 +28,7 @@ class BEMInducedVelocityModel(Model):
         sigma = self.declare_variable('_blade_solidity', shape=shape)
         chord = self.declare_variable('_chord',shape=shape)
         radius = self.declare_variable('_radius', shape=shape)
-        rotor_radius = self.declare_variable('_rotor_radius', shape= shape)
+        rotor_radius = self.declare_variable('_rotor_radius', shape=shape)
         dr = self.declare_variable('_dr', shape=shape)
         
         rho_exp = csdl.expand(self.declare_variable('density', shape=(shape[0],)),shape,'i->ijk')
@@ -74,7 +74,7 @@ class BEMInducedVelocityModel(Model):
         
 
         dE = 2 * np.pi * radius * 1.2 * (Vt * ux * ut - 2 * Vx * ux**2 + 2 * Vx**2 * ux) * F * dr
-        E = csdl.sum(dE)
+        E = csdl.sum(dE, axes=(1, 2))
 
         C_T = T / rho / (csdl.sum(n,axes=(1,2))/shape[1]/shape[2])**2 / (2 * csdl.sum(rotor_radius,axes=(1,2))/shape[1]/shape[2])**4
         T_C = C_T / (np.pi**3 / 4)
@@ -113,7 +113,7 @@ class BEMInducedVelocityModel(Model):
         # self.register_output('C_T',T_C)
         self.register_output('C_Q',C_Q)
         self.register_output('C_P',C_P)
-        self.register_output('eta',eta)
+        self.register_output('eta', eta)
         self.register_output('J',J)
 
         # self.add_objective('total_torque')
