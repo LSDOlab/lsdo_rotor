@@ -8,7 +8,7 @@ lsdo_rotor requires the following packages to be installed before it can be used
 
 * [csdl](https://lsdolab.github.io/csdl/docs/tutorial/install) 
 * [csdl backend](https://github.com/LSDOlab/python_csdl_backend)
-* [Surrogate Modeling Toolbox](https://smt.readthedocs.io/en/latest/_src_docs/getting_started.html) Note that SMT is only needed for airfoil models that are trained based on XFOIL data. A custom airfoil polar can be described in terms of angle of attack only.
+* [Surrogate Modeling Toolbox](https://smt.readthedocs.io/en/latest/_src_docs/getting_started.html). Note that SMT is only needed for airfoil models that are trained based on XFOIL data. A custom airfoil polar can be described in terms of angle of attack only.
 * [vedo](https://pypi.org/project/vedo/) vedo is used for visualizing the rotor blades. It can be installed with the command ```pip install vedo```.
 
 Please follow the installation instructions provided in the above links. Once these packages are installed you can proceed as follows with the installation of lsdo_rotor:
@@ -19,13 +19,13 @@ Please follow the installation instructions provided in the above links. Once th
   * ``pip install -e .``
 * If the installation is successful, check that the run.py file executes by typing
   * ``cd lsdo_rotor``
-  * ``python run.py``
+  * ``python BEM_run_script.py`` or ``python BILD_run_script.py`
   
 # User guidelines
 
 The user will only have to change parameters in the `run.py` file, which has comments to explain how to properly use the code. Currently, our rotor analysis tool currently supports two modes of operation:
 
-1) BEM-based ideal-loading design [`ILDM`](https://arc.aiaa.org/doi/abs/10.2514/6.2021-2598) method:
+1) BEM-based ideal-loading design [`BILD`](https://arc.aiaa.org/doi/abs/10.2514/6.2021-2598) method:
   This is a rotor DESIGN tool to efficiently compute the most aerodynamic blade geometry of a rotor for given operating conditions. Unless otherwise indicated, all quantities have SI units. The following parameters can be adjusted in the run.py file:
     * `Vx` This is the axial inflow velocity perpendicular to the rotor disc. `Vx [m/s]` can be any reasonable number greater or equal to 0. (Note: If `Vx = 0` the aircraft is hovering) 
     * `Vy` `Vz` These are "sideslip" velocity components in the rotor plane. Because the `ILDM` is based on  BEM theory, the deisgn are most reliable if there is no sideslip. Therefore, we recommend `Vx = Vy = 0` if the user wants to use this design tool. 
