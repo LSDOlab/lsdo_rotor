@@ -98,7 +98,7 @@ visualize_blade(dash=rotor_dash)
  
   
 2) Blade element momentum (BEM) theory
-  This is a rotor analysis tool that computes the aerodynamic performance of an rotor using BEM theory. The following code can be found in the BIEM_run_script.py file.
+  This is a rotor analysis tool that computes the aerodynamic performance of an rotor using BEM theory. The following code can be found in the BEM_run_script.py file.
  
   ```python 
   import numpy as np 
