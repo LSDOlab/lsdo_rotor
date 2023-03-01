@@ -26,18 +26,78 @@ Please follow the installation instructions provided in the above links. Once th
 The user will only have to change parameters in the `run.py` file, which has comments to explain how to properly use the code. Currently, our rotor analysis tool currently supports two modes of operation:
 
 1) BEM-based ideal-loading design [`BILD`](https://arc.aiaa.org/doi/abs/10.2514/6.2021-2598) method:
-  This is a rotor DESIGN tool to efficiently compute the most aerodynamic blade geometry of a rotor for given operating conditions. Unless otherwise indicated, all quantities have SI units. The following parameters can be adjusted in the run.py file:
-    * `Vx` This is the axial inflow velocity perpendicular to the rotor disc. `Vx [m/s]` can be any reasonable number greater or equal to 0. (Note: If `Vx = 0` the aircraft is hovering) 
-    * `Vy` `Vz` These are "sideslip" velocity components in the rotor plane. Because the `ILDM` is based on  BEM theory, the deisgn are most reliable if there is no sideslip. Therefore, we recommend `Vx = Vy = 0` if the user wants to use this design tool. 
-    * `reference_radius` The user needs to specify a reference radius at which a value for the chord length is specified. We recommend `reference_radius = rotor_radius / 2 = rotor_diameter / 4`
-    * `reference_chord` The user needs to specify a reference chord length AT the above mentioned `reference_radius`. We defer to the judgment of user to specify a reasonable value
-    * `num_radial` This specifies the number of radial nodes. The larger the value the more accurate the results will. We recommend a value of at least 25. 
-    
-   These are only the parameters that require some more explanation. Please follow the comments in the run.py file for the other parameters
-  
-   The output of the `ILDM` is the following
-    * All performance related parameters (e.g. thrust, torque, efficiency, etc); The user can print these by setting `print_rotor_performance = 'y'`
-    * The ideal, back-computed blade shape given by twist and chord; The user can plot the ideal blade profile by setting `plot_rotor_blade_shape  = 'y'`
+  This is a rotor DESIGN tool to efficiently compute the most aerodynamic blade geometry of a rotor for given operating conditions. Unless otherwise indicated, all quantities have SI units. The following parameters can be adjusted in the BILD_run_script.py file:
+  ```python 
+
+import numpy as np 
+from python_csdl_backend import Simulator
+from lsdo_rotor.core.BILD.BILD_run_model import BILDRunModel
+from lsdo_rotor.utils.print_output import print_output
+from lsdo_rotor.utils.visualize_blade import visualize_blade
+from lsdo_rotor.utils.rotor_dash import RotorDash
+
+
+num_nodes = 1
+num_radial = 40
+num_tangential = 1
+
+# Thrust vector is the unit normal vector w.r.t the rotor disk
+thrust_vector =  np.array([
+    [1,0,0],]
+)
+
+# Thrust origin is the point at which the thrust acts (usually the center of the rotor disk)
+thrust_origin =  np.array([
+    [8.5, 0, 5],]
+)
+
+# Design parameters
+rotor_radius = 1
+reference_chord = 0.15
+reference_radius = 0.6 * rotor_radius # Expressed as a fraction of the radius
+
+# Operating conditions 
+Vx = 0 # (for axial flow or hover only)
+rpm = 800
+altitude = 0 # in (m)
+
+num_blades = 3
+
+shape = (num_nodes, num_radial, num_tangential)
+
+airfoil_polar = {
+    'Cl_0': 0.25,
+    'Cl_alpha': 5.1566,
+    'Cd_0': 0.01,
+    'Cl_stall': [-1, 1.5], 
+    'Cd_stall': [0.02, 0.06],
+    'alpha_Cl_stall': [-10, 15],
+}
+
+sim_BILD = Simulator(BILDRunModel(
+    rotor_radius=rotor_radius,
+    reference_chord=reference_chord,
+    reference_radius=reference_radius,
+    rpm=rpm,
+    Vx=Vx,
+    altitude=altitude,
+    shape=shape,
+    num_blades=num_blades,
+    airfoil_name='NACA_4412',
+    airfoil_polar=airfoil_polar,
+    thrust_vector=thrust_vector,
+    thrust_origin=thrust_origin,
+))
+
+
+
+rotor_dash = RotorDash()
+sim_BILD.add_recorder(rotor_dash.get_recorder())
+sim_BILD.run()
+print_output(sim=sim_BILD)
+visualize_blade(dash=rotor_dash)
+```
+ 
   
 2) Blade element momentum (BEM) theory
   This is a rotor ANALYSIS tool that computes the aerodynamic performance of an EXISTING rotor using BEM theory. In the run.py file the user can change the following parameters:
