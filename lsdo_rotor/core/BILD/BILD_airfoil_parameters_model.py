@@ -27,36 +27,64 @@ class BILDAirfoilParametersModel(csdl.CustomExplicitOperation):
         rotor = self.parameters['rotor']
         interp = rotor['interp']
 
-        Re = inputs['Re_BILD'].flatten()
-        alpha_range                     = np.linspace(-2*np.pi/180,10*np.pi/180,100)
-        Re_alpha_design_space           = np.zeros((len(alpha_range),2))
-        Re_alpha_design_space[:,0]      = alpha_range
-        
-        alpha_max_LD                    = np.zeros((shape[0],))
-
-        for i in range(shape[0]):
-            Re_alpha_design_space[:,1]      = Re[i]/2e6
+        if not rotor['custom_polar']:
+            Re = inputs['Re_BILD'].flatten()
+            alpha_range                     = np.linspace(-2*np.pi/180,10*np.pi/180,100)
+            Re_alpha_design_space           = np.zeros((len(alpha_range),2))
+            Re_alpha_design_space[:,0]      = alpha_range
             
-            Re_alpha_prediction             = interp.predict_values(Re_alpha_design_space)
-            LD_design_space                 = Re_alpha_prediction[:,0] / Re_alpha_prediction[:,1]
-            LD_max                          = np.max(LD_design_space)
-            # print(LD_max, 'max_LD')
+            alpha_max_LD                    = np.zeros((shape[0],))
 
-            alpha_LD_max_index              = np.where(LD_design_space == LD_max)
-            alpha_max_LD[i]                 = alpha_range[alpha_LD_max_index]
-            # print(alpha_max_LD)
+            for i in range(shape[0]):
+                Re_alpha_design_space[:,1]      = Re[i]/2e6
+                
+                Re_alpha_prediction             = interp.predict_values(Re_alpha_design_space)
+                LD_design_space                 = Re_alpha_prediction[:,0] / Re_alpha_prediction[:,1]
+                LD_max                          = np.max(LD_design_space)
+                # print(LD_max, 'max_LD')
 
-            max_Re_alpha_combination        = np.array([alpha_max_LD[i] , Re[i]/2e6],dtype=object)
-            max_Re_alpha_combination        = max_Re_alpha_combination.reshape((1,2))
+                alpha_LD_max_index              = np.where(LD_design_space == LD_max)
+                alpha_max_LD[i]                 = alpha_range[alpha_LD_max_index]
+                # print(alpha_max_LD)
+
+                max_Re_alpha_combination        = np.array([alpha_max_LD[i] , Re[i]/2e6],dtype=object)
+                max_Re_alpha_combination        = max_Re_alpha_combination.reshape((1,2))
+                
+                self.x[i,:]                     =  max_Re_alpha_combination[0,:]
+
+                
+            Cl_Cd_prediction                = interp.predict_values(self.x)
             
-            self.x[i,:]                     =  max_Re_alpha_combination[0,:]
+            outputs['Cl_max_BILD']          = Cl_Cd_prediction[:,0]
+            outputs['Cd_min_BILD']          = Cl_Cd_prediction[:,1]
+            outputs['alpha_max_LD']         = alpha_max_LD
 
+        else: 
+            alpha_range                     = np.linspace(-2*np.pi/180,10*np.pi/180,100)        
+            alpha_max_LD                    = np.zeros((shape[0],))
+
+            for i in range(shape[0]):                
+                Cl, Cd = interp.predict_values(alpha_range)
+                LD_design_space = Cl/Cd
+                LD_max = np.max(LD_design_space)
+                # print(LD_max, 'max_LD')
+
+                alpha_LD_max_index = np.where(LD_design_space == LD_max)
+                alpha_max_LD[i] = alpha_range[alpha_LD_max_index]
+                # print(alpha_max_LD)
+
+                # max_Re_alpha_combination        = np.array([alpha_max_LD[i] , Re[i]/2e6],dtype=object)
+                # max_Re_alpha_combination        = max_Re_alpha_combination.reshape((1,2))
+                
+                # self.x[i,:]                     =  max_Re_alpha_combination[0,:]
+
+                
+            Cl_max, Cd_max = interp.predict_values(alpha_max_LD)
             
-        Cl_Cd_prediction                = interp.predict_values(self.x)
-        
-        outputs['Cl_max_BILD']          = Cl_Cd_prediction[:,0]
-        outputs['Cd_min_BILD']          = Cl_Cd_prediction[:,1]
-        outputs['alpha_max_LD']         = alpha_max_LD
+            outputs['Cl_max_BILD'] = Cl_max
+            outputs['Cd_min_BILD'] = Cd_max
+            outputs['alpha_max_LD'] = alpha_max_LD
+
 
         # TO DO: Derivatives!
 

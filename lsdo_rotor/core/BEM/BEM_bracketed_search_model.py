@@ -38,10 +38,17 @@ class BEMBracketedSearchGroup(Model):
         model.register_output('alpha_distribution', alpha)
         
         # Adding custom component to embed airfoil model in the bracketed search
-        airfoil_model_output = csdl.custom(Re,alpha,chord, op= BEMAirfoilSurrogateModelGroup(
-            rotor=rotor,
-            shape=shape,
-        ))
+        if not rotor['custom_polar']:
+            airfoil_model_output = csdl.custom(Re, alpha, chord, op= BEMAirfoilSurrogateModelGroup(
+                rotor=rotor,
+                shape=shape,
+            ))
+        else:
+            print('custom polar')
+            airfoil_model_output = csdl.custom(Re, alpha, chord, op= BEMAirfoilSurrogateModelGroup(
+                rotor=rotor,
+                shape=shape,
+            ))
         model.register_output('Cl',airfoil_model_output[0])
         model.register_output('Cd',airfoil_model_output[1])
         

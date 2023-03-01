@@ -26,6 +26,7 @@ class BEMExternalInputsModel(Model):
        
         ft2m = 1/3.281
         rotor_radius = self.declare_variable(name='propeller_radius', shape=(1,), units='m') #* ft2m / 2
+        # self.print_var(rotor_radius)
 
         # Inputs changing across conditions (segments)
         omega = self.declare_variable('omega', shape=(num_nodes, 1), units='rpm') #* 1000

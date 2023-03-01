@@ -30,8 +30,8 @@ class BILDPhiBracketedSearchModel(Model):
 
         Cl = model.declare_variable('Cl_max_BILD', shape=(num_nodes,))
         Cd = model.declare_variable('Cd_min_BILD', shape=(num_nodes,))
-        self.print_var(Cl)
-        self.print_var(Cd)
+        # self.print_var(Cl)
+        # self.print_var(Cd)
 
         f_tip = B / 2 * (rotor_radius - reference_radius) / reference_radius / csdl.sin(phi_reference)
         f_hub = B / 2 * (reference_radius - hub_radius) / hub_radius / csdl.sin(phi_reference)

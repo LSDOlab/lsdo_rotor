@@ -20,7 +20,7 @@ class PittPetersModel(Model):
         self.parameters.declare('num_nodes', default=1)
         self.parameters.declare('num_radial', types=int, default=20)
         self.parameters.declare('num_tangential', types=int, default=20)
-        self.parameters.declare(name='airfoil', default='NACA_4412')
+        self.parameters.declare(name='airfoil')
 
         self.parameters.declare('thrust_vector', types=np.ndarray)
         self.parameters.declare('thrust_origin', types=np.ndarray)

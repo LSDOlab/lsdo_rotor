@@ -11,7 +11,7 @@ class BILDBackCompModel(Model):
     def define(self):
         num_blades = self.parameters['num_blades']
         shape = self.parameters['shape']
-        print('BILD SHAPE', shape)
+        # print('BILD SHAPE', shape)
 
         Vx = self.declare_variable('_axial_inflow_velocity', shape=shape)
         Vt = self.declare_variable('_tangential_inflow_velocity', shape=shape)
@@ -35,9 +35,12 @@ class BILDBackCompModel(Model):
         Cd = self.declare_variable('Cd_min_BILD', shape = (shape[0],))
         Cl_ref_chord = csdl.expand(Cl, shape, 'i->ijk')
         Cd_ref_chord = csdl.expand(Cd, shape, 'i->ijk')
+        self.register_output('Cl_2', Cl_ref_chord)
+        self.register_output('Cd_2', Cd_ref_chord)
 
         alpha_max_LD = self.declare_variable('alpha_max_LD', shape = (shape[0],))
         alpha_ref_chord = csdl.expand(alpha_max_LD, shape, 'i->ijk')
+        self.register_output('AoA', alpha_ref_chord)
         
         a = 2 * Cl_ref_chord
         b = 2 * Cd_ref_chord * Vt - 2 * Cl_ref_chord * Vx
@@ -92,12 +95,18 @@ class BILDBackCompModel(Model):
         C_P = 2 * np.pi * C_Q
         J = csdl.sum((Vx / n /  (2 * rotor_radius)),axes=(1,2))/shape[1]/shape[2]
         eta = C_T * J / C_P
+        FOM = C_T * (C_T/2)**0.5 / C_P
+
 
         self.register_output('_local_thrust', dT)
+        self.register_output('_dT', dT*1)
         self.register_output('total_thrust', T)
+        self.register_output('T', T*1)
         
         self.register_output('_local_torque', dQ)
+        self.register_output('_dQ', dQ*1)
         self.register_output('total_torque', Q)
+        self.register_output('Q', Q*1)
 
         self.register_output('_local_thrust_2', dT2)
         self.register_output('total_thrust_2', csdl.sum(dT2,axes = (1,)))
@@ -109,6 +118,8 @@ class BILDBackCompModel(Model):
         self.register_output('_local_twist_angle', theta)
         self.register_output('_local_chord',c)
         self.register_output('_mod_local_chord', c_mod)
+        self.register_output('_chord', c_mod*1)
+        self.register_output('_pitch', theta*1)
 
         self.register_output('local_ideal_energy_loss',dE)
         self.register_output('total_energy_loss',E)
@@ -121,6 +132,7 @@ class BILDBackCompModel(Model):
         self.register_output('C_P', C_P)
         self.register_output('eta', eta)
         self.register_output('J', J)
+        self.register_output('FOM', FOM)
 
         # self.register_output('weights_1',weights_1)
         # self.register_output('weights_2',weights_2)

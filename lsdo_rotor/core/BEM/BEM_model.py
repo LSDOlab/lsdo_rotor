@@ -28,7 +28,8 @@ class BEMModel(Model):
         self.parameters.declare('num_nodes', default=1)
         self.parameters.declare('num_radial', types=int, default=30)
         self.parameters.declare('num_tangential', types=int, default=30)
-        self.parameters.declare(name='airfoil', default='NACA_4412')
+        self.parameters.declare('airfoil', types=str, allow_none=True)
+        self.parameters.declare('airfoil_polar', types=dict, allow_none=True)
         
         self.parameters.declare('thrust_vector',types=np.ndarray)
         self.parameters.declare('thrust_origin',types=np.ndarray)
@@ -36,6 +37,8 @@ class BEMModel(Model):
         self.parameters.declare('num_blades', types=int)
         self.parameters.declare('chord_b_spline',types=Boolean, default=False)
         self.parameters.declare('pitch_b_spline',types=Boolean,default=False)
+        self.parameters.declare('num_cp', default=None, allow_none=True)
+        self.parameters.declare('order', default=None, allow_none=True)
         self.parameters.declare('normalized_hub_radius',default=0.2)
 
     def define(self):
@@ -45,12 +48,11 @@ class BEMModel(Model):
         num_tangential = self.parameters['num_tangential']
         airfoil = self.parameters['airfoil']
         norm_hub_rad = self.parameters['normalized_hub_radius']
+        custom_polar = self.parameters['airfoil_polar']
         
         reference_point = self.parameters['ref_pt']
         t_v = self.parameters['thrust_vector']
-        print(t_v)
         t_o = self.parameters['thrust_origin']
-        print(t_o)
         if t_v.shape[0] == 1:
             n = 1
             self.create_input('thrust_vector', shape=(num_nodes,3), val=np.tile(t_v,(num_nodes,1)))
@@ -60,13 +62,10 @@ class BEMModel(Model):
             raise ValueError('Thrust vector matrix must have shape (num_nodes,3')
         else:
             n = t_v.shape[0]
-            print(n)
-            print(t_v.shape)
             if n != num_nodes:
                 raise ValueError('If number of thrust vectors is greater than 1, it must be equal to num_nodes')
             else:
                 self.create_input('thrust_vector',shape=(num_nodes,3),val=t_v)
-
 
         if t_o.shape[0] == 1:
             m = 1
@@ -87,20 +86,21 @@ class BEMModel(Model):
         
         shape = (num_nodes, num_radial, num_tangential)       
         
-        interp = get_surrogate_model(airfoil)
-        rotor = get_BEM_rotor_dictionary(airfoil,interp)
-
+        interp = get_surrogate_model(airfoil, custom_polar)
+        rotor = get_BEM_rotor_dictionary(airfoil, interp, custom_polar)
+    
         # prop_radius = self.declare_variable(name='propeller_radius', shape=(1, ), units='m')
         pitch_b_spline = self.parameters['pitch_b_spline']
         chord_b_spline = self.parameters['chord_b_spline']
-
+        order = self.parameters['order']
+        num_cp = self.parameters['num_cp']
         if pitch_b_spline == True:
-            pitch_cp = self.declare_variable(name='pitch_cp', shape=(8,), units='rad', val=np.linspace(50, 10, 8) *np.pi/180)
+            pitch_cp = self.declare_variable(name='pitch_cp', shape=(num_cp,), units='rad', val=np.linspace(50, 10, num_cp) *np.pi/180)
             
-            pitch_A = get_bspline_mtx(8, num_radial, order=5)
+            pitch_A = get_bspline_mtx(num_cp, num_radial, order=order)
             comp = csdl.custom(pitch_cp,op=BsplineComp(
                 num_pt=num_radial,
-                num_cp=8,
+                num_cp=num_cp,
                 in_name='pitch_cp',
                 jac=pitch_A,
                 out_name='twist_profile',
@@ -110,11 +110,11 @@ class BEMModel(Model):
             pass
 
         if chord_b_spline == True:
-            chord_cp = self.declare_variable(name='chord_cp', shape=(8,), units='rad', val=np.linspace(0.3, 0.1, 8))
-            chord_A = get_bspline_mtx(8, num_radial, order=5)
+            chord_cp = self.declare_variable(name='chord_cp', shape=(num_cp,), units='rad', val=np.linspace(0.3, 0.1, num_cp))
+            chord_A = get_bspline_mtx(num_cp, num_radial, order=order)
             comp_chord = csdl.custom(chord_cp,op=BsplineComp(
                 num_pt=num_radial,
-                num_cp=8,
+                num_cp=num_cp,
                 in_name='chord_cp',
                 jac=chord_A,
                 out_name='chord_profile',
@@ -162,10 +162,16 @@ class BEMModel(Model):
         alpha = twist - phi
         self.register_output('AoA', alpha)
 
-        airfoil_model_output_2 = csdl.custom(Re,alpha,chord, op= BEMAirfoilSurrogateModelGroup2(
-            rotor=rotor,
-            shape=shape,
-        ))
+        if not rotor['custom_polar']:
+            airfoil_model_output_2 = csdl.custom(Re,alpha,chord, op= BEMAirfoilSurrogateModelGroup2(
+                rotor=rotor,
+                shape=shape,
+            ))
+        else:
+            airfoil_model_output_2 = csdl.custom(alpha, op= BEMAirfoilSurrogateModelGroup2(
+                rotor=rotor,
+                shape=shape,
+            ))
         self.register_output('Cl_2',airfoil_model_output_2[0])
         self.register_output('Cd_2',airfoil_model_output_2[1])
 

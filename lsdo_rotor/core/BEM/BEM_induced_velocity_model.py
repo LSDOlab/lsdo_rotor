@@ -71,6 +71,8 @@ class BEMInducedVelocityModel(Model):
         
         Q = csdl.sum(dQ, axes = (1,2)) / shape[2]
 
+        dT_star = 2 * np.pi * rho_exp * (Vt - 0.5 * ut) * ut * radius * dr 
+        T_star = csdl.sum(dT_star, axes = (1,2)) / shape[2]
         
 
         dE = 2 * np.pi * radius * 1.2 * (Vt * ux * ut - 2 * Vx * ux**2 + 2 * Vx**2 * ux) * F * dr
@@ -84,22 +86,31 @@ class BEMInducedVelocityModel(Model):
         C_P = 2 * np.pi * C_Q
         J = csdl.sum((Vx / n /  (2 * rotor_radius)),axes=(1,2))/shape[1]/shape[2]
         eta = C_T * J / C_P
+        FOM = C_T * (C_T/2)**0.5 / C_P
 
         self.register_output('_ux',ux)
         self.register_output('_ux_2',ux_2)
         self.register_output('_ut', ut)
 
         self.register_output('_local_thrust', dT)
+        self.register_output('_dT', dT*1)
         self.register_output('_local_thrust_induced', dT_induced)
         # self.register_output('total_thrust', T)
         self.register_output('T', T)
+        self.register_output('Q', Q*1)
         # self.print_var(T)
         self.register_output('dC_T',dC_T)
         
         self.register_output('_local_thrust_2', dT2)
         self.register_output('total_thrust_2', T2)
 
+        self.register_output('_local_thrust_star', dT_star)
+        self.register_output('total_thrust_star', T_star)
+
+        # self.register_output('')
+
         self.register_output('_local_torque', dQ)
+        self.register_output('_dQ', dQ*1)
         self.register_output('_local_torque_induced', dQ_induced)
         self.register_output('total_torque', Q)
         
@@ -115,6 +126,7 @@ class BEMInducedVelocityModel(Model):
         self.register_output('C_P',C_P)
         self.register_output('eta', eta)
         self.register_output('J',J)
+        self.register_output('FOM', FOM)
 
         # self.add_objective('total_torque')
         # self.add_objective('total_energy_loss')

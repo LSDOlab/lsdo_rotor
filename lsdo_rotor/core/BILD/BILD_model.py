@@ -23,11 +23,12 @@ from lsdo_rotor.core.BILD.functions.get_BILD_rotor_dictionary import get_BILD_ro
 class BILDModel(Model):
 
     def initialize(self):
-        self.parameters.declare(name='name', default='propulsion')
+        self.parameters.declare('name', default='propulsion')
         self.parameters.declare('num_nodes', default=1)
         self.parameters.declare('num_radial', types=int, default=30)
         self.parameters.declare('num_tangential', types=int, default=30)
-        self.parameters.declare(name='airfoil', default='NACA_4412')
+        self.parameters.declare('airfoil')
+        self.parameters.declare('airfoil_polar', allow_none=True)
         # self.parameters.declare('shape', types=tuple)
 
         self.parameters.declare('thrust_vector', types=np.ndarray)
@@ -41,26 +42,53 @@ class BILDModel(Model):
         num_radial = self.parameters['num_radial']
         num_tangential = self.parameters['num_tangential']
         airfoil = self.parameters['airfoil']
+        custom_polar = self.parameters['airfoil_polar']
         # shape = self.parameters['shape']
         
-        thrust_vector = self.parameters['thrust_vector']
-        thrust_origin = self.parameters['thrust_origin']
-        ref_pt = self.parameters['ref_pt']
-
         num_blades = self.parameters['num_blades']
         
         shape = (num_nodes, num_radial, num_tangential)       
         
-        interp = get_surrogate_model(airfoil)
-        rotor = get_BILD_rotor_dictionary(airfoil,interp)
+        interp = get_surrogate_model(airfoil, custom_polar)
+        rotor = get_BILD_rotor_dictionary(airfoil, interp, custom_polar)
 
-        prop_radius = self.declare_variable(name='propeller_radius', shape=(1, ), units='m')
+        reference_point = self.parameters['ref_pt']
+        t_v = self.parameters['thrust_vector']
+        t_o = self.parameters['thrust_origin']
+        if t_v.shape[0] == 1:
+            n = 1
+            self.create_input('thrust_vector', shape=(num_nodes,3), val=np.tile(t_v,(num_nodes,1)))
+        elif len(t_v.shape) > 2:
+            raise ValueError('Thrust vector cannot be a tensor; It must be at most a matrix of size (num_nodes,3')
+        elif t_v.shape[1] != 3:
+            raise ValueError('Thrust vector matrix must have shape (num_nodes,3')
+        else:
+            n = t_v.shape[0]
+            if n != num_nodes:
+                raise ValueError('If number of thrust vectors is greater than 1, it must be equal to num_nodes')
+            else:
+                self.create_input('thrust_vector',shape=(num_nodes,3),val=t_v)
+
+
+        if t_o.shape[0] == 1:
+            m = 1
+            self.create_input('thrust_origin', shape=(num_nodes,3), val=np.tile(t_o,(num_nodes,1)))
+        elif len(t_o.shape) > 2:
+            raise ValueError('Thrust origin cannot be a tensor; It must be at most a matrix of size (num_nodes,3')
+        elif t_o.shape[1] != 3:
+            raise ValueError('Thrust origin matrix must have shape (num_nodes,3')
+        else:
+            m = t_o.shape[0]
+            if m != num_nodes:
+                raise ValueError('If number of thrust origin vector is greater than 1, it must be equal to num_nodes')
+            else:
+                self.create_input('thrust_origin',shape=(num_nodes,3),val=t_o)
 
         self.add(BILDExternalInputsModel(
             shape=shape,
-            thrust_vector=thrust_vector,
             num_blades=num_blades
         ), name='BILD_external_inputs_model')#, promotes = ['*'])
+
 
         self.add(BILDCoreInputsModel(
             shape=shape,
@@ -116,17 +144,25 @@ class BILDModel(Model):
             num_blades=num_blades,
         ), name = 'BILD_back_comp_group')#, promotes = ['*'])
 
-        # # Post-Processing
-        # T = self.declare_variable('T', shape=(num_nodes,))
-        # F = self.create_output('F', shape=(num_nodes,3))
-        # M = self.create_output('M', shape=(num_nodes,3))
-        # n = self.declare_variable('thrust_vector', shape=(1,3))
-        # for i in range(num_nodes):
-        #     F[i,:] = csdl.expand(T[i],(1,3)) * n
-        #     M[i,0] = F[i,2] * (thrust_origin[1] - ref_pt[1])
-        #     M[i,1] = F[i,2] * (thrust_origin[0] - ref_pt[0])
-        #     M[i,2] = F[i,0] * (thrust_origin[1] - ref_pt[1])
+        # Post-Processing
+        T = self.declare_variable('total_thrust', shape=(num_nodes,))
+        F = self.create_output('F', shape=(num_nodes,3))
+        M = self.create_output('M', shape=(num_nodes,3))
+        thrust_vector = self.declare_variable('thrust_vector', shape=(num_nodes,3))
+        thrust_origin = self.declare_variable('thrust_origin', shape=(num_nodes,3))
+        ref_pt = self.declare_variable('reference_point',shape=(num_nodes,3),val=np.tile(reference_point,(num_nodes,1)))
+        # loop over pt set list 
+        for i in range(num_nodes):
+            # F[i,:] = csdl.expand(T[i],(1,3)) * n[i,:]
+            F[i, 0] = csdl.reshape(T[i], (1, 1)) * thrust_vector[i, 0] #- 9 * hub_drag[i,0]
+            F[i, 1] = csdl.reshape(T[i], (1, 1)) * thrust_vector[i, 1]
+            F[i, 2] = csdl.reshape(T[i], (1, 1)) * thrust_vector[i, 2]
+            
 
+        moments = csdl.cross(thrust_origin-ref_pt, F, axis=1)
+        M[:,0] = moments[:,0]
+        M[:,1] = moments[:,1]
+        M[:,2] = moments[:,2]
 
 
     
