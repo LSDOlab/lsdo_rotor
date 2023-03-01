@@ -7,7 +7,8 @@ This is the rotor analysis and design tool developed by the LSDO lab. Please fol
 lsdo_rotor requires the following packages to be installed before it can be used:
 
 * [csdl](https://lsdolab.github.io/csdl/docs/tutorial/install) 
-* [smt](https://smt.readthedocs.io/en/latest/_src_docs/getting_started.html)
+* [csdl backend](https://lsdolab.github.io/csdl/docs/tutorial/install)
+* [Surrogate Modeling Toolbox](https://smt.readthedocs.io/en/latest/_src_docs/getting_started.html) (Note that SMT is only needed for airfoil models that are trained based on XFOIL data. A custom airfoil polar can be described in terms of angle of attack only.)
 
 Please follow the installation instructions provided in the above links. Once these packages are installed you can proceed as follows with the installation of lsdo_rotor:
 
