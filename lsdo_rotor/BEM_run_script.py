@@ -60,5 +60,5 @@ sim_BEM = Simulator(BEMRunModel(
 rotor_dash = RotorDash()
 sim_BEM.add_recorder(rotor_dash.get_recorder())
 sim_BEM.run()
-print_output(sim=sim_BEM)
+print_output(sim=sim_BEM, write_to_csv=True)
 visualize_blade(dash=rotor_dash)

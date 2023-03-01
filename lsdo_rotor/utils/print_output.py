@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd 
 pd.set_option('colheader_justify', 'center')
+import os
 
 
 def print_output(sim, write_to_csv : bool=False):
@@ -74,4 +75,9 @@ def print_output(sim, write_to_csv : bool=False):
                 '----------------'
     print(message2)
     print(distributions_df)
+
+    if write_to_csv == True:
+        cwd = os.getcwd()
+        file_path = cwd + '/rotor_performance.csv'
+        high_level_df.to_csv(file_path)
     # print(s)
