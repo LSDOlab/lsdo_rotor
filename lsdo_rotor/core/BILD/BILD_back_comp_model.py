@@ -2,7 +2,7 @@ import numpy as np
 from csdl import Model
 import csdl
 
-class ILDMBackCompModel(Model):
+class BILDBackCompModel(Model):
 
     def initialize(self):
         self.parameters.declare('num_blades', types=int)
@@ -11,9 +11,12 @@ class ILDMBackCompModel(Model):
     def define(self):
         num_blades = self.parameters['num_blades']
         shape = self.parameters['shape']
+        # print('BILD SHAPE', shape)
 
         Vx = self.declare_variable('_axial_inflow_velocity', shape=shape)
         Vt = self.declare_variable('_tangential_inflow_velocity', shape=shape)
+        angular_speed = self.declare_variable('_angular_speed', shape=shape)
+        n = angular_speed / 2 / np.pi
 
         eta = self.declare_variable('eta_2', shape=shape)
         dr = self.declare_variable('_dr', shape=shape)
@@ -24,16 +27,20 @@ class ILDMBackCompModel(Model):
         chord  = self.declare_variable('reference_chord', shape = (shape[0],))
         # c_ref = rotor['c_ref']
         c_ref = csdl.expand(chord, shape, 'i->ijk')
-        rho = self.declare_variable('rho_ildm', shape=shape)
+        rho_exp = csdl.expand(self.declare_variable('density', shape=(shape[0],)),shape,'i->ijk')
+        # self.print_var(rho_exp)
+        rho = self.declare_variable('density', shape=(shape[0],))
 
-
-        Cl = self.declare_variable('Cl_max_ildm', shape = (shape[0],))
-        Cd = self.declare_variable('Cd_min_ildm', shape = (shape[0],))
+        Cl = self.declare_variable('Cl_max_BILD', shape = (shape[0],))
+        Cd = self.declare_variable('Cd_min_BILD', shape = (shape[0],))
         Cl_ref_chord = csdl.expand(Cl, shape, 'i->ijk')
         Cd_ref_chord = csdl.expand(Cd, shape, 'i->ijk')
+        self.register_output('Cl_2', Cl_ref_chord)
+        self.register_output('Cd_2', Cd_ref_chord)
 
         alpha_max_LD = self.declare_variable('alpha_max_LD', shape = (shape[0],))
         alpha_ref_chord = csdl.expand(alpha_max_LD, shape, 'i->ijk')
+        self.register_output('AoA', alpha_ref_chord)
         
         a = 2 * Cl_ref_chord
         b = 2 * Cd_ref_chord * Vt - 2 * Cl_ref_chord * Vx
@@ -59,21 +66,21 @@ class ILDMBackCompModel(Model):
         F = F_tip * F_hub
         self.register_output('F_dist',F)
 
-        dT = 4 * np.pi * rho * ux * (ux-Vx) * radius * F *  dr
-        T = csdl.sum(dT, axes = (1,))
+        dT = 4 * np.pi * rho_exp * ux * (ux-Vx) * radius * F *  dr
+        T = csdl.sum(dT, axes = (1, 2))
        
-        dQ = 2 * np.pi * rho * ux * ut * radius**2 * F * dr
-        Q = csdl.sum(dQ, axes = (1,))
+        dQ = 2 * np.pi * rho_exp * ux * ut * radius**2 * F * dr
+        Q = csdl.sum(dQ, axes = (1, 2))
         
-        dE = 2 * np.pi * radius * rho * (Vt * ux * ut - 2 * Vx * ux**2 + 2 * Vx**2 * ux) * F * dr
-        E = csdl.sum(dE, axes = (1,))
-        c = 2 * dQ / (rho * dr * num_blades * (ux**2 + (Vt - 0.5 * ut)**2) * radius * (Cl_ref_chord * csdl.sin(phi) + Cd_ref_chord * csdl.cos(phi)))
+        dE = 2 * np.pi * radius * rho_exp * (Vt * ux * ut - 2 * Vx * ux**2 + 2 * Vx**2 * ux) * F * dr
+        E = csdl.sum(dE, axes=(1, 2))
+        c = 2 * dQ / (rho_exp * dr * num_blades * (ux**2 + (Vt - 0.5 * ut)**2) * radius * (Cl_ref_chord * csdl.sin(phi) + Cd_ref_chord * csdl.cos(phi)))
         
 
         Cx = Cl_ref_chord * csdl.cos(phi) - Cd_ref_chord * csdl.sin(phi)
         Ct = Cl_ref_chord * csdl.sin(phi) + Cd_ref_chord * csdl.cos(phi)
-        dT2 = num_blades * Cx * 0.5 * rho * (ux**2 + (Vt - 0.5 * ut)**2) * c * dr
-        dQ2 = num_blades * Ct * 0.5 * rho * (ux**2 + (Vt - 0.5 * ut)**2) * c * dr * radius
+        dT2 = num_blades * Cx * 0.5 * rho_exp * (ux**2 + (Vt - 0.5 * ut)**2) * c * dr
+        dQ2 = num_blades * Ct * 0.5 * rho_exp * (ux**2 + (Vt - 0.5 * ut)**2) * c * dr * radius
 
         theta = (phi + alpha_ref_chord)
 
@@ -82,12 +89,24 @@ class ILDMBackCompModel(Model):
 
         c_mod = 2.5 * c_ref *  weights_1  + c * weights_2
 
+        # Performance coefficients:
+        C_T = T / rho / (csdl.sum(n,axes=(1,2))/shape[1]/shape[2])**2 / (2 * csdl.sum(rotor_radius,axes=(1,2))/shape[1]/shape[2])**4
+        C_Q = Q / rho / (csdl.sum(n,axes=(1,2))/shape[1]/shape[2])**2 / (2 * csdl.sum(rotor_radius,axes=(1,2))/shape[1]/shape[2])**5
+        C_P = 2 * np.pi * C_Q
+        J = csdl.sum((Vx / n /  (2 * rotor_radius)),axes=(1,2))/shape[1]/shape[2]
+        eta = C_T * J / C_P
+        FOM = C_T * (C_T/2)**0.5 / C_P
+
 
         self.register_output('_local_thrust', dT)
+        self.register_output('_dT', dT*1)
         self.register_output('total_thrust', T)
+        self.register_output('T', T*1)
         
         self.register_output('_local_torque', dQ)
+        self.register_output('_dQ', dQ*1)
         self.register_output('total_torque', Q)
+        self.register_output('Q', Q*1)
 
         self.register_output('_local_thrust_2', dT2)
         self.register_output('total_thrust_2', csdl.sum(dT2,axes = (1,)))
@@ -99,12 +118,21 @@ class ILDMBackCompModel(Model):
         self.register_output('_local_twist_angle', theta)
         self.register_output('_local_chord',c)
         self.register_output('_mod_local_chord', c_mod)
+        self.register_output('_chord', c_mod*1)
+        self.register_output('_pitch', theta*1)
 
         self.register_output('local_ideal_energy_loss',dE)
         self.register_output('total_energy_loss',E)
 
         self.register_output('_back_comp_axial_induced_velocity', ux)
         self.register_output('_back_comp_tangential_induced_velocity', ut)
+
+        self.register_output('C_T', C_T)
+        self.register_output('C_Q', C_Q)
+        self.register_output('C_P', C_P)
+        self.register_output('eta', eta)
+        self.register_output('J', J)
+        self.register_output('FOM', FOM)
 
         # self.register_output('weights_1',weights_1)
         # self.register_output('weights_2',weights_2)

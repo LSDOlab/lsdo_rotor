@@ -2,7 +2,7 @@ import numpy as np
 from csdl import Model
 import csdl
 
-class ILDMQuarticSolverModel(Model):
+class BILDQuarticSolverModel(Model):
 
     def initialize(self):
         self.parameters.declare('shape', types=tuple)

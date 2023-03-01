@@ -26,13 +26,14 @@ class BEMExternalInputsModel(Model):
        
         ft2m = 1/3.281
         rotor_radius = self.declare_variable(name='propeller_radius', shape=(1,), units='m') #* ft2m / 2
+        # self.print_var(rotor_radius)
 
         # Inputs changing across conditions (segments)
         omega = self.declare_variable('omega', shape=(num_nodes, 1), units='rpm') #* 1000
 
         u = self.declare_variable(name='u', shape=(num_nodes, 1), units='m/s') * -1
-        v = self.declare_variable(name='v', shape=(num_nodes, 1), units='m/s') 
-        w = self.declare_variable(name='w', shape=(num_nodes, 1), units='m/s') 
+        v = self.declare_variable(name='v', shape=(num_nodes, 1), units='m/s', val=0) 
+        w = self.declare_variable(name='w', shape=(num_nodes, 1), units='m/s', val=0) 
 
         V = self.create_output('velocity_vector', shape=(num_nodes,3), units='m/s')
 

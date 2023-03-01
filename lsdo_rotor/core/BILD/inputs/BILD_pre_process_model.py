@@ -3,7 +3,7 @@ from csdl import Model
 import csdl
 
 
-class ILDMPreprocessModel(Model):
+class BILDPreprocessModel(Model):
 
     def initialize(self):
         self.parameters.declare('shape', types=tuple)
@@ -15,7 +15,6 @@ class ILDMPreprocessModel(Model):
 
         # -----
         _rotational_speed = self.declare_variable('_rotational_speed', shape=shape)
-        _chord = self.declare_variable('_chord', shape=shape)
         _hub_radius = self.declare_variable('_hub_radius', shape=shape)
         _rotor_radius = self.declare_variable('_rotor_radius', shape=shape)
         _theta = self.declare_variable('_theta', shape=shape)
@@ -37,8 +36,6 @@ class ILDMPreprocessModel(Model):
         _ref_radius = _hub_radius + (_rotor_radius - _hub_radius) * _normalized_radius
         self.register_output('_ref_radius',_ref_radius)
         # -----
-
-        self.register_output('_blade_solidity', num_blades * _chord / 2. / np.pi / _radius)
         # -----
 
         _inflow_x = csdl.einsum(_inflow_velocity, _x_dir, subscripts='ijkl,ijkl->ijk')

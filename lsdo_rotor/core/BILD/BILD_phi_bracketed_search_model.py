@@ -2,7 +2,7 @@ import numpy as np
 from csdl import Model, ScipyKrylov, NewtonSolver, NonlinearBlockGS
 import csdl
 
-class ILDMPhiBracketedSearchModel(Model):
+class BILDPhiBracketedSearchModel(Model):
 
     def initialize(self):
         self.parameters.declare('shape', types=tuple)
@@ -16,22 +16,22 @@ class ILDMPhiBracketedSearchModel(Model):
         model = Model()
 
         Vx = model.declare_variable('u' , shape=(num_nodes,))
-        Vt = model.declare_variable('ildm_tangential_inflow_velocity', shape=(num_nodes,))
+        Vt = model.declare_variable('BILD_tangential_inflow_velocity', shape=(num_nodes,))
         reference_sigma = model.declare_variable('reference_blade_solidity', shape=(num_nodes,))
         reference_radius = model.declare_variable('reference_radius', shape=(num_nodes,))
         rotor_radius = model.declare_variable('rotor_radius', shape=(num_nodes,))
         hub_radius = model.declare_variable('hub_radius', shape=(num_nodes,))
 
         
-        phi_reference = model.declare_variable('phi_reference_ildm', shape=(num_nodes,))
+        phi_reference = model.declare_variable('phi_reference_BILD', shape=(num_nodes,))
 
         # Cl = rotor['ideal_Cl_ref_chord']
         # Cd = rotor['ideal_Cd_ref_chord']
 
-        Cl = model.declare_variable('Cl_max_ildm', shape=(num_nodes,))
-        Cd = model.declare_variable('Cd_min_ildm', shape=(num_nodes,))
-        self.print_var(Cl)
-        self.print_var(Cd)
+        Cl = model.declare_variable('Cl_max_BILD', shape=(num_nodes,))
+        Cd = model.declare_variable('Cd_min_BILD', shape=(num_nodes,))
+        # self.print_var(Cl)
+        # self.print_var(Cd)
 
         f_tip = B / 2 * (rotor_radius - reference_radius) / reference_radius / csdl.sin(phi_reference)
         f_hub = B / 2 * (reference_radius - hub_radius) / hub_radius / csdl.sin(phi_reference)
@@ -54,7 +54,7 @@ class ILDMPhiBracketedSearchModel(Model):
         eps = 1e-6
         # setting up callable object
         solve_residual_function = self.create_implicit_operation(model)
-        solve_residual_function.declare_state('phi_reference_ildm', residual='residual_function',  bracket=(eps, np.pi/2 - eps))
+        solve_residual_function.declare_state('phi_reference_BILD', residual='residual_function',  bracket=(eps, np.pi/2 - eps))
         solve_residual_function.nonlinear_solver = NewtonSolver(
             solve_subsystems=False,
             maxiter=100,
@@ -64,25 +64,15 @@ class ILDMPhiBracketedSearchModel(Model):
 
 
         Vx = self.declare_variable('u', shape=(num_nodes,))
-        Vt = self.declare_variable('ildm_tangential_inflow_velocity', shape=(num_nodes,))
+        Vt = self.declare_variable('BILD_tangential_inflow_velocity', shape=(num_nodes,))
         reference_sigma = self.declare_variable('reference_blade_solidity', shape=(num_nodes,))
         reference_radius = self.declare_variable('reference_radius', shape=(num_nodes,))
         rotor_radius = self.declare_variable('rotor_radius', shape=(num_nodes,))
         hub_radius = self.declare_variable('hub_radius', shape=(num_nodes,))
-        Cl = self.declare_variable('Cl_max_ildm', shape=(num_nodes,))
-        Cd = self.declare_variable('Cd_min_ildm', shape=(num_nodes,))
+        Cl = self.declare_variable('Cl_max_BILD', shape=(num_nodes,))
+        Cd = self.declare_variable('Cd_min_BILD', shape=(num_nodes,))
 
         # For good practice change name
         phi_reference = solve_residual_function(Vx,Vt,reference_sigma, reference_radius,rotor_radius, hub_radius, Cl, Cd) #creates implicit operation
         # if no inputs connections will be left open 
         
-
-
-        # state = self.._bracketed_search(implicit_metadata = None,
-        #     states = 'phi_reference_ildm', 
-        #     residuals='residual_function', 
-        #     model = model, 
-        #     brackets=(eps, np.pi/2 - eps))
-
-        
-            # 

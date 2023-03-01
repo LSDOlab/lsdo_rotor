@@ -2,7 +2,7 @@ import numpy as np
 from csdl import Model
 import csdl
 
-class ILDMQuarticCoeffsModel(Model):
+class BILDQuarticCoeffsModel(Model):
 
     def initialize(self):
         self.parameters.declare('shape', types=tuple)
@@ -15,8 +15,10 @@ class ILDMQuarticCoeffsModel(Model):
         Vt = self.declare_variable('_tangential_inflow_velocity', shape=shape)
         S = self.declare_variable('ideal_loading_constant', shape=(num_nodes,))
 
-        Cl = self.declare_variable('Cl_max_ildm', shape=(num_nodes,))
-        Cd = self.declare_variable('Cd_min_ildm', shape=(num_nodes,))
+        Cl = self.declare_variable('Cl_max_BILD', shape=(num_nodes,))
+        Cd = self.declare_variable('Cd_min_BILD', shape=(num_nodes,))
+
+        self.print_var(Cl/Cd)
 
         # C = csdl.expand(csdl.reshape(S, (1,)), shape)
 

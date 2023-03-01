@@ -618,9 +618,6 @@ class PittPetersCustomImplicitOperation(csdl.CustomImplicitOperation):
         self.inv_jac = np.linalg.inv(derivatives['_lambda', '_lambda'])
         
 
-
-
-
     def solve_residual_equations(self, inputs,outputs):
         rotor = self.parameters['rotor']
         shape = self.parameters['shape']

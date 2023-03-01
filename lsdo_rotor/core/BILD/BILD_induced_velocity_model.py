@@ -3,7 +3,7 @@ from csdl import Model
 import csdl
 
 
-class ILDMInducedVelocityModel(Model):
+class BILDInducedVelocityModel(Model):
     
     def initialize(self):
         self.parameters.declare('shape',types=tuple)
@@ -14,17 +14,17 @@ class ILDMInducedVelocityModel(Model):
         B = num_blades = self.parameters['num_blades']
         num_nodes = shape[0]
 
-        phi = self.declare_variable('phi_reference_ildm', shape=(num_nodes,))
+        phi = self.declare_variable('phi_reference_BILD', shape=(num_nodes,))
         Vx = self.declare_variable('u', shape=(num_nodes,))
-        Vt = self.declare_variable('ildm_tangential_inflow_velocity', shape=(num_nodes,))
+        Vt = self.declare_variable('BILD_tangential_inflow_velocity', shape=(num_nodes,))
 
         reference_radius = self.declare_variable('reference_radius', shape=(num_nodes,))
         rotor_radius = self.declare_variable('rotor_radius', shape=(num_nodes,))
         hub_radius = self.declare_variable('hub_radius', shape=(num_nodes,))
         sigma = self.declare_variable('reference_blade_solidity', shape=(num_nodes,))
 
-        Cl = self.declare_variable('Cl_max_ildm', shape=(num_nodes,))
-        Cd = self.declare_variable('Cd_min_ildm', shape=(num_nodes,))
+        Cl = self.declare_variable('Cl_max_BILD', shape=(num_nodes,))
+        Cd = self.declare_variable('Cd_min_BILD', shape=(num_nodes,))
 
         f_tip = B / 2 * (rotor_radius - reference_radius) / reference_radius / csdl.sin(phi)
         f_hub = B / 2 * (reference_radius - hub_radius) / hub_radius / csdl.sin(phi)
