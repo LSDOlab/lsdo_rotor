@@ -78,6 +78,8 @@ def print_output(sim, write_to_csv : bool=False):
 
     if write_to_csv == True:
         cwd = os.getcwd()
-        file_path = cwd + '/rotor_performance.csv'
-        high_level_df.to_csv(file_path)
+        file_path_1 = cwd + '/rotor_performance.csv'
+        file_path_2 = cwd + '/rotor_performance_distributions.csv'
+        high_level_df.to_csv(file_path_1)
+        distributions_df.to_csv(file_path_2)
     # print(s)
