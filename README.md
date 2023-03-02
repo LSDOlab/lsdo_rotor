@@ -6,7 +6,7 @@ This is the rotor analysis and design tool developed by the LSDO lab. Please fol
 
 lsdo_rotor requires the following packages to be installed before it can be used:
 
-* [csdl](https://lsdolab.github.io/csdl/docs/tutorial/install) 
+* [csdl](https://lsdolab.github.io/csdl/docs/tutorial/install); CSDL is an algebraic, domain embedded modeling language recently developed in the LSDO lab.
 * [csdl backend](https://github.com/LSDOlab/python_csdl_backend)
 * [Surrogate Modeling Toolbox](https://smt.readthedocs.io/en/latest/_src_docs/getting_started.html). Note that SMT is only needed for airfoil models that are trained based on XFOIL data. A custom airfoil polar can be described in terms of angle of attack only.
 * [vedo](https://pypi.org/project/vedo/) vedo is used for visualizing the rotor blades. It can be installed with the command ```pip install vedo```.
