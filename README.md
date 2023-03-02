@@ -6,7 +6,7 @@ This is the rotor analysis and design tool developed by the LSDO lab. Please fol
 
 lsdo_rotor requires the following packages to be installed before it can be used:
 
-* [csdl](https://lsdolab.github.io/csdl/docs/tutorial/install) 
+* [csdl](https://lsdolab.github.io/csdl/docs/tutorial/install); CSDL is an algebraic, domain embedded modeling language recently developed in the LSDO lab.
 * [csdl backend](https://github.com/LSDOlab/python_csdl_backend)
 * [Surrogate Modeling Toolbox](https://smt.readthedocs.io/en/latest/_src_docs/getting_started.html). Note that SMT is only needed for airfoil models that are trained based on XFOIL data. A custom airfoil polar can be described in terms of angle of attack only.
 * [vedo](https://pypi.org/project/vedo/) vedo is used for visualizing the rotor blades. It can be installed with the command ```pip install vedo```.
@@ -23,10 +23,10 @@ Please follow the installation instructions provided in the above links. Once th
   
 # User guidelines
 
-The user will only have to change parameters in the execution scripts file, which has comments to explain how to properly use the code. Currently, our rotor analysis tool currently supports two modes of operation:
+The user will only have to change parameters in the execution scripts file, which has comments to explain how to properly use the code. Currently, our rotor analysis tool currently supports two modes of operation, a rotor design method (1) and classical BEM analysis (2).
 
 1) BEM-based ideal-loading design [`BILD`](https://arc.aiaa.org/doi/abs/10.2514/6.2021-2598) method:
-  This is a rotor DESIGN tool to efficiently compute the most aerodynamic blade geometry of a rotor for given operating conditions. Unless otherwise indicated, all quantities have SI units. The following code can be found in the BILD_run_script.py file:
+  This is a rotor design tool to efficiently compute the most aerodynamic efficient blade geometry of a rotor for given operating conditions. Unless otherwise indicated, all quantities have SI units. The following code can be found in the BILD_run_script.py file:
   ```python 
 
 import numpy as np 
