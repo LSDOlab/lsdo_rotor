@@ -1,6 +1,6 @@
 # lsdo_rotor
 
-This is a low-fidelity rotor analysis and design tool based one blade element momentum theory, developed by the LSDO lab. Please following these instructions on installation and proper usage. 
+This is a low-fidelity rotor analysis and design tool based on blade element momentum theory, developed by the LSDO lab. Please follow these instructions on installation and proper usage. 
 
 # Installation 
 
