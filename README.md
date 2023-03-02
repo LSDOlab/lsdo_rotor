@@ -1,6 +1,6 @@
 # lsdo_rotor
 
-This is a low-fidelity rotor analysis and design tool based on blade element momentum theory, developed by the LSDO lab. Please follow these instructions on installation and proper usage. 
+This is a python package for low-fidelity rotor analysis and design based on blade element momentum theory, developed by the LSDO lab. Please follow these instructions on installation and proper usage. 
 
 # Installation 
 
