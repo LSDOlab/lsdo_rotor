@@ -6,10 +6,10 @@ This is a python package for low-fidelity rotor analysis and design based on bla
 
 lsdo_rotor requires the following packages to be installed before it can be used:
 
-* [csdl](https://lsdolab.github.io/csdl/docs/tutorial/install); CSDL is an algebraic, domain embedded modeling language recently developed in the LSDO lab.
+* [csdl](https://lsdolab.github.io/csdl/docs/tutorial/install)- CSDL is an algebraic, domain embedded modeling language recently developed in the LSDO lab.
 * [csdl backend](https://github.com/LSDOlab/python_csdl_backend)
 * [Surrogate Modeling Toolbox](https://smt.readthedocs.io/en/latest/_src_docs/getting_started.html). Note that SMT is only needed for airfoil models that are trained based on XFOIL data. A custom airfoil polar can be described in terms of angle of attack only.
-* [vedo](https://pypi.org/project/vedo/) vedo is used for visualizing the rotor blades. It can be installed with the command ```pip install vedo```.
+* [vedo](https://pypi.org/project/vedo/)- vedo is used for visualizing the rotor blades. It can be installed with the command ```pip install vedo```.
 
 Please follow the installation instructions provided in the above links. Once these packages are installed you can proceed as follows with the installation of lsdo_rotor:
 
@@ -20,6 +20,8 @@ Please follow the installation instructions provided in the above links. Once th
 * If the installation is successful, check that the run.py file executes by typing
   * ``cd lsdo_rotor``
   * ``python BEM_run_script.py`` or ``python BILD_run_script.py``
+  
+  Note: Errors when visualizing the blade may be due to version conflicts with matplotlib and re-installing via ``pip install matplotlib`` can help.
   
 # User guidelines
 
