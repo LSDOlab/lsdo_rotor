@@ -8,7 +8,6 @@ class AtmosphereModel(Model):
     def define(self):
         shape = self.parameters['shape']
         h = self.declare_variable('z',shape=shape, val=0) * 1e-3 # value in meters; then convert to km
-        self.print_var(h)
         L = 6.5 # K/km
         R = 287
         T0 = 288.16
