@@ -28,7 +28,7 @@ reference_radius = 0.6 * rotor_radius # Expressed as a fraction of the radius
 # Operating conditions 
 Vx = 60 # (for axial flow or hover only)
 rpm = 1200
-altitude = 0 # in (m)
+altitude = 1000 # in (m)
 
 num_blades = 3
 

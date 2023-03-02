@@ -28,7 +28,7 @@ shape = (num_nodes, num_radial, num_tangential)
 rotor_radius = 1
 rpm = 1200
 Vx = 40 # (for axial flow or hover only)
-altitude = 1000
+altitude = 2000 # in (m)
 num_blades = 3
 
 airfoil_polar = {

@@ -11,7 +11,7 @@ from lsdo_rotor.core.pitt_peters.inputs.pitt_peters_pre_process_model import Pit
 from lsdo_rotor.core.pitt_peters.pitt_peters_custom_implicit_operation import PittPetersCustomImplicitOperation
 from lsdo_rotor.core.pitt_peters.pitt_peters_post_process_model import PittPetersPostProcessModel
 
-from lsdo_atmos.atmosphere_model import AtmosphereModel
+from lsdo_rotor.utils.atmosphere_model import AtmosphereModel
 
 class PittPetersModel(Model):
 

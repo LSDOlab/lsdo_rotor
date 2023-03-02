@@ -16,7 +16,7 @@ from lsdo_rotor.airfoil.BEM_airfoil_surrogate_model_group_2 import BEMAirfoilSur
 from lsdo_rotor.airfoil.get_surrogate_model import get_surrogate_model
 from lsdo_rotor.core.BEM.functions.get_BEM_rotor_dictionary import get_BEM_rotor_dictionary
 
-from lsdo_atmos.atmosphere_model import AtmosphereModel
+from lsdo_rotor.utils.atmosphere_model import AtmosphereModel
 
 from lsdo_rotor.core.BEM.functions.get_bspline_mtx import   get_bspline_mtx
 from lsdo_rotor.core.BEM.BEM_b_spline_comp import BsplineComp

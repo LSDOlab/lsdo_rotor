@@ -15,7 +15,7 @@ from lsdo_rotor.core.BILD.BILD_quartic_coefficient_model import BILDQuarticCoeff
 from lsdo_rotor.core.BILD.BILD_quartic_solver_model import BILDQuarticSolverModel
 from lsdo_rotor.core.BILD.BILD_back_comp_model import BILDBackCompModel
 
-from lsdo_atmos.atmosphere_model import AtmosphereModel
+from lsdo_rotor.utils.atmosphere_model import AtmosphereModel
 
 from lsdo_rotor.airfoil.get_surrogate_model import get_surrogate_model
 from lsdo_rotor.core.BILD.functions.get_BILD_rotor_dictionary import get_BILD_rotor_dictionary
