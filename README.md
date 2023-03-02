@@ -23,10 +23,10 @@ Please follow the installation instructions provided in the above links. Once th
   
 # User guidelines
 
-The user will only have to change parameters in the execution scripts file, which has comments to explain how to properly use the code. Currently, our rotor analysis tool currently supports two modes of operation:
+The user will only have to change parameters in the execution scripts file, which has comments to explain how to properly use the code. Currently, our rotor analysis tool currently supports two modes of operation, a rotor design method (1) and classical BEM analysis (2).
 
 1) BEM-based ideal-loading design [`BILD`](https://arc.aiaa.org/doi/abs/10.2514/6.2021-2598) method:
-  This is a rotor DESIGN tool to efficiently compute the most aerodynamic blade geometry of a rotor for given operating conditions. Unless otherwise indicated, all quantities have SI units. The following code can be found in the BILD_run_script.py file:
+  This is a rotor design tool to efficiently compute the most aerodynamic efficient blade geometry of a rotor for given operating conditions. Unless otherwise indicated, all quantities have SI units. The following code can be found in the BILD_run_script.py file:
   ```python 
 
 import numpy as np 
