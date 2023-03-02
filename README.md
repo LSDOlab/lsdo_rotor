@@ -7,7 +7,9 @@ This is the rotor analysis and design tool developed by the LSDO lab. Please fol
 lsdo_rotor requires the following packages to be installed before it can be used:
 
 * [csdl](https://lsdolab.github.io/csdl/docs/tutorial/install) 
-* [smt](https://smt.readthedocs.io/en/latest/_src_docs/getting_started.html)
+* [csdl backend](https://github.com/LSDOlab/python_csdl_backend)
+* [Surrogate Modeling Toolbox](https://smt.readthedocs.io/en/latest/_src_docs/getting_started.html). Note that SMT is only needed for airfoil models that are trained based on XFOIL data. A custom airfoil polar can be described in terms of angle of attack only.
+* [vedo](https://pypi.org/project/vedo/) vedo is used for visualizing the rotor blades. It can be installed with the command ```pip install vedo```.
 
 Please follow the installation instructions provided in the above links. Once these packages are installed you can proceed as follows with the installation of lsdo_rotor:
 
@@ -17,34 +19,156 @@ Please follow the installation instructions provided in the above links. Once th
   * ``pip install -e .``
 * If the installation is successful, check that the run.py file executes by typing
   * ``cd lsdo_rotor``
-  * ``python run.py``
+  * ``python BEM_run_script.py`` or ``python BILD_run_script.py`
   
 # User guidelines
 
-The user will only have to change parameters in the `run.py` file, which has comments to explain how to properly use the code. Currently, our rotor analysis tool currently supports two modes of operation:
+The user will only have to change parameters in the execution scripts file, which has comments to explain how to properly use the code. Currently, our rotor analysis tool currently supports two modes of operation:
 
-1) BEM-based ideal-loading design [`ILDM`](https://arc.aiaa.org/doi/abs/10.2514/6.2021-2598) method:
-  This is a rotor DESIGN tool to efficiently compute the most aerodynamic blade geometry of a rotor for given operating conditions. Unless otherwise indicated, all quantities have SI units. The following parameters can be adjusted in the run.py file:
-    * `Vx` This is the axial inflow velocity perpendicular to the rotor disc. `Vx [m/s]` can be any reasonable number greater or equal to 0. (Note: If `Vx = 0` the aircraft is hovering) 
-    * `Vy` `Vz` These are "sideslip" velocity components in the rotor plane. Because the `ILDM` is based on  BEM theory, the deisgn are most reliable if there is no sideslip. Therefore, we recommend `Vx = Vy = 0` if the user wants to use this design tool. 
-    * `reference_radius` The user needs to specify a reference radius at which a value for the chord length is specified. We recommend `reference_radius = rotor_radius / 2 = rotor_diameter / 4`
-    * `reference_chord` The user needs to specify a reference chord length AT the above mentioned `reference_radius`. We defer to the judgment of user to specify a reasonable value
-    * `num_radial` This specifies the number of radial nodes. The larger the value the more accurate the results will. We recommend a value of at least 25. 
-    
-   These are only the parameters that require some more explanation. Please follow the comments in the run.py file for the other parameters
-  
-   The output of the `ILDM` is the following
-    * All performance related parameters (e.g. thrust, torque, efficiency, etc); The user can print these by setting `print_rotor_performance = 'y'`
-    * The ideal, back-computed blade shape given by twist and chord; The user can plot the ideal blade profile by setting `plot_rotor_blade_shape  = 'y'`
+1) BEM-based ideal-loading design [`BILD`](https://arc.aiaa.org/doi/abs/10.2514/6.2021-2598) method:
+  This is a rotor DESIGN tool to efficiently compute the most aerodynamic blade geometry of a rotor for given operating conditions. Unless otherwise indicated, all quantities have SI units. The following code can be found in the BILD_run_script.py file:
+  ```python 
+
+import numpy as np 
+from python_csdl_backend import Simulator
+from lsdo_rotor.core.BILD.BILD_run_model import BILDRunModel
+from lsdo_rotor.utils.print_output import print_output
+from lsdo_rotor.utils.visualize_blade import visualize_blade
+from lsdo_rotor.utils.rotor_dash import RotorDash
+
+
+num_nodes = 1
+num_radial = 40
+num_tangential = 1
+
+# Thrust vector is the unit normal vector w.r.t the rotor disk
+thrust_vector =  np.array([
+    [1,0,0],]
+)
+
+# Thrust origin is the point at which the thrust acts (usually the center of the rotor disk)
+thrust_origin =  np.array([
+    [8.5, 0, 5],]
+)
+
+# Design parameters
+rotor_radius = 1
+reference_chord = 0.15
+reference_radius = 0.6 * rotor_radius # Expressed as a fraction of the radius
+
+# Operating conditions 
+Vx = 0 # (for axial flow or hover only)
+rpm = 800
+altitude = 0 # in (m)
+
+num_blades = 3
+
+shape = (num_nodes, num_radial, num_tangential)
+
+airfoil_polar = {
+    'Cl_0': 0.25,
+    'Cl_alpha': 5.1566,
+    'Cd_0': 0.01,
+    'Cl_stall': [-1, 1.5], 
+    'Cd_stall': [0.02, 0.06],
+    'alpha_Cl_stall': [-10, 15],
+}
+
+sim_BILD = Simulator(BILDRunModel(
+    rotor_radius=rotor_radius,
+    reference_chord=reference_chord,
+    reference_radius=reference_radius,
+    rpm=rpm,
+    Vx=Vx,
+    altitude=altitude,
+    shape=shape,
+    num_blades=num_blades,
+    airfoil_name='NACA_4412',
+    airfoil_polar=airfoil_polar,
+    thrust_vector=thrust_vector,
+    thrust_origin=thrust_origin,
+))
+
+rotor_dash = RotorDash()
+sim_BILD.add_recorder(rotor_dash.get_recorder())
+sim_BILD.run()
+print_output(sim=sim_BILD)
+visualize_blade(dash=rotor_dash)
+```
+ 
   
 2) Blade element momentum (BEM) theory
-  This is a rotor ANALYSIS tool that computes the aerodynamic performance of an EXISTING rotor using BEM theory. In the run.py file the user can change the following parameters:
-    * `Vx` This is the axial inflow velocity perpendicular to the rotor disc. `Vx [m/s]` can be any reasonable number greater or equal to 0. (Note: If `Vx = 0` the aircraft is hovering) 
-    * `Vy` `Vz` These are "sideslip" velocity components in the rotor plane. Because the momentum part of BEM theory assumes strictly axial inflow, results will be most accurate if `Vx = Vy = 0`. However, for small sideslip velocities (or if Vx dominates Vy and Vz), results are still reliable.
-    * `root_chord` `tip_chord` If the user does not define a rotor geometry, a linearly varying chord profile can defined by specifying the chord length at the rotor hub and tip
-    * `root_twist` `tip_twist [deg]` Likewise, a linearly varying twist profile can be specified
-    * `use_external_rotor_geometry = 'y/n' ` The user has the option the specify the rotor geometry of an existing rotor. A good database for small rotors can be found on the [UIUC](https://m-selig.ae.illinois.edu/props/propDB.html) website. The rotor geometry should be stored in .txt file. Please also follow the instructions in the run.py file.
-  
+  This is a rotor analysis tool that computes the aerodynamic performance of an rotor using BEM theory. The following code can be found in the BEM_run_script.py file.
+ 
+  ```python 
+  import numpy as np 
+from python_csdl_backend import Simulator
+from lsdo_rotor.core.BEM.BEM_run_model import BEMRunModel
+from lsdo_rotor.utils.print_output import print_output
+from lsdo_rotor.utils.visualize_blade import visualize_blade
+from lsdo_rotor.utils.rotor_dash import RotorDash
+
+
+num_nodes = 1
+num_radial = 50
+num_tangential = num_azimuthal = 1
+
+# Thrust vector is the unit normal vector w.r.t the rotor disk
+thrust_vector =  np.array([
+    [1,0,0],]
+)
+
+# Thrust origin is the point at which the thrust acts (usually the center of the rotor disk)
+thrust_origin =  np.array([
+    [8.5, 5, 5],]
+)
+
+# Reference point is the point about which the moments due to thrust will be computed
+reference_point = np.array([8.5, 0, 5])
+
+shape = (num_nodes, num_radial, num_tangential)
+
+rotor_radius = 1
+rpm = 1200
+Vx = 40 # (for axial flow or hover only)
+altitude = 1000
+num_blades = 3
+
+airfoil_polar = {
+    'Cl_0': 0.25,
+    'Cl_alpha': 5.1566,
+    'Cd_0': 0.01,
+    'Cl_stall': [-1, 1.5], 
+    'Cd_stall': [0.02, 0.06],
+    'alpha_Cl_stall': [-10, 15],
+}
+
+chord = np.linspace(0.3, 0.2, num_radial)
+twist = np.linspace(60, 15, num_radial)
+
+sim_BEM = Simulator(BEMRunModel(
+    rotor_radius=rotor_radius,
+    rpm=rpm,
+    Vx=Vx,
+    altitude=altitude,
+    shape=shape,
+    num_blades=num_blades,
+    airfoil_name='NACA_4412',
+    airfoil_polar=airfoil_polar,
+    chord_distribution=chord,
+    twist_distribution=twist,
+    thrust_vector=thrust_vector,
+    thrust_origin=thrust_origin,
+))
+
+
+rotor_dash = RotorDash()
+sim_BEM.add_recorder(rotor_dash.get_recorder())
+sim_BEM.run()
+print_output(sim=sim_BEM, write_to_csv=True)
+visualize_blade(dash=rotor_dash)
+
+  ```
 
   
   
