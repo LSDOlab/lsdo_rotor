@@ -1,6 +1,6 @@
 # lsdo_rotor
 
-This is the rotor analysis and design tool developed by the LSDO lab. Please following these instructions on installation and proper usage. 
+This is a python package for low-fidelity rotor analysis and design based on blade element momentum theory, developed by the LSDO lab. Please follow these instructions on installation and proper usage. 
 
 # Installation 
 
@@ -19,7 +19,7 @@ Please follow the installation instructions provided in the above links. Once th
   * ``pip install -e .``
 * If the installation is successful, check that the run.py file executes by typing
   * ``cd lsdo_rotor``
-  * ``python BEM_run_script.py`` or ``python BILD_run_script.py`
+  * ``python BEM_run_script.py`` or ``python BILD_run_script.py``
   
 # User guidelines
 
