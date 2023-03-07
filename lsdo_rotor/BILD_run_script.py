@@ -3,7 +3,7 @@ from python_csdl_backend import Simulator
 from lsdo_rotor.core.BILD.BILD_run_model import BILDRunModel
 from lsdo_rotor.utils.print_output import print_output
 from lsdo_rotor.utils.visualize_blade import visualize_blade
-from lsdo_rotor.utils.rotor_dash import RotorDash
+from lsdo_rotor.utils.dashboard.rotor_dash import RotorDash
 
 
 num_nodes = 1
