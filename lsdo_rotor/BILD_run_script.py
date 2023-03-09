@@ -7,7 +7,7 @@ from lsdo_rotor.utils.dashboard.rotor_dash import RotorDash
 
 
 num_nodes = 1
-num_radial = 40
+num_radial = 50
 num_tangential = 1
 
 # Thrust vector is the unit normal vector w.r.t the rotor disk
@@ -21,14 +21,14 @@ thrust_origin =  np.array([
 )
 
 # Design parameters
-rotor_radius = 1
-reference_chord = 0.15
-reference_radius = 0.6 * rotor_radius # Expressed as a fraction of the radius
+rotor_radius = 2
+reference_chord = 0.1
+reference_radius = 0.5 * rotor_radius # Expressed as a fraction of the radius
 
 # Operating conditions 
-Vx = 60 # (for axial flow or hover only)
-rpm = 1200
-altitude = 1000 # in (m)
+Vx = 0 # (for axial flow or hover only)
+rpm = 1000
+altitude = 10 # in (m)
 
 num_blades = 3
 

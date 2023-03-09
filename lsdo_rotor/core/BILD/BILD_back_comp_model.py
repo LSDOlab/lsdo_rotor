@@ -19,6 +19,7 @@ class BILDBackCompModel(Model):
         n = angular_speed / 2 / np.pi
 
         eta = self.declare_variable('eta_2', shape=shape)
+        self.print_var(eta)
         dr = self.declare_variable('_dr', shape=shape)
         rotor_radius = self.declare_variable('_rotor_radius', shape=shape)
         radius = self.declare_variable('_radius', shape=shape)

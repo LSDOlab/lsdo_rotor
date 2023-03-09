@@ -19,7 +19,7 @@ class BILDPhiBracketedSearchModel(Model):
         Vt = model.declare_variable('BILD_tangential_inflow_velocity', shape=(num_nodes,))
         reference_sigma = model.declare_variable('reference_blade_solidity', shape=(num_nodes,))
         reference_radius = model.declare_variable('reference_radius', shape=(num_nodes,))
-        rotor_radius = model.declare_variable('rotor_radius', shape=(num_nodes,))
+        rotor_radius = model.declare_variable('propeller_radius', shape=(num_nodes,))
         hub_radius = model.declare_variable('hub_radius', shape=(num_nodes,))
 
         
@@ -67,7 +67,7 @@ class BILDPhiBracketedSearchModel(Model):
         Vt = self.declare_variable('BILD_tangential_inflow_velocity', shape=(num_nodes,))
         reference_sigma = self.declare_variable('reference_blade_solidity', shape=(num_nodes,))
         reference_radius = self.declare_variable('reference_radius', shape=(num_nodes,))
-        rotor_radius = self.declare_variable('rotor_radius', shape=(num_nodes,))
+        rotor_radius = self.declare_variable('propeller_radius', shape=(num_nodes,))
         hub_radius = self.declare_variable('hub_radius', shape=(num_nodes,))
         Cl = self.declare_variable('Cl_max_BILD', shape=(num_nodes,))
         Cd = self.declare_variable('Cd_min_BILD', shape=(num_nodes,))
