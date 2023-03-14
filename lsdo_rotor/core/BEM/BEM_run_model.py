@@ -42,8 +42,8 @@ class BEMRunModel(Model):
         airfoil_name = self.parameters['airfoil_name']
         airfoil_polar = self.parameters['airfoil_polar']
 
-        chord = self.parameters['chord_distribution']
-        twist = self.parameters['twist_distribution']
+        chord = None #self.parameters['chord_distribution']
+        twist = None #self.parameters['twist_distribution']
         
         T_BILD = self.parameters['BILD_thrust_constraint']
         E_total_BILD = self.parameters['E_total_BILD']
@@ -65,7 +65,7 @@ class BEMRunModel(Model):
         # self.create_input(name='pitch_cp', shape=(num_cp,), units='rad', val=np.linspace(50, 10, num_cp)*180/np.pi) #np.array([8.60773973e-01,6.18472835e-01,3.76150609e-01,1.88136239e-01]))#np.linspace(35,10,4)*np.pi/180)
         # self.create_input(name='chord_cp', shape=(num_cp,), units='rad', val=np.linspace(0.3, 0.1, num_cp))
 
-        if BILD_twist and BILD_chord and chord_B_spline_rep and twist_B_spline_rep:        
+        if BILD_twist is not None and BILD_chord is not None and chord_B_spline_rep is True and twist_B_spline_rep is True:        
             self.create_input(name='pitch_cp', shape=(num_cp,), units='rad', val=np.linspace(BILD_twist[0], BILD_twist[-1], num_cp)) #np.array([8.60773973e-01,6.18472835e-01,3.76150609e-01,1.88136239e-01]))#np.linspace(35,10,4)*np.pi/180)
             self.create_input(name='chord_cp', shape=(num_cp,), units='rad', val=np.linspace(BILD_chord[0], BILD_chord[-1], num_cp))
             self.add_design_variable('pitch_cp', lower=min(BILD_twist),upper=max(BILD_twist))
