@@ -62,9 +62,9 @@ class RunModel(Model):
         self.create_input(name='propeller_radius', shape=(1, ), units='m', val=APC_14_13_radius)
         self.create_input(name='chord_profile', shape=(num_radial,), units='m', val=APC_14_13_blade_chord_interpolated)
         self.create_input(name='twist_profile', shape=(num_radial,), units='rad', val=APC_14_13_blade_twist_interpolated*np.pi/180)
-        # pitch_cp = self.create_input(name='pitch_cp', shape=(4,), units='rad', val=np.linspace(80,10,4)*np.pi/180) #np.array([8.60773973e-01,6.18472835e-01,3.76150609e-01,1.88136239e-01]))#np.linspace(35,10,4)*np.pi/180)
+        # twist_cp = self.create_input(name='twist_cp', shape=(4,), units='rad', val=np.linspace(80,10,4)*np.pi/180) #np.array([8.60773973e-01,6.18472835e-01,3.76150609e-01,1.88136239e-01]))#np.linspace(35,10,4)*np.pi/180)
         # chord_cp = self.create_input(name='chord_cp', shape=(2,), units='rad', val=np.array([0.35,0.14]))
-        # self.add_design_variable('pitch_cp', lower=5*np.pi/180,upper=60*np.pi/180)
+        # self.add_design_variable('twist_cp', lower=5*np.pi/180,upper=60*np.pi/180)
         
         # Inputs changing across conditions (segments), 
         #   - If the quantities are scalars, they will be expanded into shape (num_nodes,1)

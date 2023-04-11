@@ -31,14 +31,14 @@ class BEMModel(Model):
         self.parameters.declare('airfoil', types=str, allow_none=True)
         self.parameters.declare('airfoil_polar', types=dict, allow_none=True)
         
-        self.parameters.declare('thrust_vector',types=np.ndarray)
-        self.parameters.declare('thrust_origin',types=np.ndarray)
+        self.parameters.declare('thrust_vector', types=np.ndarray)
+        self.parameters.declare('thrust_origin', types=np.ndarray)
         self.parameters.declare('ref_pt', types=np.ndarray)
         self.parameters.declare('num_blades', types=int)
-        self.parameters.declare('chord_b_spline',types=Boolean, default=False)
-        self.parameters.declare('pitch_b_spline',types=Boolean,default=False)
+        self.parameters.declare('chord_b_spline_rep',types=Boolean, default=False)
+        self.parameters.declare('twist_b_spline_rep',types=Boolean,default=False)
         self.parameters.declare('num_cp', default=None, allow_none=True)
-        self.parameters.declare('order', default=None, allow_none=True)
+        self.parameters.declare('b_spline_order', default=None, allow_none=True)
         self.parameters.declare('normalized_hub_radius',default=0.2)
 
     def define(self):
@@ -90,18 +90,18 @@ class BEMModel(Model):
         rotor = get_BEM_rotor_dictionary(airfoil, interp, custom_polar)
     
         # prop_radius = self.declare_variable(name='propeller_radius', shape=(1, ), units='m')
-        pitch_b_spline = self.parameters['pitch_b_spline']
-        chord_b_spline = self.parameters['chord_b_spline']
-        order = self.parameters['order']
+        pitch_b_spline = self.parameters['twist_b_spline_rep']
+        chord_b_spline = self.parameters['chord_b_spline_rep']
+        order = self.parameters['b_spline_order']
         num_cp = self.parameters['num_cp']
         if pitch_b_spline == True:
-            pitch_cp = self.declare_variable(name='pitch_cp', shape=(num_cp,), units='rad', val=np.linspace(50, 10, num_cp) *np.pi/180)
+            twist_cp = self.declare_variable(name='twist_cp', shape=(num_cp,), units='rad', val=np.linspace(50, 10, num_cp) *np.pi/180)
             
             pitch_A = get_bspline_mtx(num_cp, num_radial, order=order)
-            comp = csdl.custom(pitch_cp,op=BsplineComp(
+            comp = csdl.custom(twist_cp,op=BsplineComp(
                 num_pt=num_radial,
                 num_cp=num_cp,
-                in_name='pitch_cp',
+                in_name='twist_cp',
                 jac=pitch_A,
                 out_name='twist_profile',
             ))

@@ -3,7 +3,7 @@
 import numpy as np
 from csdl import Model
 import csdl
-
+from csdl import GraphRepresentation
 from lsdo_rotor.core.BILD.inputs.BILD_external_inputs_model import BILDExternalInputsModel
 from lsdo_rotor.core.BILD.inputs.BILD_core_inputs_model import BILDCoreInputsModel
 from lsdo_rotor.core.BILD.inputs.BILD_pre_process_model import BILDPreprocessModel
@@ -84,10 +84,12 @@ class BILDModel(Model):
             else:
                 self.create_input('thrust_origin',shape=(num_nodes,3),val=t_o)
 
-        self.add(BILDExternalInputsModel(
+        external_inputs = BILDExternalInputsModel(
             shape=shape,
             num_blades=num_blades
-        ), name='BILD_external_inputs_model')#, promotes = ['*'])
+        )
+        GraphRepresentation(external_inputs)
+        self.add(external_inputs, name='BILD_external_inputs_model')#, promotes = ['*'])
 
 
         self.add(BILDCoreInputsModel(
