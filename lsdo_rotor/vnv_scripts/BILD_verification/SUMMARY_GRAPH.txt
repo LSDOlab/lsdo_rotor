@@ -1,0 +1,5013 @@
+node name, 	 node object
+
+propeller_radius, <csdl.lang.input.Input object at 0x7fa073c930d0>, .propeller_radius
+	CONNECTED TO: False
+	PROMOTED TO: True
+		propeller_radius, BEM_model.BEM_external_inputs_model.propeller_radius
+		propeller_radius, BEM_model.BEM_core_inputs_model.propeller_radius
+	PREDECESSORS
+	SUCCESSORS
+		_00qU
+		_00qY
+		_00qW
+		_00s5
+
+blade_number, <csdl.lang.input.Input object at 0x7fa073c93100>, .blade_number
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+	SUCCESSORS
+
+twist_cp, <csdl.lang.input.Input object at 0x7fa073c93130>, .twist_cp
+	CONNECTED TO: False
+	PROMOTED TO: True
+		twist_cp, BEM_model.twist_cp
+	PREDECESSORS
+	SUCCESSORS
+		_00po
+
+chord_cp, <csdl.lang.input.Input object at 0x7fa073c93160>, .chord_cp
+	CONNECTED TO: False
+	PROMOTED TO: True
+		chord_cp, BEM_model.chord_cp
+	PREDECESSORS
+	SUCCESSORS
+		_00pr
+
+rpm, <csdl.lang.input.Input object at 0x7fa073c931f0>, .rpm
+	CONNECTED TO: False
+	PROMOTED TO: True
+		rpm, BEM_model.BEM_external_inputs_model.rpm
+	PREDECESSORS
+	SUCCESSORS
+		_00rn
+
+u, <csdl.lang.input.Input object at 0x7fa073c93280>, .u
+	CONNECTED TO: False
+	PROMOTED TO: True
+		u, BEM_model.BEM_external_inputs_model.u
+	PREDECESSORS
+	SUCCESSORS
+		_00qF
+
+z, <csdl.lang.input.Input object at 0x7fa073c932b0>, .z
+	CONNECTED TO: False
+	PROMOTED TO: True
+		z, BEM_model.atmosphere_model.z
+	PREDECESSORS
+	SUCCESSORS
+		_00td
+
+T_BILD, <csdl.lang.input.Input object at 0x7fa073c933d0>, .T_BILD
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+	SUCCESSORS
+		_00pj
+
+_00pj, <csdl.operations.linear_combination.linear_combination object at 0x7fa073c93400>
+	PREDECESSORS
+		T_BILD,(1,) 
+		T,(1,) 
+	SUCCESSORS
+		thrust_constraint_optimization,(1,) 
+
+thrust_constraint_optimization, <csdl.lang.output.Output object at 0x7fa073c93430>, .thrust_constraint_optimization
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00pj
+	SUCCESSORS
+
+thrust_vector, <csdl.lang.input.Input object at 0x7fa073c93490>, BEM_model.thrust_vector
+	CONNECTED TO: False
+	PROMOTED TO: True
+		thrust_vector, BEM_model.BEM_external_inputs_model.thrust_vector
+	PREDECESSORS
+	SUCCESSORS
+		_00qd
+		_00r3
+
+_00qd, <csdl.operations.decompose.decompose object at 0x7fa073c6bdc0>
+	PREDECESSORS
+		thrust_vector,(1, 3) 
+	SUCCESSORS
+		_00qe,(1, 1) 
+		_00qk,(1, 1) 
+		_00qp,(1, 1) 
+
+thrust_origin, <csdl.lang.input.Input object at 0x7fa073c934c0>, BEM_model.thrust_origin
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+	SUCCESSORS
+		_00qs
+
+_00qs, <csdl.operations.linear_combination.linear_combination object at 0x7fa073c6bca0>
+	PREDECESSORS
+		thrust_origin,(1, 3) 
+		reference_point,(1, 3) 
+	SUCCESSORS
+		_00qt,(1, 3) 
+
+_00po, <lsdo_rotor.core.BEM.BEM_b_spline_comp.BsplineComp object at 0x7fa073c937c0>
+	PREDECESSORS
+		twist_cp,(10,) 
+	SUCCESSORS
+		twist_profile,(30,) 
+
+twist_profile, <csdl.lang.output.Output object at 0x7fa073c93850>, BEM_model.twist_profile
+	CONNECTED TO: False
+	PROMOTED TO: True
+		twist_profile, BEM_model.BEM_core_inputs_model.twist_profile
+	PREDECESSORS
+		_00po
+	SUCCESSORS
+		_00sj
+
+_00pr, <lsdo_rotor.core.BEM.BEM_b_spline_comp.BsplineComp object at 0x7fa073c938b0>
+	PREDECESSORS
+		chord_cp,(10,) 
+	SUCCESSORS
+		chord_profile,(30,) 
+
+chord_profile, <csdl.lang.output.Output object at 0x7fa073bd6a30>, BEM_model.chord_profile
+	CONNECTED TO: False
+	PROMOTED TO: True
+		chord_profile, BEM_model.BEM_core_inputs_model.chord_profile
+	PREDECESSORS
+		_00pr
+	SUCCESSORS
+		_00sl
+
+_00pJ, <csdl.operations.expand.expand object at 0x7fa073bd6fa0>
+	PREDECESSORS
+		density,(1, 1) 
+	SUCCESSORS
+		_00pK,(1, 30, 1) 
+
+_00pK, <csdl.lang.output.Output object at 0x7fa073bd6f70>, BEM_model._00pK
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00pJ
+	SUCCESSORS
+		_00pO
+
+_00pO, <csdl.operations.power_combination.power_combination object at 0x7fa073c6b640>
+	PREDECESSORS
+		_00pK,(1, 30, 1) 
+		_00pH,(1, 30, 1) 
+	SUCCESSORS
+		_00pP,(1, 30, 1) 
+
+_00pP, <csdl.lang.output.Output object at 0x7fa073c6b670>, BEM_model._00pP
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00pO
+	SUCCESSORS
+		_00pQ
+
+_00pA, <csdl.operations.power_combination.power_combination object at 0x7fa073bd6dc0>
+	PREDECESSORS
+		_axial_inflow_velocity,(1, 30, 1) 
+	SUCCESSORS
+		_00pB,(1, 30, 1) 
+
+_00pB, <csdl.lang.output.Output object at 0x7fa073bd6df0>, BEM_model._00pB
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00pA
+	SUCCESSORS
+		_00pE
+
+_00pE, <csdl.operations.linear_combination.linear_combination object at 0x7fa073bd6e80>
+	PREDECESSORS
+		_00pB,(1, 30, 1) 
+		_00pD,(1, 30, 1) 
+	SUCCESSORS
+		_00pF,(1, 30, 1) 
+
+_00pF, <csdl.lang.output.Output object at 0x7fa073bd6eb0>, BEM_model._00pF
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00pE
+	SUCCESSORS
+		_00pG
+
+_00pC, <csdl.operations.power_combination.power_combination object at 0x7fa073bd6e20>
+	PREDECESSORS
+		_tangential_inflow_velocity,(1, 30, 1) 
+	SUCCESSORS
+		_00pD,(1, 30, 1) 
+
+_00pD, <csdl.lang.output.Output object at 0x7fa073bd6e50>, BEM_model._00pD
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00pC
+	SUCCESSORS
+		_00pE
+
+_00pG, <csdl.operations.power_combination.power_combination object at 0x7fa073bd6ee0>
+	PREDECESSORS
+		_00pF,(1, 30, 1) 
+	SUCCESSORS
+		_00pH,(1, 30, 1) 
+
+_00pH, <csdl.lang.output.Output object at 0x7fa073bd6f10>, BEM_model._00pH
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00pG
+	SUCCESSORS
+		_00pO
+
+_00pQ, <csdl.operations.power_combination.power_combination object at 0x7fa073c6b6a0>
+	PREDECESSORS
+		_00pP,(1, 30, 1) 
+		_chord,(1, 30, 1) 
+	SUCCESSORS
+		_00pR,(1, 30, 1) 
+
+_00pR, <csdl.lang.output.Output object at 0x7fa073c6b6d0>, BEM_model._00pR
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00pQ
+	SUCCESSORS
+		_00pS
+
+_00pZ, <lsdo_rotor.airfoil.BEM_airfoil_surrogate_model_group_2.BEMAirfoilSurrogateModelGroup2 object at 0x7fa073c6b8e0>
+	PREDECESSORS
+		Re,(1, 30, 1) 
+		AoA,(1, 30, 1) 
+		_chord,(1, 30, 1) 
+	SUCCESSORS
+		Cl_2,(1, 30, 1) 
+		Cd_2,(1, 30, 1) 
+
+_00pS, <csdl.operations.power_combination.power_combination object at 0x7fa073c6b700>
+	PREDECESSORS
+		_00pR,(1, 30, 1) 
+		_00pN,(1, 30, 1) 
+	SUCCESSORS
+		Re,(1, 30, 1) 
+
+Re, <csdl.lang.output.Output object at 0x7fa073c6b730>, BEM_model.Re
+	CONNECTED TO: False
+	PROMOTED TO: True
+		Re, BEM_model.phi_bracketed_search_group.Re
+	PREDECESSORS
+		_00pS
+	SUCCESSORS
+		_00pZ
+		_00vz
+
+_00pM, <csdl.operations.expand.expand object at 0x7fa073c6b610>
+	PREDECESSORS
+		dynamic_viscosity,(1, 1) 
+	SUCCESSORS
+		_00pN,(1, 30, 1) 
+
+_00pN, <csdl.lang.output.Output object at 0x7fa073c6b5e0>, BEM_model._00pN
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00pM
+	SUCCESSORS
+		_00pS
+
+_00pX, <csdl.operations.linear_combination.linear_combination object at 0x7fa073c6b880>
+	PREDECESSORS
+		_pitch,(1, 30, 1) 
+		phi_distribution,(1, 30, 1) 
+	SUCCESSORS
+		AoA,(1, 30, 1) 
+
+AoA, <csdl.lang.output.Output object at 0x7fa073c6b8b0>, BEM_model.AoA
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00pX
+	SUCCESSORS
+		_00pZ
+
+Cl_2, <csdl.lang.output.Output object at 0x7fa073c6b9a0>, BEM_model.Cl_2
+	CONNECTED TO: False
+	PROMOTED TO: True
+		Cl_2, BEM_model.induced_velocity_model.Cl_2
+	PREDECESSORS
+		_00pZ
+	SUCCESSORS
+		_00wN
+		_00wD
+		_00wX
+		_00x0
+
+Cd_2, <csdl.lang.output.Output object at 0x7fa073c6b970>, BEM_model.Cd_2
+	CONNECTED TO: False
+	PROMOTED TO: True
+		Cd_2, BEM_model.induced_velocity_model.Cd_2
+	PREDECESSORS
+		_00pZ
+	SUCCESSORS
+		_00wR
+		_00wH
+
+_00q9, <csdl.operations.decompose.decompose object at 0x7fa073c6bcd0>
+	PREDECESSORS
+		T,(1,) 
+	SUCCESSORS
+		_00qa,(1,) 
+
+_00qa, <csdl.lang.output.Output object at 0x7fa073c6bd00>, BEM_model._00qa
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00q9
+	SUCCESSORS
+		_00qb
+		_00qi
+		_00qn
+
+_00qb, <csdl.operations.reshape.reshape object at 0x7fa073c6bc70>
+	PREDECESSORS
+		_00qa,(1,) 
+	SUCCESSORS
+		_00qc,(1, 1) 
+
+_00qi, <csdl.operations.reshape.reshape object at 0x7fa073c6bd90>
+	PREDECESSORS
+		_00qa,(1,) 
+	SUCCESSORS
+		_00qj,(1, 1) 
+
+_00qn, <csdl.operations.reshape.reshape object at 0x7fa073c6bf10>
+	PREDECESSORS
+		_00qa,(1,) 
+	SUCCESSORS
+		_00qo,(1, 1) 
+
+_00qc, <csdl.lang.output.Output object at 0x7fa073c6bd60>, BEM_model._00qc
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00qb
+	SUCCESSORS
+		_00qf
+
+_00qf, <csdl.operations.power_combination.power_combination object at 0x7fa073c6bd30>
+	PREDECESSORS
+		_00qc,(1, 1) 
+		_00qe,(1, 1) 
+	SUCCESSORS
+		_00qg,(1, 1) 
+
+_00qg, <csdl.lang.output.Output object at 0x7fa073c6be20>, BEM_model._00qg
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00qf
+	SUCCESSORS
+		_00qh
+
+_00qe, <csdl.lang.output.Output object at 0x7fa073c6bdf0>, BEM_model._00qe
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00qd
+	SUCCESSORS
+		_00qf
+
+_00qk, <csdl.lang.output.Output object at 0x7fa073c6bee0>, BEM_model._00qk
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00qd
+	SUCCESSORS
+		_00ql
+
+_00qp, <csdl.lang.output.Output object at 0x7fa073c6b160>, BEM_model._00qp
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00qd
+	SUCCESSORS
+		_00qq
+
+_00ql, <csdl.operations.power_combination.power_combination object at 0x7fa073c6be50>
+	PREDECESSORS
+		_00qk,(1, 1) 
+		_00qj,(1, 1) 
+	SUCCESSORS
+		_00qm,(1, 1) 
+
+_00qq, <csdl.operations.power_combination.power_combination object at 0x7fa073c6bfd0>
+	PREDECESSORS
+		_00qp,(1, 1) 
+		_00qo,(1, 1) 
+	SUCCESSORS
+		_00qr,(1, 1) 
+
+_00qh, <csdl.operations.indexed_passthrough.indexed_passthrough object at 0x7fa073c6be80>
+	PREDECESSORS
+		_00qg,(1, 1) 
+		_00qm,(1, 1) 
+		_00qr,(1, 1) 
+	SUCCESSORS
+		F,(1, 3) 
+
+F, <csdl.lang.concatenation.Concatenation object at 0x7fa073c6bb80>, BEM_model.F
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00qh
+	SUCCESSORS
+		_00qu
+
+_00qj, <csdl.lang.output.Output object at 0x7fa073c6beb0>, BEM_model._00qj
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00qi
+	SUCCESSORS
+		_00ql
+
+_00qm, <csdl.lang.output.Output object at 0x7fa073c6bf40>, BEM_model._00qm
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00ql
+	SUCCESSORS
+		_00qh
+
+_00qo, <csdl.lang.output.Output object at 0x7fa073c6bfa0>, BEM_model._00qo
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00qn
+	SUCCESSORS
+		_00qq
+
+_00qr, <csdl.lang.output.Output object at 0x7fa073c6bf70>, BEM_model._00qr
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00qq
+	SUCCESSORS
+		_00qh
+
+_00qu, <csdl.operations.cross.cross object at 0x7fa073d070a0>
+	PREDECESSORS
+		F,(1, 3) 
+		_00qt,(1, 3) 
+	SUCCESSORS
+		_00qv,(1, 3) 
+
+_00qt, <csdl.lang.output.Output object at 0x7fa073d07040>, BEM_model._00qt
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00qs
+	SUCCESSORS
+		_00qu
+
+reference_point, <csdl.lang.declared_variable.DeclaredVariable object at 0x7fa073c6bc40>, BEM_model.reference_point
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+	SUCCESSORS
+		_00qs
+
+_00qv, <csdl.lang.output.Output object at 0x7fa073d070d0>, BEM_model._00qv
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00qu
+	SUCCESSORS
+		_00qw
+
+_00qw, <csdl.operations.decompose.decompose object at 0x7fa073d07130>
+	PREDECESSORS
+		_00qv,(1, 3) 
+	SUCCESSORS
+		_00qx,(1, 1) 
+		_00qz,(1, 1) 
+		_00qA,(1, 1) 
+
+_00qx, <csdl.lang.output.Output object at 0x7fa073d07160>, BEM_model._00qx
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00qw
+	SUCCESSORS
+		_00qy
+
+_00qz, <csdl.lang.output.Output object at 0x7fa073d07100>, BEM_model._00qz
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00qw
+	SUCCESSORS
+		_00qy
+
+_00qA, <csdl.lang.output.Output object at 0x7fa073d07250>, BEM_model._00qA
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00qw
+	SUCCESSORS
+		_00qy
+
+_00qy, <csdl.operations.indexed_passthrough.indexed_passthrough object at 0x7fa073d07190>
+	PREDECESSORS
+		_00qx,(1, 1) 
+		_00qz,(1, 1) 
+		_00qA,(1, 1) 
+	SUCCESSORS
+		M,(1, 3) 
+
+M, <csdl.lang.concatenation.Concatenation object at 0x7fa073c6bbb0>, BEM_model.M
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00qy
+	SUCCESSORS
+
+_00qF, <csdl.operations.power_combination.power_combination object at 0x7fa073d07280>
+	PREDECESSORS
+		u,(1, 1) 
+	SUCCESSORS
+		_00qG,(1, 1) 
+
+_00qG, <csdl.lang.output.Output object at 0x7fa073d072e0>, BEM_model.BEM_external_inputs_model._00qG
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00qF
+	SUCCESSORS
+		_00rs
+
+_00rs, <csdl.operations.decompose.decompose object at 0x7fa073d07ca0>
+	PREDECESSORS
+		_00qG,(1, 1) 
+	SUCCESSORS
+		_00rt,(1, 1) 
+
+_00rt, <csdl.lang.output.Output object at 0x7fa073d07d00>, BEM_model.BEM_external_inputs_model._00rt
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00rs
+	SUCCESSORS
+		_00ru
+
+_00ru, <csdl.operations.indexed_passthrough.indexed_passthrough object at 0x7fa073d07cd0>
+	PREDECESSORS
+		_00rt,(1, 1) 
+		_00rw,(1, 1) 
+		_00ry,(1, 1) 
+	SUCCESSORS
+		velocity_vector,(1, 3) 
+
+velocity_vector, <csdl.lang.concatenation.Concatenation object at 0x7fa073d07370>, BEM_model.BEM_external_inputs_model.velocity_vector
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00ru
+	SUCCESSORS
+		_00rz
+
+v, <csdl.lang.declared_variable.DeclaredVariable object at 0x7fa073d07310>, BEM_model.BEM_external_inputs_model.v
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+	SUCCESSORS
+		_00rv
+
+_00rv, <csdl.operations.decompose.decompose object at 0x7fa073d07fa0>
+	PREDECESSORS
+		v,(1, 1) 
+	SUCCESSORS
+		_00rw,(1, 1) 
+
+_00rw, <csdl.lang.output.Output object at 0x7fa073d07f40>, BEM_model.BEM_external_inputs_model._00rw
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00rv
+	SUCCESSORS
+		_00ru
+
+w, <csdl.lang.declared_variable.DeclaredVariable object at 0x7fa073d07340>, BEM_model.BEM_external_inputs_model.w
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+	SUCCESSORS
+		_00rx
+
+_00rx, <csdl.operations.decompose.decompose object at 0x7fa073d07d30>
+	PREDECESSORS
+		w,(1, 1) 
+	SUCCESSORS
+		_00ry,(1, 1) 
+
+_00ry, <csdl.lang.output.Output object at 0x7fa073d07c40>, BEM_model.BEM_external_inputs_model._00ry
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00rx
+	SUCCESSORS
+		_00ru
+
+_00rz, <csdl.operations.decompose.decompose object at 0x7fa073d07eb0>
+	PREDECESSORS
+		velocity_vector,(1, 3) 
+	SUCCESSORS
+		_00rA,(1, 3) 
+
+p, <csdl.lang.declared_variable.DeclaredVariable object at 0x7fa073d073a0>, BEM_model.BEM_external_inputs_model.p
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+	SUCCESSORS
+		_00qL
+
+_00qL, <csdl.operations.power_combination.power_combination object at 0x7fa073d073d0>
+	PREDECESSORS
+		p,(1, 1) 
+	SUCCESSORS
+		p1,(1, 1) 
+
+p1, <csdl.lang.output.Output object at 0x7fa073d07400>, BEM_model.BEM_external_inputs_model.p1
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00qL
+	SUCCESSORS
+
+q, <csdl.lang.declared_variable.DeclaredVariable object at 0x7fa073d07430>, BEM_model.BEM_external_inputs_model.q
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+	SUCCESSORS
+		_00qO
+
+_00qO, <csdl.operations.power_combination.power_combination object at 0x7fa073d07460>
+	PREDECESSORS
+		q,(1, 1) 
+	SUCCESSORS
+		q1,(1, 1) 
+
+q1, <csdl.lang.output.Output object at 0x7fa073d07490>, BEM_model.BEM_external_inputs_model.q1
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00qO
+	SUCCESSORS
+
+r, <csdl.lang.declared_variable.DeclaredVariable object at 0x7fa073d074c0>, BEM_model.BEM_external_inputs_model.r
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+	SUCCESSORS
+		_00qR
+
+_00qR, <csdl.operations.power_combination.power_combination object at 0x7fa073d074f0>
+	PREDECESSORS
+		r,(1, 1) 
+	SUCCESSORS
+		r1,(1, 1) 
+
+r1, <csdl.lang.output.Output object at 0x7fa073d07520>, BEM_model.BEM_external_inputs_model.r1
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00qR
+	SUCCESSORS
+
+_00rA, <csdl.lang.output.Output object at 0x7fa073d07ee0>, BEM_model.BEM_external_inputs_model._00rA
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00rz
+	SUCCESSORS
+		_00rF
+		_00rB
+		_00rD
+
+_00rF, <csdl.operations.dot.dot object at 0x7fa073d07e20>
+	PREDECESSORS
+		_00rA,(1, 3) 
+		_00r6,(1, 3) 
+	SUCCESSORS
+		_00rG,(1,) 
+
+_00rB, <csdl.operations.dot.dot object at 0x7fa073d07bb0>
+	PREDECESSORS
+		_00rA,(1, 3) 
+		in_plane_ex,(1, 3) 
+	SUCCESSORS
+		_00rC,(1,) 
+
+_00rD, <csdl.operations.dot.dot object at 0x7fa073d07e80>
+	PREDECESSORS
+		_00rA,(1, 3) 
+		in_plane_ey,(1, 3) 
+	SUCCESSORS
+		_00rE,(1,) 
+
+_00rG, <csdl.lang.output.Output object at 0x7fa073d07dc0>, BEM_model.BEM_external_inputs_model._00rG
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00rF
+	SUCCESSORS
+		_00rH
+
+_00r3, <csdl.operations.decompose.decompose object at 0x7fa073d077c0>
+	PREDECESSORS
+		thrust_vector,(1, 3) 
+	SUCCESSORS
+		_00r4,(1, 3) 
+
+_00r4, <csdl.lang.output.Output object at 0x7fa073d07820>, BEM_model.BEM_external_inputs_model._00r4
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00r3
+	SUCCESSORS
+		_00r5
+		_00rl
+		_00r7
+		_00rb
+
+_00r5, <csdl.operations.power_combination.power_combination object at 0x7fa073d07760>
+	PREDECESSORS
+		_00r4,(1, 3) 
+	SUCCESSORS
+		_00r6,(1, 3) 
+
+_00rl, <csdl.operations.cross.cross object at 0x7fa073d07af0>
+	PREDECESSORS
+		_00r4,(1, 3) 
+		in_plane_ey,(1, 3) 
+	SUCCESSORS
+		in_plane_ex,(1, 3) 
+
+_00r7, <csdl.operations.dot.dot object at 0x7fa073d077f0>
+	PREDECESSORS
+		_00r4,(1, 3) 
+		projection_vector,(1, 3) 
+	SUCCESSORS
+		_00r8,(1,) 
+
+_00rb, <csdl.operations.power_combination.power_combination object at 0x7fa073d07910>
+	PREDECESSORS
+		_00r4,(1, 3) 
+		_00ra,(1, 3) 
+	SUCCESSORS
+		_00rc,(1, 3) 
+
+_00r6, <csdl.lang.output.Output object at 0x7fa073d07850>, BEM_model.BEM_external_inputs_model._00r6
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00r5
+	SUCCESSORS
+		_00rF
+
+_00rH, <csdl.operations.expand.expand object at 0x7fa073d07d90>
+	PREDECESSORS
+		_00rG,(1,) 
+	SUCCESSORS
+		_00rI,(1, 30, 1, 1) 
+
+_00rI, <csdl.lang.output.Output object at 0x7fa073d07df0>, BEM_model.BEM_external_inputs_model._00rI
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00rH
+	SUCCESSORS
+		_00rJ
+
+_00rJ, <csdl.operations.indexed_passthrough.indexed_passthrough object at 0x7fa07418c940>
+	PREDECESSORS
+		_00rI,(1, 30, 1, 1) 
+		_00rN,(1, 30, 1, 1) 
+		_00rP,(1, 30, 1, 1) 
+	SUCCESSORS
+		inflow_velocity,(1, 30, 1, 3) 
+
+inflow_velocity, <csdl.lang.concatenation.Concatenation object at 0x7fa073d07550>, BEM_model.BEM_external_inputs_model.inflow_velocity
+	CONNECTED TO: False
+	PROMOTED TO: True
+		inflow_velocity, BEM_model.BEM_core_inputs_model.inflow_velocity
+	PREDECESSORS
+		_00rJ
+	SUCCESSORS
+		_00sh
+
+_00rC, <csdl.lang.output.Output object at 0x7fa073d07e50>, BEM_model.BEM_external_inputs_model._00rC
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00rB
+	SUCCESSORS
+		_00rK
+
+in_plane_ex, <csdl.lang.output.Output object at 0x7fa073d07b20>, BEM_model.BEM_external_inputs_model.in_plane_ex
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00rl
+	SUCCESSORS
+		_00rB
+
+projection_vector, <csdl.lang.declared_variable.DeclaredVariable object at 0x7fa073d071f0>, BEM_model.BEM_external_inputs_model.projection_vector
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+	SUCCESSORS
+		_00rd
+		_00r7
+
+_00rd, <csdl.operations.linear_combination.linear_combination object at 0x7fa073d07970>
+	PREDECESSORS
+		projection_vector,(1, 3) 
+		_00rc,(1, 3) 
+	SUCCESSORS
+		_00re,(1, 3) 
+
+_00re, <csdl.lang.output.Output object at 0x7fa073d079a0>, BEM_model.BEM_external_inputs_model._00re
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00rd
+	SUCCESSORS
+		_00rj
+		_00rf
+
+_00r8, <csdl.lang.output.Output object at 0x7fa073d078b0>, BEM_model.BEM_external_inputs_model._00r8
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00r7
+	SUCCESSORS
+		_00r9
+
+_00r9, <csdl.operations.expand.expand object at 0x7fa073d07880>
+	PREDECESSORS
+		_00r8,(1,) 
+	SUCCESSORS
+		_00ra,(1, 3) 
+
+_00ra, <csdl.lang.output.Output object at 0x7fa073d078e0>, BEM_model.BEM_external_inputs_model._00ra
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00r9
+	SUCCESSORS
+		_00rb
+
+_00rc, <csdl.lang.output.Output object at 0x7fa073d07940>, BEM_model.BEM_external_inputs_model._00rc
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00rb
+	SUCCESSORS
+		_00rd
+
+_00rj, <csdl.operations.power_combination.power_combination object at 0x7fa073d07a90>
+	PREDECESSORS
+		_00re,(1, 3) 
+		_00ri,(1, 3) 
+	SUCCESSORS
+		in_plane_ey,(1, 3) 
+
+_00rf, <csdl.operations.pnorm.pnorm object at 0x7fa073d079d0>
+	PREDECESSORS
+		_00re,(1, 3) 
+	SUCCESSORS
+		_00rg,(1,) 
+
+in_plane_ey, <csdl.lang.output.Output object at 0x7fa073d07ac0>, BEM_model.BEM_external_inputs_model.in_plane_ey
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00rj
+	SUCCESSORS
+		_00rl
+		_00rD
+
+_00rg, <csdl.lang.output.Output object at 0x7fa073d07a00>, BEM_model.BEM_external_inputs_model._00rg
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00rf
+	SUCCESSORS
+		_00rh
+
+_00rh, <csdl.operations.expand.expand object at 0x7fa073d07a30>
+	PREDECESSORS
+		_00rg,(1,) 
+	SUCCESSORS
+		_00ri,(1, 3) 
+
+_00ri, <csdl.lang.output.Output object at 0x7fa073d07a60>, BEM_model.BEM_external_inputs_model._00ri
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00rh
+	SUCCESSORS
+		_00rj
+
+_00rK, <csdl.operations.linear_combination.linear_combination object at 0x7fa073d07d60>
+	PREDECESSORS
+		_00rC,(1,) 
+	SUCCESSORS
+		_00rL,(1,) 
+
+_00rL, <csdl.lang.output.Output object at 0x7fa07418cac0>, BEM_model.BEM_external_inputs_model._00rL
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00rK
+	SUCCESSORS
+		_00rM
+
+_00rM, <csdl.operations.expand.expand object at 0x7fa07418cca0>
+	PREDECESSORS
+		_00rL,(1,) 
+	SUCCESSORS
+		_00rN,(1, 30, 1, 1) 
+
+_00rN, <csdl.lang.output.Output object at 0x7fa07418cc70>, BEM_model.BEM_external_inputs_model._00rN
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00rM
+	SUCCESSORS
+		_00rJ
+
+_00rE, <csdl.lang.output.Output object at 0x7fa073d07f10>, BEM_model.BEM_external_inputs_model._00rE
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00rD
+	SUCCESSORS
+		_00rO
+
+_00rO, <csdl.operations.expand.expand object at 0x7fa07418cfa0>
+	PREDECESSORS
+		_00rE,(1,) 
+	SUCCESSORS
+		_00rP,(1, 30, 1, 1) 
+
+_00rP, <csdl.lang.output.Output object at 0x7fa07418ccd0>, BEM_model.BEM_external_inputs_model._00rP
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00rO
+	SUCCESSORS
+		_00rJ
+
+_00qU, <csdl.operations.power_combination.power_combination object at 0x7fa073d07580>
+	PREDECESSORS
+		propeller_radius,(1,) 
+	SUCCESSORS
+		hub_radius,(1,) 
+
+_00qY, <csdl.operations.linear_combination.linear_combination object at 0x7fa073d07640>
+	PREDECESSORS
+		_00qX,(1,) 
+		propeller_radius,(1,) 
+	SUCCESSORS
+		_00qZ,(1,) 
+
+_00qW, <csdl.operations.power_combination.power_combination object at 0x7fa073d075e0>
+	PREDECESSORS
+		propeller_radius,(1,) 
+	SUCCESSORS
+		_00qX,(1,) 
+
+hub_radius, <csdl.lang.output.Output object at 0x7fa073d075b0>, BEM_model.BEM_external_inputs_model.hub_radius
+	CONNECTED TO: False
+	PROMOTED TO: True
+		hub_radius, BEM_model.BEM_core_inputs_model.hub_radius
+	PREDECESSORS
+		_00qU
+	SUCCESSORS
+		_00s3
+
+_00qZ, <csdl.lang.output.Output object at 0x7fa073d07670>, BEM_model.BEM_external_inputs_model._00qZ
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00qY
+	SUCCESSORS
+		_00q_
+
+_00qX, <csdl.lang.output.Output object at 0x7fa073d07610>, BEM_model.BEM_external_inputs_model._00qX
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00qW
+	SUCCESSORS
+		_00qY
+
+_00q_, <csdl.operations.power_combination.power_combination object at 0x7fa073d076a0>
+	PREDECESSORS
+		_00qZ,(1,) 
+	SUCCESSORS
+		dr,(1,) 
+
+dr, <csdl.lang.output.Output object at 0x7fa073d076d0>, BEM_model.BEM_external_inputs_model.dr
+	CONNECTED TO: False
+	PROMOTED TO: True
+		dr, BEM_model.BEM_core_inputs_model.dr
+	PREDECESSORS
+		_00q_
+	SUCCESSORS
+		_00s7
+
+_00rn, <csdl.operations.decompose.decompose object at 0x7fa073d07b80>
+	PREDECESSORS
+		rpm,(1, 1) 
+	SUCCESSORS
+		_00ro,(1, 1) 
+
+_00ro, <csdl.lang.output.Output object at 0x7fa073d07be0>, BEM_model.BEM_external_inputs_model._00ro
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00rn
+	SUCCESSORS
+		_00rp
+
+_00rp, <csdl.operations.power_combination.power_combination object at 0x7fa073d07b50>
+	PREDECESSORS
+		_00ro,(1, 1) 
+	SUCCESSORS
+		_00rq,(1, 1) 
+
+_00rq, <csdl.lang.output.Output object at 0x7fa073d07c10>, BEM_model.BEM_external_inputs_model._00rq
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00rp
+	SUCCESSORS
+		_00rr
+
+_00rr, <csdl.operations.indexed_passthrough.indexed_passthrough object at 0x7fa073d07c70>
+	PREDECESSORS
+		_00rq,(1, 1) 
+	SUCCESSORS
+		rotational_speed,(1, 1) 
+
+rotational_speed, <csdl.lang.concatenation.Concatenation object at 0x7fa073d07700>, BEM_model.BEM_external_inputs_model.rotational_speed
+	CONNECTED TO: False
+	PROMOTED TO: True
+		rotational_speed, BEM_model.BEM_core_inputs_model.rotational_speed
+	PREDECESSORS
+		_00rr
+	SUCCESSORS
+		_00s9
+
+x_dir, <csdl.lang.input.Input object at 0x7fa073d07790>, BEM_model.BEM_external_inputs_model.x_dir
+	CONNECTED TO: False
+	PROMOTED TO: True
+		x_dir, BEM_model.BEM_core_inputs_model.x_dir
+	PREDECESSORS
+	SUCCESSORS
+		_00sb
+
+y_dir, <csdl.lang.input.Input object at 0x7fa07418cfd0>, BEM_model.BEM_external_inputs_model.y_dir
+	CONNECTED TO: False
+	PROMOTED TO: True
+		y_dir, BEM_model.BEM_core_inputs_model.y_dir
+	PREDECESSORS
+	SUCCESSORS
+		_00sd
+
+z_dir, <csdl.lang.input.Input object at 0x7fa07418cf40>, BEM_model.BEM_external_inputs_model.z_dir
+	CONNECTED TO: False
+	PROMOTED TO: True
+		z_dir, BEM_model.BEM_core_inputs_model.z_dir
+	PREDECESSORS
+	SUCCESSORS
+		_00sf
+
+_00s3, <csdl.operations.expand.expand object at 0x7fa07418cd00>
+	PREDECESSORS
+		hub_radius,(1,) 
+	SUCCESSORS
+		_hub_radius,(1, 30, 1) 
+
+_hub_radius, <csdl.lang.output.Output object at 0x7fa07418cd30>, BEM_model.BEM_core_inputs_model._hub_radius
+	CONNECTED TO: False
+	PROMOTED TO: True
+		_hub_radius, BEM_model.prandtl_loss_factor_model._hub_radius
+		_hub_radius, BEM_model.BEM_pre_process_model._hub_radius
+		_hub_radius, BEM_model.phi_bracketed_search_group._hub_radius
+	PREDECESSORS
+		_00s3
+	SUCCESSORS
+		_00sF
+		_00sB
+		_00vP
+		_00vT
+		_00vz
+
+_00s5, <csdl.operations.expand.expand object at 0x7fa07418cc10>
+	PREDECESSORS
+		propeller_radius,(1,) 
+	SUCCESSORS
+		_rotor_radius,(1, 30, 1) 
+
+_rotor_radius, <csdl.lang.output.Output object at 0x7fa07418cc40>, BEM_model.BEM_core_inputs_model._rotor_radius
+	CONNECTED TO: False
+	PROMOTED TO: True
+		_rotor_radius, BEM_model.prandtl_loss_factor_model._rotor_radius
+		_rotor_radius, BEM_model.phi_bracketed_search_group._rotor_radius
+		_rotor_radius, BEM_model.BEM_pre_process_model._rotor_radius
+		_rotor_radius, BEM_model.induced_velocity_model._rotor_radius
+	PREDECESSORS
+		_00s5
+	SUCCESSORS
+		_00sB
+		_00vF
+		_00vz
+		_00yv
+		_00Bu
+		_00BU
+		_00C9
+
+_00s7, <csdl.operations.expand.expand object at 0x7fa07418cbb0>
+	PREDECESSORS
+		dr,(1,) 
+	SUCCESSORS
+		_dr,(1, 30, 1) 
+
+_dr, <csdl.lang.output.Output object at 0x7fa07418cbe0>, BEM_model.BEM_core_inputs_model._dr
+	CONNECTED TO: False
+	PROMOTED TO: True
+		_dr, BEM_model.induced_velocity_model._dr
+	PREDECESSORS
+		_00s7
+	SUCCESSORS
+		_00yj
+		_00zS
+		_00yN
+		_00z8
+		_00AH
+		_00Ad
+		_00zu
+		_00Be
+
+_00s9, <csdl.operations.expand.expand object at 0x7fa07418cb50>
+	PREDECESSORS
+		rotational_speed,(1, 1) 
+	SUCCESSORS
+		_rotational_speed,(1, 30, 1) 
+
+_rotational_speed, <csdl.lang.output.Output object at 0x7fa07418cb80>, BEM_model.BEM_core_inputs_model._rotational_speed
+	CONNECTED TO: False
+	PROMOTED TO: True
+		_rotational_speed, BEM_model.BEM_pre_process_model._rotational_speed
+	PREDECESSORS
+		_00s9
+	SUCCESSORS
+		_00sz
+
+_00sb, <csdl.operations.expand.expand object at 0x7fa07418caf0>
+	PREDECESSORS
+		x_dir,(1, 3) 
+	SUCCESSORS
+		_x_dir,(1, 30, 1, 3) 
+
+_x_dir, <csdl.lang.output.Output object at 0x7fa07418cb20>, BEM_model.BEM_core_inputs_model._x_dir
+	CONNECTED TO: False
+	PROMOTED TO: True
+		_x_dir, BEM_model.BEM_pre_process_model._x_dir
+	PREDECESSORS
+		_00sb
+	SUCCESSORS
+		_00sP
+
+_00sd, <csdl.operations.expand.expand object at 0x7fa07418ca90>
+	PREDECESSORS
+		y_dir,(1, 3) 
+	SUCCESSORS
+		_y_dir,(1, 30, 1, 3) 
+
+_y_dir, <csdl.lang.output.Output object at 0x7fa07418ca60>, BEM_model.BEM_core_inputs_model._y_dir
+	CONNECTED TO: False
+	PROMOTED TO: True
+		_y_dir, BEM_model.BEM_pre_process_model._y_dir
+	PREDECESSORS
+		_00sd
+	SUCCESSORS
+		_00sR
+
+_00sf, <csdl.operations.expand.expand object at 0x7fa07418ca30>
+	PREDECESSORS
+		z_dir,(1, 3) 
+	SUCCESSORS
+		_z_dir,(1, 30, 1, 3) 
+
+_z_dir, <csdl.lang.output.Output object at 0x7fa07418ca00>, BEM_model.BEM_core_inputs_model._z_dir
+	CONNECTED TO: False
+	PROMOTED TO: True
+		_z_dir, BEM_model.BEM_pre_process_model._z_dir
+	PREDECESSORS
+		_00sf
+	SUCCESSORS
+		_00sT
+
+_00sh, <csdl.operations.power_combination.power_combination object at 0x7fa07418c9a0>
+	PREDECESSORS
+		inflow_velocity,(1, 30, 1, 3) 
+	SUCCESSORS
+		_inflow_velocity,(1, 30, 1, 3) 
+
+_inflow_velocity, <csdl.lang.output.Output object at 0x7fa07418c9d0>, BEM_model.BEM_core_inputs_model._inflow_velocity
+	CONNECTED TO: False
+	PROMOTED TO: True
+		_inflow_velocity, BEM_model.BEM_pre_process_model._inflow_velocity
+	PREDECESSORS
+		_00sh
+	SUCCESSORS
+		_00sP
+		_00sR
+		_00sT
+
+_00sj, <csdl.operations.expand.expand object at 0x7fa07412a760>
+	PREDECESSORS
+		twist_profile,(30,) 
+	SUCCESSORS
+		_pitch,(1, 30, 1) 
+
+_pitch, <csdl.lang.output.Output object at 0x7fa07418c970>, BEM_model.BEM_core_inputs_model._pitch
+	CONNECTED TO: False
+	PROMOTED TO: True
+		_pitch, BEM_model.phi_bracketed_search_group._pitch
+		_pitch, BEM_model._pitch
+	PREDECESSORS
+		_00sj
+	SUCCESSORS
+		_00pX
+		_00vz
+
+_00sl, <csdl.operations.expand.expand object at 0x7fa073d0e040>
+	PREDECESSORS
+		chord_profile,(30,) 
+	SUCCESSORS
+		_chord,(1, 30, 1) 
+
+_chord, <csdl.lang.output.Output object at 0x7fa073d0e070>, BEM_model.BEM_core_inputs_model._chord
+	CONNECTED TO: False
+	PROMOTED TO: True
+		_chord, BEM_model.phi_bracketed_search_group._chord
+		_chord, BEM_model.induced_velocity_model._chord
+		_chord, BEM_model.BEM_pre_process_model._chord
+		_chord, BEM_model._chord
+	PREDECESSORS
+		_00sl
+	SUCCESSORS
+		_00pQ
+		_00pZ
+		_00vz
+		_00zQ
+		_00z6
+		_00Ab
+		_00zs
+		_00sH
+
+direction, <csdl.lang.input.Input object at 0x7fa07418cd60>, BEM_model.BEM_core_inputs_model.direction
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+	SUCCESSORS
+
+_theta, <csdl.lang.input.Input object at 0x7fa073d0e0a0>, BEM_model.BEM_core_inputs_model._theta
+	CONNECTED TO: False
+	PROMOTED TO: True
+		_theta, BEM_model.BEM_pre_process_model._theta
+	PREDECESSORS
+	SUCCESSORS
+		_00sX
+		_00t2
+
+_normalized_radius, <csdl.lang.input.Input object at 0x7fa073d0e100>, BEM_model.BEM_core_inputs_model._normalized_radius
+	CONNECTED TO: False
+	PROMOTED TO: True
+		_normalized_radius, BEM_model.BEM_pre_process_model._normalized_radius
+	PREDECESSORS
+	SUCCESSORS
+		_00sD
+
+_00sz, <csdl.operations.power_combination.power_combination object at 0x7fa073d0e2e0>
+	PREDECESSORS
+		_rotational_speed,(1, 30, 1) 
+	SUCCESSORS
+		_angular_speed,(1, 30, 1) 
+
+_angular_speed, <csdl.lang.output.Output object at 0x7fa073d0e310>, BEM_model.BEM_pre_process_model._angular_speed
+	CONNECTED TO: False
+	PROMOTED TO: True
+		_angular_speed, BEM_model.induced_velocity_model._angular_speed
+	PREDECESSORS
+		_00sz
+	SUCCESSORS
+		_00t8
+		_00yn
+		_00wl
+
+_00t8, <csdl.operations.power_combination.power_combination object at 0x7fa073d0e9a0>
+	PREDECESSORS
+		_angular_speed,(1, 30, 1) 
+		_radius,(1, 30, 1) 
+	SUCCESSORS
+		_00t9,(1, 30, 1) 
+
+_00sF, <csdl.operations.linear_combination.linear_combination object at 0x7fa073d0e400>
+	PREDECESSORS
+		_00sE,(1, 30, 1) 
+		_hub_radius,(1, 30, 1) 
+	SUCCESSORS
+		_radius,(1, 30, 1) 
+
+_00sB, <csdl.operations.linear_combination.linear_combination object at 0x7fa073d0e340>
+	PREDECESSORS
+		_hub_radius,(1, 30, 1) 
+		_rotor_radius,(1, 30, 1) 
+	SUCCESSORS
+		_00sC,(1, 30, 1) 
+
+_radius, <csdl.lang.output.Output object at 0x7fa073d0e430>, BEM_model.BEM_pre_process_model._radius
+	CONNECTED TO: False
+	PROMOTED TO: True
+		_radius, BEM_model.induced_velocity_model._radius
+		_radius, BEM_model.prandtl_loss_factor_model._radius
+		_radius, BEM_model.phi_bracketed_search_group._radius
+	PREDECESSORS
+		_00sF
+	SUCCESSORS
+		_00sN
+		_00t8
+		_00vz
+		_00y7
+		_00yB
+		_00AF
+		_00zw
+		_00AN
+		_00vF
+		_00vJ
+		_00vP
+
+_00sC, <csdl.lang.output.Output object at 0x7fa073d0e370>, BEM_model.BEM_pre_process_model._00sC
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00sB
+	SUCCESSORS
+		_00sD
+
+_00sD, <csdl.operations.power_combination.power_combination object at 0x7fa073d0e3a0>
+	PREDECESSORS
+		_00sC,(1, 30, 1) 
+		_normalized_radius,(1, 30, 1) 
+	SUCCESSORS
+		_00sE,(1, 30, 1) 
+
+_00sE, <csdl.lang.output.Output object at 0x7fa073d0e3d0>, BEM_model.BEM_pre_process_model._00sE
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00sD
+	SUCCESSORS
+		_00sF
+
+_00sN, <csdl.operations.power_combination.power_combination object at 0x7fa073d0e580>
+	PREDECESSORS
+		_radius,(1, 30, 1) 
+		_00sM,(1, 30, 1) 
+	SUCCESSORS
+		_blade_solidity,(1, 30, 1) 
+
+_00sH, <csdl.operations.power_combination.power_combination object at 0x7fa073d0e460>
+	PREDECESSORS
+		_chord,(1, 30, 1) 
+	SUCCESSORS
+		_00sI,(1, 30, 1) 
+
+_00sI, <csdl.lang.output.Output object at 0x7fa073d0e490>, BEM_model.BEM_pre_process_model._00sI
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00sH
+	SUCCESSORS
+		_00sJ
+
+_00sJ, <csdl.operations.power_combination.power_combination object at 0x7fa073d0e4c0>
+	PREDECESSORS
+		_00sI,(1, 30, 1) 
+	SUCCESSORS
+		_00sK,(1, 30, 1) 
+
+_00sK, <csdl.lang.output.Output object at 0x7fa073d0e4f0>, BEM_model.BEM_pre_process_model._00sK
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00sJ
+	SUCCESSORS
+		_00sL
+
+_00sL, <csdl.operations.power_combination.power_combination object at 0x7fa073d0e520>
+	PREDECESSORS
+		_00sK,(1, 30, 1) 
+	SUCCESSORS
+		_00sM,(1, 30, 1) 
+
+_00sM, <csdl.lang.output.Output object at 0x7fa073d0e550>, BEM_model.BEM_pre_process_model._00sM
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00sL
+	SUCCESSORS
+		_00sN
+
+_blade_solidity, <csdl.lang.output.Output object at 0x7fa073d0e5b0>, BEM_model.BEM_pre_process_model._blade_solidity
+	CONNECTED TO: False
+	PROMOTED TO: True
+		_blade_solidity, BEM_model.phi_bracketed_search_group._blade_solidity
+		_blade_solidity, BEM_model.induced_velocity_model._blade_solidity
+	PREDECESSORS
+		_00sN
+	SUCCESSORS
+		_00vz
+		_00xm
+		_00xs
+		_00xG
+		_00xQ
+		_00y1
+
+_00sP, <csdl.operations.einsum.einsum object at 0x7fa073d0e5e0>
+	PREDECESSORS
+		_x_dir,(1, 30, 1, 3) 
+		_inflow_velocity,(1, 30, 1, 3) 
+	SUCCESSORS
+		_axial_inflow_velocity,(1, 30, 1) 
+
+_00sR, <csdl.operations.einsum.einsum object at 0x7fa073d0e640>
+	PREDECESSORS
+		_y_dir,(1, 30, 1, 3) 
+		_inflow_velocity,(1, 30, 1, 3) 
+	SUCCESSORS
+		_in_plane_inflow_velocity,(1, 30, 1) 
+
+_00sT, <csdl.operations.einsum.einsum object at 0x7fa073d0e6a0>
+	PREDECESSORS
+		_z_dir,(1, 30, 1, 3) 
+		_inflow_velocity,(1, 30, 1, 3) 
+	SUCCESSORS
+		inflow_z,(1, 30, 1) 
+
+_axial_inflow_velocity, <csdl.lang.output.Output object at 0x7fa073d0e610>, BEM_model.BEM_pre_process_model._axial_inflow_velocity
+	CONNECTED TO: False
+	PROMOTED TO: True
+		_axial_inflow_velocity, BEM_model._axial_inflow_velocity
+		_axial_inflow_velocity, BEM_model.phi_bracketed_search_group._axial_inflow_velocity
+		_axial_inflow_velocity, BEM_model.induced_velocity_model._axial_inflow_velocity
+	PREDECESSORS
+		_00sP
+	SUCCESSORS
+		_00pA
+		_00vz
+		_00xM
+		_00yd
+		_00AV
+		_00B2
+		_00C7
+
+_in_plane_inflow_velocity, <csdl.lang.output.Output object at 0x7fa073d0e670>, BEM_model.BEM_pre_process_model._in_plane_inflow_velocity
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00sR
+	SUCCESSORS
+		_00t0
+
+_00t0, <csdl.operations.power_combination.power_combination object at 0x7fa073d0e820>
+	PREDECESSORS
+		_in_plane_inflow_velocity,(1, 30, 1) 
+	SUCCESSORS
+		_00t1,(1, 30, 1) 
+
+inflow_z, <csdl.lang.output.Output object at 0x7fa073d0e6d0>, BEM_model.BEM_pre_process_model.inflow_z
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00sT
+	SUCCESSORS
+		_00sV
+
+_00sV, <csdl.operations.power_combination.power_combination object at 0x7fa073d0e700>
+	PREDECESSORS
+		inflow_z,(1, 30, 1) 
+	SUCCESSORS
+		_00sW,(1, 30, 1) 
+
+_00sW, <csdl.lang.output.Output object at 0x7fa073d0e730>, BEM_model.BEM_pre_process_model._00sW
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00sV
+	SUCCESSORS
+		_00sZ
+
+_00sZ, <csdl.operations.power_combination.power_combination object at 0x7fa073d0e7c0>
+	PREDECESSORS
+		_00sW,(1, 30, 1) 
+		_00sY,(1, 30, 1) 
+	SUCCESSORS
+		_00s_,(1, 30, 1) 
+
+_00s_, <csdl.lang.output.Output object at 0x7fa073d0e7f0>, BEM_model.BEM_pre_process_model._00s_
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00sZ
+	SUCCESSORS
+		_00t6
+
+_00sX, <csdl.operations.cos.cos object at 0x7fa073d0e760>
+	PREDECESSORS
+		_theta,(1, 30, 1) 
+	SUCCESSORS
+		_00sY,(1, 30, 1) 
+
+_00t2, <csdl.operations.sin.sin object at 0x7fa073d0e880>
+	PREDECESSORS
+		_theta,(1, 30, 1) 
+	SUCCESSORS
+		_00t3,(1, 30, 1) 
+
+_00sY, <csdl.lang.output.Output object at 0x7fa073d0e790>, BEM_model.BEM_pre_process_model._00sY
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00sX
+	SUCCESSORS
+		_00sZ
+
+_00t6, <csdl.operations.linear_combination.linear_combination object at 0x7fa073d0e940>
+	PREDECESSORS
+		_00s_,(1, 30, 1) 
+		_00t5,(1, 30, 1) 
+	SUCCESSORS
+		_00t7,(1, 30, 1) 
+
+_00t7, <csdl.lang.output.Output object at 0x7fa073d0e970>, BEM_model.BEM_pre_process_model._00t7
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00t6
+	SUCCESSORS
+		_00ta
+
+_00t1, <csdl.lang.output.Output object at 0x7fa073d0e850>, BEM_model.BEM_pre_process_model._00t1
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00t0
+	SUCCESSORS
+		_00t4
+
+_00t4, <csdl.operations.power_combination.power_combination object at 0x7fa073d0e8e0>
+	PREDECESSORS
+		_00t1,(1, 30, 1) 
+		_00t3,(1, 30, 1) 
+	SUCCESSORS
+		_00t5,(1, 30, 1) 
+
+_00t5, <csdl.lang.output.Output object at 0x7fa073d0e910>, BEM_model.BEM_pre_process_model._00t5
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00t4
+	SUCCESSORS
+		_00t6
+
+_00t3, <csdl.lang.output.Output object at 0x7fa073d0e8b0>, BEM_model.BEM_pre_process_model._00t3
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00t2
+	SUCCESSORS
+		_00t4
+
+_00ta, <csdl.operations.linear_combination.linear_combination object at 0x7fa073d0ea00>
+	PREDECESSORS
+		_00t7,(1, 30, 1) 
+		_00t9,(1, 30, 1) 
+	SUCCESSORS
+		_tangential_inflow_velocity,(1, 30, 1) 
+
+_tangential_inflow_velocity, <csdl.lang.output.Output object at 0x7fa073d0ea30>, BEM_model.BEM_pre_process_model._tangential_inflow_velocity
+	CONNECTED TO: False
+	PROMOTED TO: True
+		_tangential_inflow_velocity, BEM_model.induced_velocity_model._tangential_inflow_velocity
+		_tangential_inflow_velocity, BEM_model.phi_bracketed_search_group._tangential_inflow_velocity
+		_tangential_inflow_velocity, BEM_model._tangential_inflow_velocity
+	PREDECESSORS
+		_00ta
+	SUCCESSORS
+		_00pC
+		_00x4
+		_00xu
+		_00xO
+		_00zI
+		_00yZ
+		_00Az
+		_00A3
+		_00zk
+		_00AR
+		_00vz
+
+_00t9, <csdl.lang.output.Output object at 0x7fa073d0e9d0>, BEM_model.BEM_pre_process_model._00t9
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00t8
+	SUCCESSORS
+		_00ta
+
+_00td, <csdl.operations.power_combination.power_combination object at 0x7fa073d0ea90>
+	PREDECESSORS
+		z,(1, 1) 
+	SUCCESSORS
+		_00te,(1, 1) 
+
+_00te, <csdl.lang.output.Output object at 0x7fa073d0eac0>, BEM_model.atmosphere_model._00te
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00td
+	SUCCESSORS
+		_00tf
+
+_00tf, <csdl.operations.linear_combination.linear_combination object at 0x7fa073d0eaf0>
+	PREDECESSORS
+		_00te,(1, 1) 
+	SUCCESSORS
+		_00tg,(1, 1) 
+
+_00tg, <csdl.lang.output.Output object at 0x7fa073d0eb20>, BEM_model.atmosphere_model._00tg
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00tf
+	SUCCESSORS
+		_00th
+
+_00th, <csdl.operations.power_combination.power_combination object at 0x7fa073d0eb50>
+	PREDECESSORS
+		_00tg,(1, 1) 
+	SUCCESSORS
+		_00ti,(1, 1) 
+
+_00ti, <csdl.lang.output.Output object at 0x7fa073d0eb80>, BEM_model.atmosphere_model._00ti
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00th
+	SUCCESSORS
+		_00tj
+
+_00tj, <csdl.operations.linear_combination.linear_combination object at 0x7fa073d0ebb0>
+	PREDECESSORS
+		_00ti,(1, 1) 
+	SUCCESSORS
+		temperature,(1, 1) 
+
+temperature, <csdl.lang.output.Output object at 0x7fa073d0ebe0>, BEM_model.atmosphere_model.temperature
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00tj
+	SUCCESSORS
+		_00tl
+		_00tt
+		_00tv
+		_00tD
+		_00tH
+
+_00tl, <csdl.operations.power_combination.power_combination object at 0x7fa073d0ec10>
+	PREDECESSORS
+		temperature,(1, 1) 
+	SUCCESSORS
+		_00tm,(1, 1) 
+
+_00tt, <csdl.operations.power_combination.power_combination object at 0x7fa073d0ed90>
+	PREDECESSORS
+		temperature,(1, 1) 
+		_00ts,(1, 1) 
+	SUCCESSORS
+		density,(1, 1) 
+
+_00tv, <csdl.operations.power_combination.power_combination object at 0x7fa073d0edf0>
+	PREDECESSORS
+		temperature,(1, 1) 
+	SUCCESSORS
+		_00tw,(1, 1) 
+
+_00tD, <csdl.operations.linear_combination.linear_combination object at 0x7fa073d0ef70>
+	PREDECESSORS
+		temperature,(1, 1) 
+	SUCCESSORS
+		_00tE,(1, 1) 
+
+_00tH, <csdl.operations.power_combination.power_combination object at 0x7fa073ce4070>
+	PREDECESSORS
+		temperature,(1, 1) 
+	SUCCESSORS
+		_00tI,(1, 1) 
+
+_00tm, <csdl.lang.output.Output object at 0x7fa073d0ec40>, BEM_model.atmosphere_model._00tm
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00tl
+	SUCCESSORS
+		_00tn
+
+_00tn, <csdl.operations.power_combination.power_combination object at 0x7fa073d0ec70>
+	PREDECESSORS
+		_00tm,(1, 1) 
+	SUCCESSORS
+		_00to,(1, 1) 
+
+_00to, <csdl.lang.output.Output object at 0x7fa073d0eca0>, BEM_model.atmosphere_model._00to
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00tn
+	SUCCESSORS
+		_00tp
+
+_00tp, <csdl.operations.power_combination.power_combination object at 0x7fa073d0ecd0>
+	PREDECESSORS
+		_00to,(1, 1) 
+	SUCCESSORS
+		pressure,(1, 1) 
+
+pressure, <csdl.lang.output.Output object at 0x7fa073d0ed00>, BEM_model.atmosphere_model.pressure
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00tp
+	SUCCESSORS
+		_00tr
+
+_00tr, <csdl.operations.power_combination.power_combination object at 0x7fa073d0ed30>
+	PREDECESSORS
+		pressure,(1, 1) 
+	SUCCESSORS
+		_00ts,(1, 1) 
+
+_00ts, <csdl.lang.output.Output object at 0x7fa073d0ed60>, BEM_model.atmosphere_model._00ts
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00tr
+	SUCCESSORS
+		_00tt
+
+density, <csdl.lang.output.Output object at 0x7fa073d0edc0>, BEM_model.atmosphere_model.density
+	CONNECTED TO: False
+	PROMOTED TO: True
+		density, BEM_model.density
+		density, BEM_model.induced_velocity_model.density
+	PREDECESSORS
+		_00tt
+	SUCCESSORS
+		_00pJ
+		_00wv
+		_00Bi
+		_00BI
+
+_00tw, <csdl.lang.output.Output object at 0x7fa073d0ee20>, BEM_model.atmosphere_model._00tw
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00tv
+	SUCCESSORS
+		_00tx
+
+_00tx, <csdl.operations.power_combination.power_combination object at 0x7fa073d0ee50>
+	PREDECESSORS
+		_00tw,(1, 1) 
+	SUCCESSORS
+		_00ty,(1, 1) 
+
+_00ty, <csdl.lang.output.Output object at 0x7fa073d0ee80>, BEM_model.atmosphere_model._00ty
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00tx
+	SUCCESSORS
+		_00tz
+
+_00tz, <csdl.operations.power_combination.power_combination object at 0x7fa073d0eeb0>
+	PREDECESSORS
+		_00ty,(1, 1) 
+	SUCCESSORS
+		_00tA,(1, 1) 
+
+_00tA, <csdl.lang.output.Output object at 0x7fa073d0eee0>, BEM_model.atmosphere_model._00tA
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00tz
+	SUCCESSORS
+		_00tB
+
+_00tB, <csdl.operations.power_combination.power_combination object at 0x7fa073d0ef10>
+	PREDECESSORS
+		_00tA,(1, 1) 
+	SUCCESSORS
+		_00tC,(1, 1) 
+
+_00tC, <csdl.lang.output.Output object at 0x7fa073d0ef40>, BEM_model.atmosphere_model._00tC
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00tB
+	SUCCESSORS
+		_00tF
+
+_00tF, <csdl.operations.power_combination.power_combination object at 0x7fa073d0efd0>
+	PREDECESSORS
+		_00tC,(1, 1) 
+		_00tE,(1, 1) 
+	SUCCESSORS
+		dynamic_viscosity,(1, 1) 
+
+dynamic_viscosity, <csdl.lang.output.Output object at 0x7fa073ce4040>, BEM_model.atmosphere_model.dynamic_viscosity
+	CONNECTED TO: False
+	PROMOTED TO: True
+		dynamic_viscosity, BEM_model.dynamic_viscosity
+	PREDECESSORS
+		_00tF
+	SUCCESSORS
+		_00pM
+
+_00tE, <csdl.lang.output.Output object at 0x7fa073d0efa0>, BEM_model.atmosphere_model._00tE
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00tD
+	SUCCESSORS
+		_00tF
+
+_00tI, <csdl.lang.output.Output object at 0x7fa073ce40a0>, BEM_model.atmosphere_model._00tI
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00tH
+	SUCCESSORS
+		_00tJ
+
+_00tJ, <csdl.operations.power_combination.power_combination object at 0x7fa073ce40d0>
+	PREDECESSORS
+		_00tI,(1, 1) 
+	SUCCESSORS
+		speed_of_sound,(1, 1) 
+
+speed_of_sound, <csdl.lang.output.Output object at 0x7fa073ce4100>, BEM_model.atmosphere_model.speed_of_sound
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00tJ
+	SUCCESSORS
+
+_00vz, <csdl.lang.bracketed_search_operation.BracketedSearchOperation object at 0x7fa073d41880>
+	PREDECESSORS
+		Re,(1, 30, 1) 
+		_hub_radius,(1, 30, 1) 
+		_rotor_radius,(1, 30, 1) 
+		_pitch,(1, 30, 1) 
+		_chord,(1, 30, 1) 
+		_radius,(1, 30, 1) 
+		_blade_solidity,(1, 30, 1) 
+		_axial_inflow_velocity,(1, 30, 1) 
+		_tangential_inflow_velocity,(1, 30, 1) 
+	SUCCESSORS
+		phi_distribution,(1, 30, 1) 
+
+phi_distribution, <csdl.lang.output.Output object at 0x7fa073d4a1c0>, BEM_model.phi_bracketed_search_group.phi_distribution
+	CONNECTED TO: False
+	PROMOTED TO: True
+		phi_distribution, BEM_model.phi_distribution
+		phi_distribution, BEM_model.prandtl_loss_factor_model.phi_distribution
+		phi_distribution, BEM_model.induced_velocity_model.phi_distribution
+	PREDECESSORS
+		_00vz
+	SUCCESSORS
+		_00pX
+		_00vL
+		_00vV
+		_00x6
+		_00xe
+		_00xi
+		_00wL
+		_00wP
+		_00wB
+		_00wF
+		_00xy
+		_00xC
+		_00xW
+		_00wV
+		_00wZ
+
+_00vF, <csdl.operations.linear_combination.linear_combination object at 0x7fa073d417f0>
+	PREDECESSORS
+		_rotor_radius,(1, 30, 1) 
+		_radius,(1, 30, 1) 
+	SUCCESSORS
+		_00vG,(1, 30, 1) 
+
+_00vG, <csdl.lang.output.Output object at 0x7fa073d25f70>, BEM_model.prandtl_loss_factor_model._00vG
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00vF
+	SUCCESSORS
+		_00vH
+
+_00vJ, <csdl.operations.power_combination.power_combination object at 0x7fa073d257c0>
+	PREDECESSORS
+		_00vI,(1, 30, 1) 
+		_radius,(1, 30, 1) 
+	SUCCESSORS
+		_00vK,(1, 30, 1) 
+
+_00vP, <csdl.operations.linear_combination.linear_combination object at 0x7fa073d256a0>
+	PREDECESSORS
+		_hub_radius,(1, 30, 1) 
+		_radius,(1, 30, 1) 
+	SUCCESSORS
+		_00vQ,(1, 30, 1) 
+
+_00vH, <csdl.operations.power_combination.power_combination object at 0x7fa073d257f0>
+	PREDECESSORS
+		_00vG,(1, 30, 1) 
+	SUCCESSORS
+		_00vI,(1, 30, 1) 
+
+_00vI, <csdl.lang.output.Output object at 0x7fa073d25850>, BEM_model.prandtl_loss_factor_model._00vI
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00vH
+	SUCCESSORS
+		_00vJ
+
+_00vK, <csdl.lang.output.Output object at 0x7fa073d25820>, BEM_model.prandtl_loss_factor_model._00vK
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00vJ
+	SUCCESSORS
+		_00vN
+
+_00vN, <csdl.operations.power_combination.power_combination object at 0x7fa073d25700>
+	PREDECESSORS
+		_00vK,(1, 30, 1) 
+		_00vM,(1, 30, 1) 
+	SUCCESSORS
+		_00vO,(1, 30, 1) 
+
+_00vO, <csdl.lang.output.Output object at 0x7fa073d256d0>, BEM_model.prandtl_loss_factor_model._00vO
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00vN
+	SUCCESSORS
+		_00vZ
+
+_00vL, <csdl.operations.sin.sin object at 0x7fa073d25730>
+	PREDECESSORS
+		phi_distribution,(1, 30, 1) 
+	SUCCESSORS
+		_00vM,(1, 30, 1) 
+
+_00vV, <csdl.operations.sin.sin object at 0x7fa073d25580>
+	PREDECESSORS
+		phi_distribution,(1, 30, 1) 
+	SUCCESSORS
+		_00vW,(1, 30, 1) 
+
+_00vM, <csdl.lang.output.Output object at 0x7fa073d25760>, BEM_model.prandtl_loss_factor_model._00vM
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00vL
+	SUCCESSORS
+		_00vN
+
+_00vZ, <csdl.operations.linear_combination.linear_combination object at 0x7fa073d254c0>
+	PREDECESSORS
+		_00vO,(1, 30, 1) 
+	SUCCESSORS
+		_00v_,(1, 30, 1) 
+
+_00v_, <csdl.lang.output.Output object at 0x7fa073d25490>, BEM_model.prandtl_loss_factor_model._00v_
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00vZ
+	SUCCESSORS
+		_00w0
+
+_00w0, <csdl.operations.exp.exp object at 0x7fa073d25460>
+	PREDECESSORS
+		_00v_,(1, 30, 1) 
+	SUCCESSORS
+		_00w1,(1, 30, 1) 
+
+_00w1, <csdl.lang.output.Output object at 0x7fa073d25430>, BEM_model.prandtl_loss_factor_model._00w1
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00w0
+	SUCCESSORS
+		_00w2
+
+_00w2, <csdl.operations.arccos.arccos object at 0x7fa073d25400>
+	PREDECESSORS
+		_00w1,(1, 30, 1) 
+	SUCCESSORS
+		_00w3,(1, 30, 1) 
+
+_00w3, <csdl.lang.output.Output object at 0x7fa073d253d0>, BEM_model.prandtl_loss_factor_model._00w3
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00w2
+	SUCCESSORS
+		_00w4
+
+_00w4, <csdl.operations.power_combination.power_combination object at 0x7fa073d253a0>
+	PREDECESSORS
+		_00w3,(1, 30, 1) 
+	SUCCESSORS
+		_00w5,(1, 30, 1) 
+
+_00w5, <csdl.lang.output.Output object at 0x7fa073d25370>, BEM_model.prandtl_loss_factor_model._00w5
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00w4
+	SUCCESSORS
+		_00we
+
+_00we, <csdl.operations.power_combination.power_combination object at 0x7fa073d251c0>
+	PREDECESSORS
+		_00w5,(1, 30, 1) 
+		_00wd,(1, 30, 1) 
+	SUCCESSORS
+		prandtl_loss_factor,(1, 30, 1) 
+
+prandtl_loss_factor, <csdl.lang.output.Output object at 0x7fa073d25190>, BEM_model.prandtl_loss_factor_model.prandtl_loss_factor
+	CONNECTED TO: False
+	PROMOTED TO: True
+		prandtl_loss_factor, BEM_model.induced_velocity_model.prandtl_loss_factor
+	PREDECESSORS
+		_00we
+	SUCCESSORS
+		_00x2
+		_00xc
+		_00xw
+		_00xU
+		_00yh
+		_00yL
+		_00Bc
+
+_00vQ, <csdl.lang.output.Output object at 0x7fa073d25670>, BEM_model.prandtl_loss_factor_model._00vQ
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00vP
+	SUCCESSORS
+		_00vR
+
+_00vT, <csdl.operations.power_combination.power_combination object at 0x7fa073d255e0>
+	PREDECESSORS
+		_00vS,(1, 30, 1) 
+		_hub_radius,(1, 30, 1) 
+	SUCCESSORS
+		_00vU,(1, 30, 1) 
+
+_00vR, <csdl.operations.power_combination.power_combination object at 0x7fa073d25640>
+	PREDECESSORS
+		_00vQ,(1, 30, 1) 
+	SUCCESSORS
+		_00vS,(1, 30, 1) 
+
+_00vS, <csdl.lang.output.Output object at 0x7fa073d25610>, BEM_model.prandtl_loss_factor_model._00vS
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00vR
+	SUCCESSORS
+		_00vT
+
+_00vU, <csdl.lang.output.Output object at 0x7fa073d255b0>, BEM_model.prandtl_loss_factor_model._00vU
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00vT
+	SUCCESSORS
+		_00vX
+
+_00vX, <csdl.operations.power_combination.power_combination object at 0x7fa073d25520>
+	PREDECESSORS
+		_00vU,(1, 30, 1) 
+		_00vW,(1, 30, 1) 
+	SUCCESSORS
+		_00vY,(1, 30, 1) 
+
+_00vY, <csdl.lang.output.Output object at 0x7fa073d254f0>, BEM_model.prandtl_loss_factor_model._00vY
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00vX
+	SUCCESSORS
+		_00w6
+
+_00vW, <csdl.lang.output.Output object at 0x7fa073d25550>, BEM_model.prandtl_loss_factor_model._00vW
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00vV
+	SUCCESSORS
+		_00vX
+
+_00w6, <csdl.operations.linear_combination.linear_combination object at 0x7fa073d25340>
+	PREDECESSORS
+		_00vY,(1, 30, 1) 
+	SUCCESSORS
+		_00w7,(1, 30, 1) 
+
+_00w7, <csdl.lang.output.Output object at 0x7fa073d25310>, BEM_model.prandtl_loss_factor_model._00w7
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00w6
+	SUCCESSORS
+		_00w8
+
+_00w8, <csdl.operations.exp.exp object at 0x7fa073d252e0>
+	PREDECESSORS
+		_00w7,(1, 30, 1) 
+	SUCCESSORS
+		_00w9,(1, 30, 1) 
+
+_00w9, <csdl.lang.output.Output object at 0x7fa073d252b0>, BEM_model.prandtl_loss_factor_model._00w9
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00w8
+	SUCCESSORS
+		_00wa
+
+_00wa, <csdl.operations.arccos.arccos object at 0x7fa073d25280>
+	PREDECESSORS
+		_00w9,(1, 30, 1) 
+	SUCCESSORS
+		_00wb,(1, 30, 1) 
+
+_00wb, <csdl.lang.output.Output object at 0x7fa073d25250>, BEM_model.prandtl_loss_factor_model._00wb
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00wa
+	SUCCESSORS
+		_00wc
+
+_00wc, <csdl.operations.power_combination.power_combination object at 0x7fa073d25220>
+	PREDECESSORS
+		_00wb,(1, 30, 1) 
+	SUCCESSORS
+		_00wd,(1, 30, 1) 
+
+_00wd, <csdl.lang.output.Output object at 0x7fa073d251f0>, BEM_model.prandtl_loss_factor_model._00wd
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00wc
+	SUCCESSORS
+		_00we
+
+_00x2, <csdl.operations.power_combination.power_combination object at 0x7fa073baa7f0>
+	PREDECESSORS
+		prandtl_loss_factor,(1, 30, 1) 
+	SUCCESSORS
+		_00x3,(1, 30, 1) 
+
+_00xc, <csdl.operations.power_combination.power_combination object at 0x7fa073baa610>
+	PREDECESSORS
+		prandtl_loss_factor,(1, 30, 1) 
+	SUCCESSORS
+		_00xd,(1, 30, 1) 
+
+_00xw, <csdl.operations.power_combination.power_combination object at 0x7fa073baa250>
+	PREDECESSORS
+		prandtl_loss_factor,(1, 30, 1) 
+	SUCCESSORS
+		_00xx,(1, 30, 1) 
+
+_00xU, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8d90>
+	PREDECESSORS
+		prandtl_loss_factor,(1, 30, 1) 
+	SUCCESSORS
+		_00xV,(1, 30, 1) 
+
+_00yh, <csdl.operations.power_combination.power_combination object at 0x7fa073cd88e0>
+	PREDECESSORS
+		_00yg,(1, 30, 1) 
+		prandtl_loss_factor,(1, 30, 1) 
+	SUCCESSORS
+		_00yi,(1, 30, 1) 
+
+_00yL, <csdl.operations.power_combination.power_combination object at 0x7fa073cd82b0>
+	PREDECESSORS
+		_00yK,(1, 30, 1) 
+		prandtl_loss_factor,(1, 30, 1) 
+	SUCCESSORS
+		_00yM,(1, 30, 1) 
+
+_00Bc, <csdl.operations.power_combination.power_combination object at 0x7fa073cb1280>
+	PREDECESSORS
+		_00Bb,(1, 30, 1) 
+		prandtl_loss_factor,(1, 30, 1) 
+	SUCCESSORS
+		_00Bd,(1, 30, 1) 
+
+_00x3, <csdl.lang.output.Output object at 0x7fa073baa7c0>, BEM_model.induced_velocity_model._00x3
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00x2
+	SUCCESSORS
+		_00x4
+
+_00x4, <csdl.operations.power_combination.power_combination object at 0x7fa073baa790>
+	PREDECESSORS
+		_00x3,(1, 30, 1) 
+		_tangential_inflow_velocity,(1, 30, 1) 
+	SUCCESSORS
+		_00x5,(1, 30, 1) 
+
+_00x5, <csdl.lang.output.Output object at 0x7fa073baa760>, BEM_model.induced_velocity_model._00x5
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00x4
+	SUCCESSORS
+		_00xa
+
+_00xu, <csdl.operations.power_combination.power_combination object at 0x7fa073baa2b0>
+	PREDECESSORS
+		_00xt,(1, 30, 1) 
+		_tangential_inflow_velocity,(1, 30, 1) 
+	SUCCESSORS
+		_00xv,(1, 30, 1) 
+
+_00xO, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8eb0>
+	PREDECESSORS
+		_tangential_inflow_velocity,(1, 30, 1) 
+	SUCCESSORS
+		_00xP,(1, 30, 1) 
+
+_00zI, <csdl.operations.linear_combination.linear_combination object at 0x7fa073cc4730>
+	PREDECESSORS
+		_00zH,(1, 30, 1) 
+		_tangential_inflow_velocity,(1, 30, 1) 
+	SUCCESSORS
+		_00zJ,(1, 30, 1) 
+
+_00yZ, <csdl.operations.linear_combination.linear_combination object at 0x7fa073cc4fd0>
+	PREDECESSORS
+		_00yY,(1, 30, 1) 
+		_tangential_inflow_velocity,(1, 30, 1) 
+	SUCCESSORS
+		_00y_,(1, 30, 1) 
+
+_00Az, <csdl.operations.linear_combination.linear_combination object at 0x7fa073cb1b20>
+	PREDECESSORS
+		_00Ay,(1, 30, 1) 
+		_tangential_inflow_velocity,(1, 30, 1) 
+	SUCCESSORS
+		_00AA,(1, 30, 1) 
+
+_00A3, <csdl.operations.linear_combination.linear_combination object at 0x7fa073cc4310>
+	PREDECESSORS
+		_00A2,(1, 30, 1) 
+		_tangential_inflow_velocity,(1, 30, 1) 
+	SUCCESSORS
+		_00A4,(1, 30, 1) 
+
+_00zk, <csdl.operations.linear_combination.linear_combination object at 0x7fa073cc4bb0>
+	PREDECESSORS
+		_00zj,(1, 30, 1) 
+		_tangential_inflow_velocity,(1, 30, 1) 
+	SUCCESSORS
+		_00zl,(1, 30, 1) 
+
+_00AR, <csdl.operations.power_combination.power_combination object at 0x7fa073cb16a0>
+	PREDECESSORS
+		_ux,(1, 30, 1) 
+		_tangential_inflow_velocity,(1, 30, 1) 
+	SUCCESSORS
+		_00AS,(1, 30, 1) 
+
+_00xa, <csdl.operations.power_combination.power_combination object at 0x7fa073baa670>
+	PREDECESSORS
+		_00x5,(1, 30, 1) 
+		_00x9,(1, 30, 1) 
+	SUCCESSORS
+		_00xb,(1, 30, 1) 
+
+_00xb, <csdl.lang.output.Output object at 0x7fa073baa640>, BEM_model.induced_velocity_model._00xb
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xa
+	SUCCESSORS
+		_00xq
+
+_00x6, <csdl.operations.sin.sin object at 0x7fa073baa730>
+	PREDECESSORS
+		phi_distribution,(1, 30, 1) 
+	SUCCESSORS
+		_00x7,(1, 30, 1) 
+
+_00xe, <csdl.operations.sin.sin object at 0x7fa073baa5b0>
+	PREDECESSORS
+		phi_distribution,(1, 30, 1) 
+	SUCCESSORS
+		_00xf,(1, 30, 1) 
+
+_00xi, <csdl.operations.cos.cos object at 0x7fa073baa4f0>
+	PREDECESSORS
+		phi_distribution,(1, 30, 1) 
+	SUCCESSORS
+		_00xj,(1, 30, 1) 
+
+_00wL, <csdl.operations.sin.sin object at 0x7fa073baab50>
+	PREDECESSORS
+		phi_distribution,(1, 30, 1) 
+	SUCCESSORS
+		_00wM,(1, 30, 1) 
+
+_00wP, <csdl.operations.cos.cos object at 0x7fa073baaa90>
+	PREDECESSORS
+		phi_distribution,(1, 30, 1) 
+	SUCCESSORS
+		_00wQ,(1, 30, 1) 
+
+_00wB, <csdl.operations.cos.cos object at 0x7fa073baad30>
+	PREDECESSORS
+		phi_distribution,(1, 30, 1) 
+	SUCCESSORS
+		_00wC,(1, 30, 1) 
+
+_00wF, <csdl.operations.sin.sin object at 0x7fa073baac70>
+	PREDECESSORS
+		phi_distribution,(1, 30, 1) 
+	SUCCESSORS
+		_00wG,(1, 30, 1) 
+
+_00xy, <csdl.operations.sin.sin object at 0x7fa073baa1f0>
+	PREDECESSORS
+		phi_distribution,(1, 30, 1) 
+	SUCCESSORS
+		_00xz,(1, 30, 1) 
+
+_00xC, <csdl.operations.cos.cos object at 0x7fa073baa130>
+	PREDECESSORS
+		phi_distribution,(1, 30, 1) 
+	SUCCESSORS
+		_00xD,(1, 30, 1) 
+
+_00xW, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8d30>
+	PREDECESSORS
+		phi_distribution,(1, 30, 1) 
+	SUCCESSORS
+		_00xX,(1, 30, 1) 
+
+_00wV, <csdl.operations.cos.cos object at 0x7fa073baa970>
+	PREDECESSORS
+		phi_distribution,(1, 30, 1) 
+	SUCCESSORS
+		_00wW,(1, 30, 1) 
+
+_00wZ, <csdl.operations.sin.sin object at 0x7fa073baa8b0>
+	PREDECESSORS
+		phi_distribution,(1, 30, 1) 
+	SUCCESSORS
+		_00w_,(1, 30, 1) 
+
+_00x7, <csdl.lang.output.Output object at 0x7fa073baa700>, BEM_model.induced_velocity_model._00x7
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00x6
+	SUCCESSORS
+		_00x8
+
+_00x8, <csdl.operations.power_combination.power_combination object at 0x7fa073baa6d0>
+	PREDECESSORS
+		_00x7,(1, 30, 1) 
+	SUCCESSORS
+		_00x9,(1, 30, 1) 
+
+_00x9, <csdl.lang.output.Output object at 0x7fa073baa6a0>, BEM_model.induced_velocity_model._00x9
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00x8
+	SUCCESSORS
+		_00xa
+
+_00xq, <csdl.operations.power_combination.power_combination object at 0x7fa073baa370>
+	PREDECESSORS
+		_00xb,(1, 30, 1) 
+		_00xp,(1, 30, 1) 
+	SUCCESSORS
+		_ux,(1, 30, 1) 
+
+_ux, <csdl.lang.output.Output object at 0x7fa073baa340>, BEM_model.induced_velocity_model._ux
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xq
+	SUCCESSORS
+		_00yb
+		_00yd
+		_00yH
+		_00AR
+		_00AX
+		_00B6
+
+_00xd, <csdl.lang.output.Output object at 0x7fa073baa5e0>, BEM_model.induced_velocity_model._00xd
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xc
+	SUCCESSORS
+		_00xg
+
+_00xg, <csdl.operations.power_combination.power_combination object at 0x7fa073baa550>
+	PREDECESSORS
+		_00xd,(1, 30, 1) 
+		_00xf,(1, 30, 1) 
+	SUCCESSORS
+		_00xh,(1, 30, 1) 
+
+_00xh, <csdl.lang.output.Output object at 0x7fa073baa520>, BEM_model.induced_velocity_model._00xh
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xg
+	SUCCESSORS
+		_00xk
+
+_00xf, <csdl.lang.output.Output object at 0x7fa073baa580>, BEM_model.induced_velocity_model._00xf
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xe
+	SUCCESSORS
+		_00xg
+
+_00xk, <csdl.operations.power_combination.power_combination object at 0x7fa073baa490>
+	PREDECESSORS
+		_00xh,(1, 30, 1) 
+		_00xj,(1, 30, 1) 
+	SUCCESSORS
+		_00xl,(1, 30, 1) 
+
+_00xl, <csdl.lang.output.Output object at 0x7fa073baa460>, BEM_model.induced_velocity_model._00xl
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xk
+	SUCCESSORS
+		_00xo
+
+_00xj, <csdl.lang.output.Output object at 0x7fa073baa4c0>, BEM_model.induced_velocity_model._00xj
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xi
+	SUCCESSORS
+		_00xk
+
+_00xo, <csdl.operations.linear_combination.linear_combination object at 0x7fa073baa3d0>
+	PREDECESSORS
+		_00xl,(1, 30, 1) 
+		_00xn,(1, 30, 1) 
+	SUCCESSORS
+		_00xp,(1, 30, 1) 
+
+_00xp, <csdl.lang.output.Output object at 0x7fa073baa3a0>, BEM_model.induced_velocity_model._00xp
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xo
+	SUCCESSORS
+		_00xq
+
+_00xm, <csdl.operations.power_combination.power_combination object at 0x7fa073baa430>
+	PREDECESSORS
+		_00wU,(1, 30, 1) 
+		_blade_solidity,(1, 30, 1) 
+	SUCCESSORS
+		_00xn,(1, 30, 1) 
+
+_00xs, <csdl.operations.power_combination.power_combination object at 0x7fa073baa310>
+	PREDECESSORS
+		_00wK,(1, 30, 1) 
+		_blade_solidity,(1, 30, 1) 
+	SUCCESSORS
+		_00xt,(1, 30, 1) 
+
+_00xG, <csdl.operations.power_combination.power_combination object at 0x7fa073baa070>
+	PREDECESSORS
+		_00wU,(1, 30, 1) 
+		_blade_solidity,(1, 30, 1) 
+	SUCCESSORS
+		_00xH,(1, 30, 1) 
+
+_00xQ, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8e50>
+	PREDECESSORS
+		_00xP,(1, 30, 1) 
+		_blade_solidity,(1, 30, 1) 
+	SUCCESSORS
+		_00xR,(1, 30, 1) 
+
+_00y1, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8c10>
+	PREDECESSORS
+		_00wU,(1, 30, 1) 
+		_blade_solidity,(1, 30, 1) 
+	SUCCESSORS
+		_00y2,(1, 30, 1) 
+
+_00xn, <csdl.lang.output.Output object at 0x7fa073baa400>, BEM_model.induced_velocity_model._00xn
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xm
+	SUCCESSORS
+		_00xo
+
+_00wN, <csdl.operations.power_combination.power_combination object at 0x7fa073baaaf0>
+	PREDECESSORS
+		_00wM,(1, 30, 1) 
+		Cl_2,(1, 30, 1) 
+	SUCCESSORS
+		_00wO,(1, 30, 1) 
+
+_00wD, <csdl.operations.power_combination.power_combination object at 0x7fa073baacd0>
+	PREDECESSORS
+		_00wC,(1, 30, 1) 
+		Cl_2,(1, 30, 1) 
+	SUCCESSORS
+		_00wE,(1, 30, 1) 
+
+_00wX, <csdl.operations.power_combination.power_combination object at 0x7fa073baa910>
+	PREDECESSORS
+		_00wW,(1, 30, 1) 
+		Cl_2,(1, 30, 1) 
+	SUCCESSORS
+		_00wY,(1, 30, 1) 
+
+_00x0, <csdl.operations.power_combination.power_combination object at 0x7fa073baa850>
+	PREDECESSORS
+		_00w_,(1, 30, 1) 
+		Cl_2,(1, 30, 1) 
+	SUCCESSORS
+		_00x1,(1, 30, 1) 
+
+_00wO, <csdl.lang.output.Output object at 0x7fa073baaac0>, BEM_model.induced_velocity_model._00wO
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00wN
+	SUCCESSORS
+		_00wT
+
+_00wM, <csdl.lang.output.Output object at 0x7fa073baab20>, BEM_model.induced_velocity_model._00wM
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00wL
+	SUCCESSORS
+		_00wN
+
+_00wT, <csdl.operations.linear_combination.linear_combination object at 0x7fa073baa9d0>
+	PREDECESSORS
+		_00wO,(1, 30, 1) 
+		_00wS,(1, 30, 1) 
+	SUCCESSORS
+		_00wU,(1, 30, 1) 
+
+_00wU, <csdl.lang.output.Output object at 0x7fa073baa9a0>, BEM_model.induced_velocity_model._00wU
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00wT
+	SUCCESSORS
+		_00xm
+		_00xG
+		_00xS
+		_00y1
+		_00za
+
+_00wR, <csdl.operations.power_combination.power_combination object at 0x7fa073baaa30>
+	PREDECESSORS
+		_00wQ,(1, 30, 1) 
+		Cd_2,(1, 30, 1) 
+	SUCCESSORS
+		_00wS,(1, 30, 1) 
+
+_00wH, <csdl.operations.power_combination.power_combination object at 0x7fa073baac10>
+	PREDECESSORS
+		_00wG,(1, 30, 1) 
+		Cd_2,(1, 30, 1) 
+	SUCCESSORS
+		_00wI,(1, 30, 1) 
+
+_00wS, <csdl.lang.output.Output object at 0x7fa073baaa00>, BEM_model.induced_velocity_model._00wS
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00wR
+	SUCCESSORS
+		_00wT
+
+_00wQ, <csdl.lang.output.Output object at 0x7fa073baaa60>, BEM_model.induced_velocity_model._00wQ
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00wP
+	SUCCESSORS
+		_00wR
+
+_00xS, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8df0>
+	PREDECESSORS
+		_00wU,(1, 30, 1) 
+		_00xR,(1, 30, 1) 
+	SUCCESSORS
+		_00xT,(1, 30, 1) 
+
+_00za, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4d90>
+	PREDECESSORS
+		_00wU,(1, 30, 1) 
+	SUCCESSORS
+		_00zb,(1, 30, 1) 
+
+_00yb, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8a00>
+	PREDECESSORS
+		_ux,(1, 30, 1) 
+		_00ya,(1, 30, 1) 
+	SUCCESSORS
+		_00yc,(1, 30, 1) 
+
+_00yd, <csdl.operations.linear_combination.linear_combination object at 0x7fa073cd89a0>
+	PREDECESSORS
+		_ux,(1, 30, 1) 
+		_axial_inflow_velocity,(1, 30, 1) 
+	SUCCESSORS
+		_00ye,(1, 30, 1) 
+
+_00yH, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8370>
+	PREDECESSORS
+		_ux,(1, 30, 1) 
+		_00yG,(1, 30, 1) 
+	SUCCESSORS
+		_00yI,(1, 30, 1) 
+
+_00AX, <csdl.operations.power_combination.power_combination object at 0x7fa073cb1580>
+	PREDECESSORS
+		_ux,(1, 30, 1) 
+	SUCCESSORS
+		_00AY,(1, 30, 1) 
+
+_00B6, <csdl.operations.power_combination.power_combination object at 0x7fa073cb13a0>
+	PREDECESSORS
+		_ux,(1, 30, 1) 
+		_00B5,(1, 30, 1) 
+	SUCCESSORS
+		_00B7,(1, 30, 1) 
+
+_00xM, <csdl.operations.linear_combination.linear_combination object at 0x7fa073cd8f10>
+	PREDECESSORS
+		_00xL,(1, 30, 1) 
+		_axial_inflow_velocity,(1, 30, 1) 
+	SUCCESSORS
+		_ux_2,(1, 30, 1) 
+
+_00AV, <csdl.operations.power_combination.power_combination object at 0x7fa073cb15e0>
+	PREDECESSORS
+		_axial_inflow_velocity,(1, 30, 1) 
+	SUCCESSORS
+		_00AW,(1, 30, 1) 
+
+_00B2, <csdl.operations.power_combination.power_combination object at 0x7fa073cb1460>
+	PREDECESSORS
+		_axial_inflow_velocity,(1, 30, 1) 
+	SUCCESSORS
+		_00B3,(1, 30, 1) 
+
+_00C7, <csdl.operations.power_combination.power_combination object at 0x7fa073ca2220>
+	PREDECESSORS
+		_00wo,(1, 30, 1) 
+		_axial_inflow_velocity,(1, 30, 1) 
+	SUCCESSORS
+		_00C8,(1, 30, 1) 
+
+_ux_2, <csdl.lang.output.Output object at 0x7fa073cd8ee0>, BEM_model.induced_velocity_model._ux_2
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xM
+	SUCCESSORS
+		_00zE
+		_00yV
+		_00z_
+		_00zg
+
+_00xt, <csdl.lang.output.Output object at 0x7fa073baa2e0>, BEM_model.induced_velocity_model._00xt
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xs
+	SUCCESSORS
+		_00xu
+
+_00wE, <csdl.lang.output.Output object at 0x7fa073baaca0>, BEM_model.induced_velocity_model._00wE
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00wD
+	SUCCESSORS
+		_00wJ
+
+_00wC, <csdl.lang.output.Output object at 0x7fa073baad00>, BEM_model.induced_velocity_model._00wC
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00wB
+	SUCCESSORS
+		_00wD
+
+_00wJ, <csdl.operations.linear_combination.linear_combination object at 0x7fa073baabb0>
+	PREDECESSORS
+		_00wE,(1, 30, 1) 
+		_00wI,(1, 30, 1) 
+	SUCCESSORS
+		_00wK,(1, 30, 1) 
+
+_00wK, <csdl.lang.output.Output object at 0x7fa073baab80>, BEM_model.induced_velocity_model._00wK
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00wJ
+	SUCCESSORS
+		_00xs
+		_00yP
+
+_00wI, <csdl.lang.output.Output object at 0x7fa073baabe0>, BEM_model.induced_velocity_model._00wI
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00wH
+	SUCCESSORS
+		_00wJ
+
+_00wG, <csdl.lang.output.Output object at 0x7fa073baac40>, BEM_model.induced_velocity_model._00wG
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00wF
+	SUCCESSORS
+		_00wH
+
+_00yP, <csdl.operations.power_combination.power_combination object at 0x7fa073cd81f0>
+	PREDECESSORS
+		_00wK,(1, 30, 1) 
+	SUCCESSORS
+		_00yQ,(1, 30, 1) 
+
+_00xv, <csdl.lang.output.Output object at 0x7fa073baa280>, BEM_model.induced_velocity_model._00xv
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xu
+	SUCCESSORS
+		_00xK
+
+_00xK, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8f70>
+	PREDECESSORS
+		_00xv,(1, 30, 1) 
+		_00xJ,(1, 30, 1) 
+	SUCCESSORS
+		_00xL,(1, 30, 1) 
+
+_00xL, <csdl.lang.output.Output object at 0x7fa073cd8f40>, BEM_model.induced_velocity_model._00xL
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xK
+	SUCCESSORS
+		_00xM
+
+_00xx, <csdl.lang.output.Output object at 0x7fa073baa220>, BEM_model.induced_velocity_model._00xx
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xw
+	SUCCESSORS
+		_00xA
+
+_00xA, <csdl.operations.power_combination.power_combination object at 0x7fa073baa190>
+	PREDECESSORS
+		_00xx,(1, 30, 1) 
+		_00xz,(1, 30, 1) 
+	SUCCESSORS
+		_00xB,(1, 30, 1) 
+
+_00xB, <csdl.lang.output.Output object at 0x7fa073baa160>, BEM_model.induced_velocity_model._00xB
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xA
+	SUCCESSORS
+		_00xE
+
+_00xz, <csdl.lang.output.Output object at 0x7fa073baa1c0>, BEM_model.induced_velocity_model._00xz
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xy
+	SUCCESSORS
+		_00xA
+
+_00xE, <csdl.operations.power_combination.power_combination object at 0x7fa073baa0d0>
+	PREDECESSORS
+		_00xB,(1, 30, 1) 
+		_00xD,(1, 30, 1) 
+	SUCCESSORS
+		_00xF,(1, 30, 1) 
+
+_00xF, <csdl.lang.output.Output object at 0x7fa073baa0a0>, BEM_model.induced_velocity_model._00xF
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xE
+	SUCCESSORS
+		_00xI
+
+_00xD, <csdl.lang.output.Output object at 0x7fa073baa100>, BEM_model.induced_velocity_model._00xD
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xC
+	SUCCESSORS
+		_00xE
+
+_00xI, <csdl.operations.linear_combination.linear_combination object at 0x7fa073cd8fd0>
+	PREDECESSORS
+		_00xF,(1, 30, 1) 
+		_00xH,(1, 30, 1) 
+	SUCCESSORS
+		_00xJ,(1, 30, 1) 
+
+_00xJ, <csdl.lang.output.Output object at 0x7fa073cd8fa0>, BEM_model.induced_velocity_model._00xJ
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xI
+	SUCCESSORS
+		_00xK
+
+_00xH, <csdl.lang.output.Output object at 0x7fa073baa040>, BEM_model.induced_velocity_model._00xH
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xG
+	SUCCESSORS
+		_00xI
+
+_00zE, <csdl.operations.power_combination.power_combination object at 0x7fa073cc47f0>
+	PREDECESSORS
+		_ux_2,(1, 30, 1) 
+	SUCCESSORS
+		_00zF,(1, 30, 1) 
+
+_00yV, <csdl.operations.power_combination.power_combination object at 0x7fa073cd80d0>
+	PREDECESSORS
+		_ux_2,(1, 30, 1) 
+	SUCCESSORS
+		_00yW,(1, 30, 1) 
+
+_00z_, <csdl.operations.power_combination.power_combination object at 0x7fa073cc43d0>
+	PREDECESSORS
+		_ux_2,(1, 30, 1) 
+	SUCCESSORS
+		_00A0,(1, 30, 1) 
+
+_00zg, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4c70>
+	PREDECESSORS
+		_ux_2,(1, 30, 1) 
+	SUCCESSORS
+		_00zh,(1, 30, 1) 
+
+_00xP, <csdl.lang.output.Output object at 0x7fa073cd8e80>, BEM_model.induced_velocity_model._00xP
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xO
+	SUCCESSORS
+		_00xQ
+
+_00xR, <csdl.lang.output.Output object at 0x7fa073cd8e20>, BEM_model.induced_velocity_model._00xR
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xQ
+	SUCCESSORS
+		_00xS
+
+_00xT, <csdl.lang.output.Output object at 0x7fa073cd8dc0>, BEM_model.induced_velocity_model._00xT
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xS
+	SUCCESSORS
+		_00y5
+
+_00y5, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8b50>
+	PREDECESSORS
+		_00xT,(1, 30, 1) 
+		_00y4,(1, 30, 1) 
+	SUCCESSORS
+		_ut,(1, 30, 1) 
+
+_ut, <csdl.lang.output.Output object at 0x7fa073cd8b20>, BEM_model.induced_velocity_model._ut
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00y5
+	SUCCESSORS
+		_00zG
+		_00yJ
+		_00yX
+		_00Ax
+		_00AD
+		_00A1
+		_00zi
+		_00AT
+
+_00xV, <csdl.lang.output.Output object at 0x7fa073cd8d60>, BEM_model.induced_velocity_model._00xV
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xU
+	SUCCESSORS
+		_00x_
+
+_00x_, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8c70>
+	PREDECESSORS
+		_00xV,(1, 30, 1) 
+		_00xZ,(1, 30, 1) 
+	SUCCESSORS
+		_00y0,(1, 30, 1) 
+
+_00y0, <csdl.lang.output.Output object at 0x7fa073cd8c40>, BEM_model.induced_velocity_model._00y0
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00x_
+	SUCCESSORS
+		_00y3
+
+_00xX, <csdl.lang.output.Output object at 0x7fa073cd8d00>, BEM_model.induced_velocity_model._00xX
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xW
+	SUCCESSORS
+		_00xY
+
+_00xY, <csdl.operations.sin.sin object at 0x7fa073cd8cd0>
+	PREDECESSORS
+		_00xX,(1, 30, 1) 
+	SUCCESSORS
+		_00xZ,(1, 30, 1) 
+
+_00xZ, <csdl.lang.output.Output object at 0x7fa073cd8ca0>, BEM_model.induced_velocity_model._00xZ
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00xY
+	SUCCESSORS
+		_00x_
+
+_00y3, <csdl.operations.linear_combination.linear_combination object at 0x7fa073cd8bb0>
+	PREDECESSORS
+		_00y0,(1, 30, 1) 
+		_00y2,(1, 30, 1) 
+	SUCCESSORS
+		_00y4,(1, 30, 1) 
+
+_00y4, <csdl.lang.output.Output object at 0x7fa073cd8b80>, BEM_model.induced_velocity_model._00y4
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00y3
+	SUCCESSORS
+		_00y5
+
+_00y2, <csdl.lang.output.Output object at 0x7fa073cd8be0>, BEM_model.induced_velocity_model._00y2
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00y1
+	SUCCESSORS
+		_00y3
+
+_00zG, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4790>
+	PREDECESSORS
+		_ut,(1, 30, 1) 
+	SUCCESSORS
+		_00zH,(1, 30, 1) 
+
+_00yJ, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8310>
+	PREDECESSORS
+		_ut,(1, 30, 1) 
+		_00yI,(1, 30, 1) 
+	SUCCESSORS
+		_00yK,(1, 30, 1) 
+
+_00yX, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8070>
+	PREDECESSORS
+		_ut,(1, 30, 1) 
+	SUCCESSORS
+		_00yY,(1, 30, 1) 
+
+_00Ax, <csdl.operations.power_combination.power_combination object at 0x7fa073cb1b80>
+	PREDECESSORS
+		_ut,(1, 30, 1) 
+	SUCCESSORS
+		_00Ay,(1, 30, 1) 
+
+_00AD, <csdl.operations.power_combination.power_combination object at 0x7fa073cb1a60>
+	PREDECESSORS
+		_ut,(1, 30, 1) 
+		_00AC,(1, 30, 1) 
+	SUCCESSORS
+		_00AE,(1, 30, 1) 
+
+_00A1, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4370>
+	PREDECESSORS
+		_ut,(1, 30, 1) 
+	SUCCESSORS
+		_00A2,(1, 30, 1) 
+
+_00zi, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4c10>
+	PREDECESSORS
+		_ut,(1, 30, 1) 
+	SUCCESSORS
+		_00zj,(1, 30, 1) 
+
+_00AT, <csdl.operations.power_combination.power_combination object at 0x7fa073cb1640>
+	PREDECESSORS
+		_ut,(1, 30, 1) 
+		_00AS,(1, 30, 1) 
+	SUCCESSORS
+		_00AU,(1, 30, 1) 
+
+_00y7, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8af0>
+	PREDECESSORS
+		_radius,(1, 30, 1) 
+	SUCCESSORS
+		_00y8,(1, 30, 1) 
+
+_00yB, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8490>
+	PREDECESSORS
+		_radius,(1, 30, 1) 
+	SUCCESSORS
+		_00yC,(1, 30, 1) 
+
+_00AF, <csdl.operations.power_combination.power_combination object at 0x7fa073cb1a00>
+	PREDECESSORS
+		_00AE,(1, 30, 1) 
+		_radius,(1, 30, 1) 
+	SUCCESSORS
+		_00AG,(1, 30, 1) 
+
+_00zw, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4970>
+	PREDECESSORS
+		_00zv,(1, 30, 1) 
+		_radius,(1, 30, 1) 
+	SUCCESSORS
+		_local_torque_2,(1, 30, 1) 
+
+_00AN, <csdl.operations.power_combination.power_combination object at 0x7fa073cb1820>
+	PREDECESSORS
+		_radius,(1, 30, 1) 
+	SUCCESSORS
+		_00AO,(1, 30, 1) 
+
+_00y8, <csdl.lang.output.Output object at 0x7fa073cd8ac0>, BEM_model.induced_velocity_model._00y8
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00y7
+	SUCCESSORS
+		_00y9
+
+_00y9, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8a60>
+	PREDECESSORS
+		_00y8,(1, 30, 1) 
+		_00ww,(1, 30, 1) 
+	SUCCESSORS
+		_00ya,(1, 30, 1) 
+
+_00ya, <csdl.lang.output.Output object at 0x7fa073cd8a30>, BEM_model.induced_velocity_model._00ya
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00y9
+	SUCCESSORS
+		_00yb
+
+_00wv, <csdl.operations.expand.expand object at 0x7fa073baae20>
+	PREDECESSORS
+		density,(1, 1) 
+	SUCCESSORS
+		_00ww,(1, 30, 1) 
+
+_00Bi, <csdl.operations.power_combination.power_combination object at 0x7fa073cb1160>
+	PREDECESSORS
+		T,(1,) 
+		density,(1, 1) 
+	SUCCESSORS
+		_00Bj,(1,) 
+
+_00BI, <csdl.operations.power_combination.power_combination object at 0x7fa073ca29d0>
+	PREDECESSORS
+		total_torque,(1,) 
+		density,(1, 1) 
+	SUCCESSORS
+		_00BJ,(1,) 
+
+_00ww, <csdl.lang.output.Output object at 0x7fa073baae50>, BEM_model.induced_velocity_model._00ww
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00wv
+	SUCCESSORS
+		_00y9
+		_00zC
+		_00yF
+		_00yl
+		_00yT
+		_00Av
+		_00zY
+		_00ze
+
+_00zC, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4850>
+	PREDECESSORS
+		_00ww,(1, 30, 1) 
+		_00zB,(1, 30, 1) 
+	SUCCESSORS
+		_00zD,(1, 30, 1) 
+
+_00yF, <csdl.operations.power_combination.power_combination object at 0x7fa073cd83d0>
+	PREDECESSORS
+		_00ww,(1, 30, 1) 
+		_00yE,(1, 30, 1) 
+	SUCCESSORS
+		_00yG,(1, 30, 1) 
+
+_00yl, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8820>
+	PREDECESSORS
+		_00ww,(1, 30, 1) 
+		_local_thrust,(1, 30, 1) 
+	SUCCESSORS
+		_00ym,(1, 30, 1) 
+
+_00yT, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8130>
+	PREDECESSORS
+		_00ww,(1, 30, 1) 
+		_00yS,(1, 30, 1) 
+	SUCCESSORS
+		_00yU,(1, 30, 1) 
+
+_00Av, <csdl.operations.power_combination.power_combination object at 0x7fa073cb1c10>
+	PREDECESSORS
+		_00ww,(1, 30, 1) 
+	SUCCESSORS
+		_00Aw,(1, 30, 1) 
+
+_00zY, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4430>
+	PREDECESSORS
+		_00ww,(1, 30, 1) 
+		_00zX,(1, 30, 1) 
+	SUCCESSORS
+		_00zZ,(1, 30, 1) 
+
+_00ze, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4cd0>
+	PREDECESSORS
+		_00ww,(1, 30, 1) 
+		_00zd,(1, 30, 1) 
+	SUCCESSORS
+		_00zf,(1, 30, 1) 
+
+_00yc, <csdl.lang.output.Output object at 0x7fa073cd89d0>, BEM_model.induced_velocity_model._00yc
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yb
+	SUCCESSORS
+		_00yf
+
+_00yf, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8940>
+	PREDECESSORS
+		_00yc,(1, 30, 1) 
+		_00ye,(1, 30, 1) 
+	SUCCESSORS
+		_00yg,(1, 30, 1) 
+
+_00yg, <csdl.lang.output.Output object at 0x7fa073cd8910>, BEM_model.induced_velocity_model._00yg
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yf
+	SUCCESSORS
+		_00yh
+
+_00ye, <csdl.lang.output.Output object at 0x7fa073cd8970>, BEM_model.induced_velocity_model._00ye
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yd
+	SUCCESSORS
+		_00yf
+
+_00yi, <csdl.lang.output.Output object at 0x7fa073cd88b0>, BEM_model.induced_velocity_model._00yi
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yh
+	SUCCESSORS
+		_00yj
+
+_00yj, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8880>
+	PREDECESSORS
+		_00yi,(1, 30, 1) 
+		_dr,(1, 30, 1) 
+	SUCCESSORS
+		_local_thrust,(1, 30, 1) 
+
+_local_thrust, <csdl.lang.output.Output object at 0x7fa073cd8850>, BEM_model.induced_velocity_model._local_thrust
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yj
+	SUCCESSORS
+		_00Cv
+		_00An
+		_00yl
+
+_00zS, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4550>
+	PREDECESSORS
+		_00zR,(1, 30, 1) 
+		_dr,(1, 30, 1) 
+	SUCCESSORS
+		_local_thrust_induced,(1, 30, 1) 
+
+_00yN, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8250>
+	PREDECESSORS
+		_00yM,(1, 30, 1) 
+		_dr,(1, 30, 1) 
+	SUCCESSORS
+		_local_torque,(1, 30, 1) 
+
+_00z8, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4df0>
+	PREDECESSORS
+		_00z7,(1, 30, 1) 
+		_dr,(1, 30, 1) 
+	SUCCESSORS
+		_local_thrust_2,(1, 30, 1) 
+
+_00AH, <csdl.operations.power_combination.power_combination object at 0x7fa073cb19a0>
+	PREDECESSORS
+		_00AG,(1, 30, 1) 
+		_dr,(1, 30, 1) 
+	SUCCESSORS
+		_local_thrust_star,(1, 30, 1) 
+
+_00Ad, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4130>
+	PREDECESSORS
+		_00Ac,(1, 30, 1) 
+		_dr,(1, 30, 1) 
+	SUCCESSORS
+		_local_torque_induced,(1, 30, 1) 
+
+_00zu, <csdl.operations.power_combination.power_combination object at 0x7fa073cc49d0>
+	PREDECESSORS
+		_00zt,(1, 30, 1) 
+		_dr,(1, 30, 1) 
+	SUCCESSORS
+		_00zv,(1, 30, 1) 
+
+_00Be, <csdl.operations.power_combination.power_combination object at 0x7fa073cb1220>
+	PREDECESSORS
+		_00Bd,(1, 30, 1) 
+		_dr,(1, 30, 1) 
+	SUCCESSORS
+		_local_energy_loss,(1, 30, 1) 
+
+_00Cv, <csdl.operations.power_combination.power_combination object at 0x7fa073c1d430>
+	PREDECESSORS
+		_local_thrust,(1, 30, 1) 
+	SUCCESSORS
+		_dT,(1, 30, 1) 
+
+_00An, <csdl.operations.sum.sum object at 0x7fa073cb1eb0>
+	PREDECESSORS
+		_local_thrust,(1, 30, 1) 
+	SUCCESSORS
+		_00Ao,(1,) 
+
+_dT, <csdl.lang.output.Output object at 0x7fa073c1d460>, BEM_model.induced_velocity_model._dT
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Cv
+	SUCCESSORS
+
+_00wY, <csdl.lang.output.Output object at 0x7fa073baa8e0>, BEM_model.induced_velocity_model._00wY
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00wX
+	SUCCESSORS
+		_00zy
+
+_00wW, <csdl.lang.output.Output object at 0x7fa073baa940>, BEM_model.induced_velocity_model._00wW
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00wV
+	SUCCESSORS
+		_00wX
+
+_00zy, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4910>
+	PREDECESSORS
+		_00wY,(1, 30, 1) 
+	SUCCESSORS
+		_00zz,(1, 30, 1) 
+
+_00zz, <csdl.lang.output.Output object at 0x7fa073cc48e0>, BEM_model.induced_velocity_model._00zz
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zy
+	SUCCESSORS
+		_00zA
+
+_00zA, <csdl.operations.power_combination.power_combination object at 0x7fa073cc48b0>
+	PREDECESSORS
+		_00zz,(1, 30, 1) 
+	SUCCESSORS
+		_00zB,(1, 30, 1) 
+
+_00zB, <csdl.lang.output.Output object at 0x7fa073cc4880>, BEM_model.induced_velocity_model._00zB
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zA
+	SUCCESSORS
+		_00zC
+
+_00zD, <csdl.lang.output.Output object at 0x7fa073cc4820>, BEM_model.induced_velocity_model._00zD
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zC
+	SUCCESSORS
+		_00zO
+
+_00zO, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4610>
+	PREDECESSORS
+		_00zD,(1, 30, 1) 
+		_00zN,(1, 30, 1) 
+	SUCCESSORS
+		_00zP,(1, 30, 1) 
+
+_00zP, <csdl.lang.output.Output object at 0x7fa073cc45e0>, BEM_model.induced_velocity_model._00zP
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zO
+	SUCCESSORS
+		_00zQ
+
+_00zF, <csdl.lang.output.Output object at 0x7fa073cc47c0>, BEM_model.induced_velocity_model._00zF
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zE
+	SUCCESSORS
+		_00zM
+
+_00zM, <csdl.operations.linear_combination.linear_combination object at 0x7fa073cc4670>
+	PREDECESSORS
+		_00zF,(1, 30, 1) 
+		_00zL,(1, 30, 1) 
+	SUCCESSORS
+		_00zN,(1, 30, 1) 
+
+_00zN, <csdl.lang.output.Output object at 0x7fa073cc4640>, BEM_model.induced_velocity_model._00zN
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zM
+	SUCCESSORS
+		_00zO
+
+_00zJ, <csdl.lang.output.Output object at 0x7fa073cc4700>, BEM_model.induced_velocity_model._00zJ
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zI
+	SUCCESSORS
+		_00zK
+
+_00zH, <csdl.lang.output.Output object at 0x7fa073cc4760>, BEM_model.induced_velocity_model._00zH
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zG
+	SUCCESSORS
+		_00zI
+
+_00zK, <csdl.operations.power_combination.power_combination object at 0x7fa073cc46d0>
+	PREDECESSORS
+		_00zJ,(1, 30, 1) 
+	SUCCESSORS
+		_00zL,(1, 30, 1) 
+
+_00zL, <csdl.lang.output.Output object at 0x7fa073cc46a0>, BEM_model.induced_velocity_model._00zL
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zK
+	SUCCESSORS
+		_00zM
+
+_00zQ, <csdl.operations.power_combination.power_combination object at 0x7fa073cc45b0>
+	PREDECESSORS
+		_00zP,(1, 30, 1) 
+		_chord,(1, 30, 1) 
+	SUCCESSORS
+		_00zR,(1, 30, 1) 
+
+_00zR, <csdl.lang.output.Output object at 0x7fa073cc4580>, BEM_model.induced_velocity_model._00zR
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zQ
+	SUCCESSORS
+		_00zS
+
+_00z6, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4e50>
+	PREDECESSORS
+		_00z5,(1, 30, 1) 
+		_chord,(1, 30, 1) 
+	SUCCESSORS
+		_00z7,(1, 30, 1) 
+
+_00Ab, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4190>
+	PREDECESSORS
+		_00Aa,(1, 30, 1) 
+		_chord,(1, 30, 1) 
+	SUCCESSORS
+		_00Ac,(1, 30, 1) 
+
+_00zs, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4a30>
+	PREDECESSORS
+		_00zr,(1, 30, 1) 
+		_chord,(1, 30, 1) 
+	SUCCESSORS
+		_00zt,(1, 30, 1) 
+
+_local_thrust_induced, <csdl.lang.output.Output object at 0x7fa073cc4520>, BEM_model.induced_velocity_model._local_thrust_induced
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zS
+	SUCCESSORS
+
+_00Ao, <csdl.lang.output.Output object at 0x7fa073cb1df0>, BEM_model.induced_velocity_model._00Ao
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00An
+	SUCCESSORS
+		_00Ap
+
+_00Ap, <csdl.operations.power_combination.power_combination object at 0x7fa073cb1dc0>
+	PREDECESSORS
+		_00Ao,(1,) 
+	SUCCESSORS
+		T,(1,) 
+
+T, <csdl.lang.output.Output object at 0x7fa073cb1d90>, BEM_model.induced_velocity_model.T
+	CONNECTED TO: False
+	PROMOTED TO: True
+		T, .T
+		T, BEM_model.T
+	PREDECESSORS
+		_00Ap
+	SUCCESSORS
+		_00Bi
+		_00pj
+		_00q9
+
+_00yC, <csdl.lang.output.Output object at 0x7fa073cd8460>, BEM_model.induced_velocity_model._00yC
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yB
+	SUCCESSORS
+		_00yD
+
+_00yD, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8430>
+	PREDECESSORS
+		_00yC,(1, 30, 1) 
+	SUCCESSORS
+		_00yE,(1, 30, 1) 
+
+_00yE, <csdl.lang.output.Output object at 0x7fa073cd8400>, BEM_model.induced_velocity_model._00yE
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yD
+	SUCCESSORS
+		_00yF
+
+_00yG, <csdl.lang.output.Output object at 0x7fa073cd83a0>, BEM_model.induced_velocity_model._00yG
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yF
+	SUCCESSORS
+		_00yH
+
+_00yI, <csdl.lang.output.Output object at 0x7fa073cd8340>, BEM_model.induced_velocity_model._00yI
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yH
+	SUCCESSORS
+		_00yJ
+
+_00yK, <csdl.lang.output.Output object at 0x7fa073cd82e0>, BEM_model.induced_velocity_model._00yK
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yJ
+	SUCCESSORS
+		_00yL
+
+_00yM, <csdl.lang.output.Output object at 0x7fa073cd8280>, BEM_model.induced_velocity_model._00yM
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yL
+	SUCCESSORS
+		_00yN
+
+_local_torque, <csdl.lang.output.Output object at 0x7fa073cd8220>, BEM_model.induced_velocity_model._local_torque
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yN
+	SUCCESSORS
+		_00Ar
+		_00Cz
+
+_00Ar, <csdl.operations.sum.sum object at 0x7fa073cb1d60>
+	PREDECESSORS
+		_local_torque,(1, 30, 1) 
+	SUCCESSORS
+		_00As,(1,) 
+
+_00Cz, <csdl.operations.power_combination.power_combination object at 0x7fa073c1d610>
+	PREDECESSORS
+		_local_torque,(1, 30, 1) 
+	SUCCESSORS
+		_dQ,(1, 30, 1) 
+
+_00As, <csdl.lang.output.Output object at 0x7fa073cb1ca0>, BEM_model.induced_velocity_model._00As
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Ar
+	SUCCESSORS
+		_00At
+
+_00At, <csdl.operations.power_combination.power_combination object at 0x7fa073cb1c70>
+	PREDECESSORS
+		_00As,(1,) 
+	SUCCESSORS
+		total_torque,(1,) 
+
+total_torque, <csdl.lang.output.Output object at 0x7fa073cb1c40>, BEM_model.induced_velocity_model.total_torque
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00At
+	SUCCESSORS
+		_00Cx
+		_00BI
+
+_00Cx, <csdl.operations.power_combination.power_combination object at 0x7fa073c1d5b0>
+	PREDECESSORS
+		total_torque,(1,) 
+	SUCCESSORS
+		Q,(1,) 
+
+Q, <csdl.lang.output.Output object at 0x7fa073c1d5e0>, BEM_model.induced_velocity_model.Q
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Cx
+	SUCCESSORS
+
+_00ym, <csdl.lang.output.Output object at 0x7fa073cd87f0>, BEM_model.induced_velocity_model._00ym
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yl
+	SUCCESSORS
+		_00yt
+
+_00yt, <csdl.operations.power_combination.power_combination object at 0x7fa073cd86a0>
+	PREDECESSORS
+		_00ym,(1, 30, 1) 
+		_00ys,(1, 30, 1) 
+	SUCCESSORS
+		_00yu,(1, 30, 1) 
+
+_00yu, <csdl.lang.output.Output object at 0x7fa073cd8670>, BEM_model.induced_velocity_model._00yu
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yt
+	SUCCESSORS
+		_00yz
+
+_00yn, <csdl.operations.power_combination.power_combination object at 0x7fa073cd87c0>
+	PREDECESSORS
+		_angular_speed,(1, 30, 1) 
+	SUCCESSORS
+		_00yo,(1, 30, 1) 
+
+_00wl, <csdl.operations.power_combination.power_combination object at 0x7fa073d25070>
+	PREDECESSORS
+		_angular_speed,(1, 30, 1) 
+	SUCCESSORS
+		_00wm,(1, 30, 1) 
+
+_00yo, <csdl.lang.output.Output object at 0x7fa073cd8790>, BEM_model.induced_velocity_model._00yo
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yn
+	SUCCESSORS
+		_00yp
+
+_00yp, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8760>
+	PREDECESSORS
+		_00yo,(1, 30, 1) 
+	SUCCESSORS
+		_00yq,(1, 30, 1) 
+
+_00yq, <csdl.lang.output.Output object at 0x7fa073cd8730>, BEM_model.induced_velocity_model._00yq
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yp
+	SUCCESSORS
+		_00yr
+
+_00yr, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8700>
+	PREDECESSORS
+		_00yq,(1, 30, 1) 
+	SUCCESSORS
+		_00ys,(1, 30, 1) 
+
+_00ys, <csdl.lang.output.Output object at 0x7fa073cd86d0>, BEM_model.induced_velocity_model._00ys
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yr
+	SUCCESSORS
+		_00yt
+
+_00yz, <csdl.operations.power_combination.power_combination object at 0x7fa073cd84f0>
+	PREDECESSORS
+		_00yu,(1, 30, 1) 
+		_00yy,(1, 30, 1) 
+	SUCCESSORS
+		dC_T,(1, 30, 1) 
+
+dC_T, <csdl.lang.output.Output object at 0x7fa073cd84c0>, BEM_model.induced_velocity_model.dC_T
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yz
+	SUCCESSORS
+
+_00yv, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8640>
+	PREDECESSORS
+		_rotor_radius,(1, 30, 1) 
+	SUCCESSORS
+		_00yw,(1, 30, 1) 
+
+_00Bu, <csdl.operations.sum.sum object at 0x7fa073ca2e20>
+	PREDECESSORS
+		_rotor_radius,(1, 30, 1) 
+	SUCCESSORS
+		_00Bv,(1,) 
+
+_00BU, <csdl.operations.sum.sum object at 0x7fa073ca2670>
+	PREDECESSORS
+		_rotor_radius,(1, 30, 1) 
+	SUCCESSORS
+		_00BV,(1,) 
+
+_00C9, <csdl.operations.power_combination.power_combination object at 0x7fa073ca21c0>
+	PREDECESSORS
+		_rotor_radius,(1, 30, 1) 
+	SUCCESSORS
+		_00Ca,(1, 30, 1) 
+
+_00yw, <csdl.lang.output.Output object at 0x7fa073cd8610>, BEM_model.induced_velocity_model._00yw
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yv
+	SUCCESSORS
+		_00yx
+
+_00yx, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8550>
+	PREDECESSORS
+		_00yw,(1, 30, 1) 
+	SUCCESSORS
+		_00yy,(1, 30, 1) 
+
+_00yy, <csdl.lang.output.Output object at 0x7fa073cd8520>, BEM_model.induced_velocity_model._00yy
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yx
+	SUCCESSORS
+		_00yz
+
+_00yQ, <csdl.lang.output.Output object at 0x7fa073cd81c0>, BEM_model.induced_velocity_model._00yQ
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yP
+	SUCCESSORS
+		_00yR
+
+_00yR, <csdl.operations.power_combination.power_combination object at 0x7fa073cd8190>
+	PREDECESSORS
+		_00yQ,(1, 30, 1) 
+	SUCCESSORS
+		_00yS,(1, 30, 1) 
+
+_00yS, <csdl.lang.output.Output object at 0x7fa073cd8160>, BEM_model.induced_velocity_model._00yS
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yR
+	SUCCESSORS
+		_00yT
+
+_00yU, <csdl.lang.output.Output object at 0x7fa073cd8100>, BEM_model.induced_velocity_model._00yU
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yT
+	SUCCESSORS
+		_00z4
+
+_00z4, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4eb0>
+	PREDECESSORS
+		_00yU,(1, 30, 1) 
+		_00z3,(1, 30, 1) 
+	SUCCESSORS
+		_00z5,(1, 30, 1) 
+
+_00z5, <csdl.lang.output.Output object at 0x7fa073cc4e80>, BEM_model.induced_velocity_model._00z5
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00z4
+	SUCCESSORS
+		_00z6
+
+_00yW, <csdl.lang.output.Output object at 0x7fa073cd80a0>, BEM_model.induced_velocity_model._00yW
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yV
+	SUCCESSORS
+		_00z2
+
+_00z2, <csdl.operations.linear_combination.linear_combination object at 0x7fa073cc4f10>
+	PREDECESSORS
+		_00yW,(1, 30, 1) 
+		_00z1,(1, 30, 1) 
+	SUCCESSORS
+		_00z3,(1, 30, 1) 
+
+_00z3, <csdl.lang.output.Output object at 0x7fa073cc4ee0>, BEM_model.induced_velocity_model._00z3
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00z2
+	SUCCESSORS
+		_00z4
+
+_00y_, <csdl.lang.output.Output object at 0x7fa073cc4fa0>, BEM_model.induced_velocity_model._00y_
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yZ
+	SUCCESSORS
+		_00z0
+
+_00yY, <csdl.lang.output.Output object at 0x7fa073cd8040>, BEM_model.induced_velocity_model._00yY
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00yX
+	SUCCESSORS
+		_00yZ
+
+_00z0, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4f70>
+	PREDECESSORS
+		_00y_,(1, 30, 1) 
+	SUCCESSORS
+		_00z1,(1, 30, 1) 
+
+_00z1, <csdl.lang.output.Output object at 0x7fa073cc4f40>, BEM_model.induced_velocity_model._00z1
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00z0
+	SUCCESSORS
+		_00z2
+
+_00z7, <csdl.lang.output.Output object at 0x7fa073cc4e20>, BEM_model.induced_velocity_model._00z7
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00z6
+	SUCCESSORS
+		_00z8
+
+_local_thrust_2, <csdl.lang.output.Output object at 0x7fa073cc4dc0>, BEM_model.induced_velocity_model._local_thrust_2
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00z8
+	SUCCESSORS
+		_00Af
+
+_00Af, <csdl.operations.sum.sum object at 0x7fa073cc40d0>
+	PREDECESSORS
+		_local_thrust_2,(1, 30, 1) 
+	SUCCESSORS
+		_00Ag,(1,) 
+
+_00Ag, <csdl.lang.output.Output object at 0x7fa073cc40a0>, BEM_model.induced_velocity_model._00Ag
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Af
+	SUCCESSORS
+		_00Ah
+
+_00Ah, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4070>
+	PREDECESSORS
+		_00Ag,(1,) 
+	SUCCESSORS
+		total_thrust_2,(1,) 
+
+total_thrust_2, <csdl.lang.output.Output object at 0x7fa073cc4040>, BEM_model.induced_velocity_model.total_thrust_2
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Ah
+	SUCCESSORS
+
+_00Aw, <csdl.lang.output.Output object at 0x7fa073cb1be0>, BEM_model.induced_velocity_model._00Aw
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Av
+	SUCCESSORS
+		_00AB
+
+_00AB, <csdl.operations.power_combination.power_combination object at 0x7fa073cb1ac0>
+	PREDECESSORS
+		_00Aw,(1, 30, 1) 
+		_00AA,(1, 30, 1) 
+	SUCCESSORS
+		_00AC,(1, 30, 1) 
+
+_00AC, <csdl.lang.output.Output object at 0x7fa073cb1a90>, BEM_model.induced_velocity_model._00AC
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00AB
+	SUCCESSORS
+		_00AD
+
+_00AA, <csdl.lang.output.Output object at 0x7fa073cb1af0>, BEM_model.induced_velocity_model._00AA
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Az
+	SUCCESSORS
+		_00AB
+
+_00Ay, <csdl.lang.output.Output object at 0x7fa073cb1b50>, BEM_model.induced_velocity_model._00Ay
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Ax
+	SUCCESSORS
+		_00Az
+
+_00AE, <csdl.lang.output.Output object at 0x7fa073cb1a30>, BEM_model.induced_velocity_model._00AE
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00AD
+	SUCCESSORS
+		_00AF
+
+_00AG, <csdl.lang.output.Output object at 0x7fa073cb19d0>, BEM_model.induced_velocity_model._00AG
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00AF
+	SUCCESSORS
+		_00AH
+
+_local_thrust_star, <csdl.lang.output.Output object at 0x7fa073cb1970>, BEM_model.induced_velocity_model._local_thrust_star
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00AH
+	SUCCESSORS
+		_00AJ
+
+_00AJ, <csdl.operations.sum.sum object at 0x7fa073cb1940>
+	PREDECESSORS
+		_local_thrust_star,(1, 30, 1) 
+	SUCCESSORS
+		_00AK,(1,) 
+
+_00AK, <csdl.lang.output.Output object at 0x7fa073cb18b0>, BEM_model.induced_velocity_model._00AK
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00AJ
+	SUCCESSORS
+		_00AL
+
+_00AL, <csdl.operations.power_combination.power_combination object at 0x7fa073cb1880>
+	PREDECESSORS
+		_00AK,(1,) 
+	SUCCESSORS
+		total_thrust_star,(1,) 
+
+total_thrust_star, <csdl.lang.output.Output object at 0x7fa073cb1850>, BEM_model.induced_velocity_model.total_thrust_star
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00AL
+	SUCCESSORS
+
+_dQ, <csdl.lang.output.Output object at 0x7fa073c1d640>, BEM_model.induced_velocity_model._dQ
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Cz
+	SUCCESSORS
+
+_00x1, <csdl.lang.output.Output object at 0x7fa073baa820>, BEM_model.induced_velocity_model._00x1
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00x0
+	SUCCESSORS
+		_00zU
+
+_00w_, <csdl.lang.output.Output object at 0x7fa073baa880>, BEM_model.induced_velocity_model._00w_
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00wZ
+	SUCCESSORS
+		_00x0
+
+_00zU, <csdl.operations.power_combination.power_combination object at 0x7fa073cc44f0>
+	PREDECESSORS
+		_00x1,(1, 30, 1) 
+	SUCCESSORS
+		_00zV,(1, 30, 1) 
+
+_00zV, <csdl.lang.output.Output object at 0x7fa073cc44c0>, BEM_model.induced_velocity_model._00zV
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zU
+	SUCCESSORS
+		_00zW
+
+_00zW, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4490>
+	PREDECESSORS
+		_00zV,(1, 30, 1) 
+	SUCCESSORS
+		_00zX,(1, 30, 1) 
+
+_00zX, <csdl.lang.output.Output object at 0x7fa073cc4460>, BEM_model.induced_velocity_model._00zX
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zW
+	SUCCESSORS
+		_00zY
+
+_00zZ, <csdl.lang.output.Output object at 0x7fa073cc4400>, BEM_model.induced_velocity_model._00zZ
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zY
+	SUCCESSORS
+		_00A9
+
+_00A9, <csdl.operations.power_combination.power_combination object at 0x7fa073cc41f0>
+	PREDECESSORS
+		_00zZ,(1, 30, 1) 
+		_00A8,(1, 30, 1) 
+	SUCCESSORS
+		_00Aa,(1, 30, 1) 
+
+_00Aa, <csdl.lang.output.Output object at 0x7fa073cc41c0>, BEM_model.induced_velocity_model._00Aa
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00A9
+	SUCCESSORS
+		_00Ab
+
+_00A0, <csdl.lang.output.Output object at 0x7fa073cc43a0>, BEM_model.induced_velocity_model._00A0
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00z_
+	SUCCESSORS
+		_00A7
+
+_00A7, <csdl.operations.linear_combination.linear_combination object at 0x7fa073cc4250>
+	PREDECESSORS
+		_00A0,(1, 30, 1) 
+		_00A6,(1, 30, 1) 
+	SUCCESSORS
+		_00A8,(1, 30, 1) 
+
+_00A8, <csdl.lang.output.Output object at 0x7fa073cc4220>, BEM_model.induced_velocity_model._00A8
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00A7
+	SUCCESSORS
+		_00A9
+
+_00A4, <csdl.lang.output.Output object at 0x7fa073cc42e0>, BEM_model.induced_velocity_model._00A4
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00A3
+	SUCCESSORS
+		_00A5
+
+_00A2, <csdl.lang.output.Output object at 0x7fa073cc4340>, BEM_model.induced_velocity_model._00A2
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00A1
+	SUCCESSORS
+		_00A3
+
+_00A5, <csdl.operations.power_combination.power_combination object at 0x7fa073cc42b0>
+	PREDECESSORS
+		_00A4,(1, 30, 1) 
+	SUCCESSORS
+		_00A6,(1, 30, 1) 
+
+_00A6, <csdl.lang.output.Output object at 0x7fa073cc4280>, BEM_model.induced_velocity_model._00A6
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00A5
+	SUCCESSORS
+		_00A7
+
+_00Ac, <csdl.lang.output.Output object at 0x7fa073cc4160>, BEM_model.induced_velocity_model._00Ac
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Ab
+	SUCCESSORS
+		_00Ad
+
+_local_torque_induced, <csdl.lang.output.Output object at 0x7fa073cc4100>, BEM_model.induced_velocity_model._local_torque_induced
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Ad
+	SUCCESSORS
+
+_00zb, <csdl.lang.output.Output object at 0x7fa073cc4d60>, BEM_model.induced_velocity_model._00zb
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00za
+	SUCCESSORS
+		_00zc
+
+_00zc, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4d30>
+	PREDECESSORS
+		_00zb,(1, 30, 1) 
+	SUCCESSORS
+		_00zd,(1, 30, 1) 
+
+_00zd, <csdl.lang.output.Output object at 0x7fa073cc4d00>, BEM_model.induced_velocity_model._00zd
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zc
+	SUCCESSORS
+		_00ze
+
+_00zf, <csdl.lang.output.Output object at 0x7fa073cc4ca0>, BEM_model.induced_velocity_model._00zf
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00ze
+	SUCCESSORS
+		_00zq
+
+_00zq, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4a90>
+	PREDECESSORS
+		_00zf,(1, 30, 1) 
+		_00zp,(1, 30, 1) 
+	SUCCESSORS
+		_00zr,(1, 30, 1) 
+
+_00zr, <csdl.lang.output.Output object at 0x7fa073cc4a60>, BEM_model.induced_velocity_model._00zr
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zq
+	SUCCESSORS
+		_00zs
+
+_00zh, <csdl.lang.output.Output object at 0x7fa073cc4c40>, BEM_model.induced_velocity_model._00zh
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zg
+	SUCCESSORS
+		_00zo
+
+_00zo, <csdl.operations.linear_combination.linear_combination object at 0x7fa073cc4af0>
+	PREDECESSORS
+		_00zh,(1, 30, 1) 
+		_00zn,(1, 30, 1) 
+	SUCCESSORS
+		_00zp,(1, 30, 1) 
+
+_00zp, <csdl.lang.output.Output object at 0x7fa073cc4ac0>, BEM_model.induced_velocity_model._00zp
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zo
+	SUCCESSORS
+		_00zq
+
+_00zl, <csdl.lang.output.Output object at 0x7fa073cc4b80>, BEM_model.induced_velocity_model._00zl
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zk
+	SUCCESSORS
+		_00zm
+
+_00zj, <csdl.lang.output.Output object at 0x7fa073cc4be0>, BEM_model.induced_velocity_model._00zj
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zi
+	SUCCESSORS
+		_00zk
+
+_00zm, <csdl.operations.power_combination.power_combination object at 0x7fa073cc4b50>
+	PREDECESSORS
+		_00zl,(1, 30, 1) 
+	SUCCESSORS
+		_00zn,(1, 30, 1) 
+
+_00zn, <csdl.lang.output.Output object at 0x7fa073cc4b20>, BEM_model.induced_velocity_model._00zn
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zm
+	SUCCESSORS
+		_00zo
+
+_00zt, <csdl.lang.output.Output object at 0x7fa073cc4a00>, BEM_model.induced_velocity_model._00zt
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zs
+	SUCCESSORS
+		_00zu
+
+_00zv, <csdl.lang.output.Output object at 0x7fa073cc49a0>, BEM_model.induced_velocity_model._00zv
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zu
+	SUCCESSORS
+		_00zw
+
+_local_torque_2, <csdl.lang.output.Output object at 0x7fa073cc4940>, BEM_model.induced_velocity_model._local_torque_2
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00zw
+	SUCCESSORS
+		_00Aj
+
+_00Aj, <csdl.operations.sum.sum object at 0x7fa073cb1fd0>
+	PREDECESSORS
+		_local_torque_2,(1, 30, 1) 
+	SUCCESSORS
+		_00Ak,(1,) 
+
+_00Ak, <csdl.lang.output.Output object at 0x7fa073cb1f40>, BEM_model.induced_velocity_model._00Ak
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Aj
+	SUCCESSORS
+		_00Al
+
+_00Al, <csdl.operations.power_combination.power_combination object at 0x7fa073cb1f10>
+	PREDECESSORS
+		_00Ak,(1,) 
+	SUCCESSORS
+		total_torque_2,(1,) 
+
+total_torque_2, <csdl.lang.output.Output object at 0x7fa073cb1ee0>, BEM_model.induced_velocity_model.total_torque_2
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Al
+	SUCCESSORS
+
+_00AO, <csdl.lang.output.Output object at 0x7fa073cb17f0>, BEM_model.induced_velocity_model._00AO
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00AN
+	SUCCESSORS
+		_00AP
+
+_00AP, <csdl.operations.power_combination.power_combination object at 0x7fa073cb1790>
+	PREDECESSORS
+		_00AO,(1, 30, 1) 
+	SUCCESSORS
+		_00AQ,(1, 30, 1) 
+
+_00AQ, <csdl.lang.output.Output object at 0x7fa073cb1760>, BEM_model.induced_velocity_model._00AQ
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00AP
+	SUCCESSORS
+		_00Ba
+
+_00Ba, <csdl.operations.power_combination.power_combination object at 0x7fa073cb12e0>
+	PREDECESSORS
+		_00AQ,(1, 30, 1) 
+		_00B9,(1, 30, 1) 
+	SUCCESSORS
+		_00Bb,(1, 30, 1) 
+
+_00Bb, <csdl.lang.output.Output object at 0x7fa073cb12b0>, BEM_model.induced_velocity_model._00Bb
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Ba
+	SUCCESSORS
+		_00Bc
+
+_00AS, <csdl.lang.output.Output object at 0x7fa073cb1670>, BEM_model.induced_velocity_model._00AS
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00AR
+	SUCCESSORS
+		_00AT
+
+_00AU, <csdl.lang.output.Output object at 0x7fa073cb1610>, BEM_model.induced_velocity_model._00AU
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00AT
+	SUCCESSORS
+		_00B0
+
+_00B0, <csdl.operations.linear_combination.linear_combination object at 0x7fa073cb14c0>
+	PREDECESSORS
+		_00AU,(1, 30, 1) 
+		_00A_,(1, 30, 1) 
+	SUCCESSORS
+		_00B1,(1, 30, 1) 
+
+_00B1, <csdl.lang.output.Output object at 0x7fa073cb1490>, BEM_model.induced_velocity_model._00B1
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00B0
+	SUCCESSORS
+		_00B8
+
+_00AW, <csdl.lang.output.Output object at 0x7fa073cb15b0>, BEM_model.induced_velocity_model._00AW
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00AV
+	SUCCESSORS
+		_00AZ
+
+_00AZ, <csdl.operations.power_combination.power_combination object at 0x7fa073cb1520>
+	PREDECESSORS
+		_00AW,(1, 30, 1) 
+		_00AY,(1, 30, 1) 
+	SUCCESSORS
+		_00A_,(1, 30, 1) 
+
+_00A_, <csdl.lang.output.Output object at 0x7fa073cb14f0>, BEM_model.induced_velocity_model._00A_
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00AZ
+	SUCCESSORS
+		_00B0
+
+_00AY, <csdl.lang.output.Output object at 0x7fa073cb1550>, BEM_model.induced_velocity_model._00AY
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00AX
+	SUCCESSORS
+		_00AZ
+
+_00B8, <csdl.operations.linear_combination.linear_combination object at 0x7fa073cb1340>
+	PREDECESSORS
+		_00B1,(1, 30, 1) 
+		_00B7,(1, 30, 1) 
+	SUCCESSORS
+		_00B9,(1, 30, 1) 
+
+_00B9, <csdl.lang.output.Output object at 0x7fa073cb1310>, BEM_model.induced_velocity_model._00B9
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00B8
+	SUCCESSORS
+		_00Ba
+
+_00B3, <csdl.lang.output.Output object at 0x7fa073cb1430>, BEM_model.induced_velocity_model._00B3
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00B2
+	SUCCESSORS
+		_00B4
+
+_00B4, <csdl.operations.power_combination.power_combination object at 0x7fa073cb1400>
+	PREDECESSORS
+		_00B3,(1, 30, 1) 
+	SUCCESSORS
+		_00B5,(1, 30, 1) 
+
+_00B5, <csdl.lang.output.Output object at 0x7fa073cb13d0>, BEM_model.induced_velocity_model._00B5
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00B4
+	SUCCESSORS
+		_00B6
+
+_00B7, <csdl.lang.output.Output object at 0x7fa073cb1370>, BEM_model.induced_velocity_model._00B7
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00B6
+	SUCCESSORS
+		_00B8
+
+_00Bd, <csdl.lang.output.Output object at 0x7fa073cb1250>, BEM_model.induced_velocity_model._00Bd
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Bc
+	SUCCESSORS
+		_00Be
+
+_local_energy_loss, <csdl.lang.output.Output object at 0x7fa073cb11f0>, BEM_model.induced_velocity_model._local_energy_loss
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Be
+	SUCCESSORS
+		_00Bg
+
+_00Bg, <csdl.operations.sum.sum object at 0x7fa073cb11c0>
+	PREDECESSORS
+		_local_energy_loss,(1, 30, 1) 
+	SUCCESSORS
+		total_energy_loss,(1,) 
+
+total_energy_loss, <csdl.lang.output.Output object at 0x7fa073cb1190>, BEM_model.induced_velocity_model.total_energy_loss
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Bg
+	SUCCESSORS
+
+_00Bj, <csdl.lang.output.Output object at 0x7fa073cb1130>, BEM_model.induced_velocity_model._00Bj
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Bi
+	SUCCESSORS
+		_00Bs
+
+_00Bs, <csdl.operations.power_combination.power_combination object at 0x7fa073ca2e80>
+	PREDECESSORS
+		_00Bj,(1,) 
+		_00Br,(1,) 
+	SUCCESSORS
+		_00Bt,(1,) 
+
+_00Bt, <csdl.lang.output.Output object at 0x7fa073ca2e50>, BEM_model.induced_velocity_model._00Bt
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Bs
+	SUCCESSORS
+		_00BE
+
+_00wm, <csdl.lang.output.Output object at 0x7fa073d25040>, BEM_model.induced_velocity_model._00wm
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00wl
+	SUCCESSORS
+		_00wn
+
+_00wn, <csdl.operations.power_combination.power_combination object at 0x7fa073baafd0>
+	PREDECESSORS
+		_00wm,(1, 30, 1) 
+	SUCCESSORS
+		_00wo,(1, 30, 1) 
+
+_00wo, <csdl.lang.output.Output object at 0x7fa073baafa0>, BEM_model.induced_velocity_model._00wo
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00wn
+	SUCCESSORS
+		_00Bk
+		_00BK
+		_00C7
+
+_00Bk, <csdl.operations.sum.sum object at 0x7fa073cb1100>
+	PREDECESSORS
+		_00wo,(1, 30, 1) 
+	SUCCESSORS
+		_00Bl,(1,) 
+
+_00BK, <csdl.operations.sum.sum object at 0x7fa073ca2970>
+	PREDECESSORS
+		_00wo,(1, 30, 1) 
+	SUCCESSORS
+		_00BL,(1,) 
+
+_00Bl, <csdl.lang.output.Output object at 0x7fa073cb1070>, BEM_model.induced_velocity_model._00Bl
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Bk
+	SUCCESSORS
+		_00Bm
+
+_00Bm, <csdl.operations.power_combination.power_combination object at 0x7fa073cb1040>
+	PREDECESSORS
+		_00Bl,(1,) 
+	SUCCESSORS
+		_00Bn,(1,) 
+
+_00Bn, <csdl.lang.output.Output object at 0x7fa073ca2fd0>, BEM_model.induced_velocity_model._00Bn
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Bm
+	SUCCESSORS
+		_00Bo
+
+_00Bo, <csdl.operations.power_combination.power_combination object at 0x7fa073ca2fa0>
+	PREDECESSORS
+		_00Bn,(1,) 
+	SUCCESSORS
+		_00Bp,(1,) 
+
+_00Bp, <csdl.lang.output.Output object at 0x7fa073ca2f70>, BEM_model.induced_velocity_model._00Bp
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Bo
+	SUCCESSORS
+		_00Bq
+
+_00Bq, <csdl.operations.power_combination.power_combination object at 0x7fa073ca2f10>
+	PREDECESSORS
+		_00Bp,(1,) 
+	SUCCESSORS
+		_00Br,(1,) 
+
+_00Br, <csdl.lang.output.Output object at 0x7fa073ca2ee0>, BEM_model.induced_velocity_model._00Br
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Bq
+	SUCCESSORS
+		_00Bs
+
+_00BE, <csdl.operations.power_combination.power_combination object at 0x7fa073ca2af0>
+	PREDECESSORS
+		_00Bt,(1,) 
+		_00BD,(1,) 
+	SUCCESSORS
+		C_T,(1,) 
+
+C_T, <csdl.lang.output.Output object at 0x7fa073ca2ac0>, BEM_model.induced_velocity_model.C_T
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00BE
+	SUCCESSORS
+		_00Cj
+		_00Cr
+		_00Cn
+
+_00Bv, <csdl.lang.output.Output object at 0x7fa073ca2d30>, BEM_model.induced_velocity_model._00Bv
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Bu
+	SUCCESSORS
+		_00Bw
+
+_00Bw, <csdl.operations.power_combination.power_combination object at 0x7fa073ca2d00>
+	PREDECESSORS
+		_00Bv,(1,) 
+	SUCCESSORS
+		_00Bx,(1,) 
+
+_00Bx, <csdl.lang.output.Output object at 0x7fa073ca2cd0>, BEM_model.induced_velocity_model._00Bx
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Bw
+	SUCCESSORS
+		_00By
+
+_00By, <csdl.operations.power_combination.power_combination object at 0x7fa073ca2ca0>
+	PREDECESSORS
+		_00Bx,(1,) 
+	SUCCESSORS
+		_00Bz,(1,) 
+
+_00Bz, <csdl.lang.output.Output object at 0x7fa073ca2c70>, BEM_model.induced_velocity_model._00Bz
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00By
+	SUCCESSORS
+		_00BA
+
+_00BA, <csdl.operations.power_combination.power_combination object at 0x7fa073ca2c10>
+	PREDECESSORS
+		_00Bz,(1,) 
+	SUCCESSORS
+		_00BB,(1,) 
+
+_00BB, <csdl.lang.output.Output object at 0x7fa073ca2be0>, BEM_model.induced_velocity_model._00BB
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00BA
+	SUCCESSORS
+		_00BC
+
+_00BC, <csdl.operations.power_combination.power_combination object at 0x7fa073ca2b80>
+	PREDECESSORS
+		_00BB,(1,) 
+	SUCCESSORS
+		_00BD,(1,) 
+
+_00BD, <csdl.lang.output.Output object at 0x7fa073ca2b50>, BEM_model.induced_velocity_model._00BD
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00BC
+	SUCCESSORS
+		_00BE
+
+_00Cj, <csdl.operations.power_combination.power_combination object at 0x7fa073c1d130>
+	PREDECESSORS
+		C_T,(1,) 
+		J,(1,) 
+	SUCCESSORS
+		_00Ck,(1,) 
+
+_00Cr, <csdl.operations.power_combination.power_combination object at 0x7fa073c1d370>
+	PREDECESSORS
+		C_T,(1,) 
+		_00Cq,(1,) 
+	SUCCESSORS
+		_00Cs,(1,) 
+
+_00Cn, <csdl.operations.power_combination.power_combination object at 0x7fa073c1d1f0>
+	PREDECESSORS
+		C_T,(1,) 
+	SUCCESSORS
+		_00Co,(1,) 
+
+_00BJ, <csdl.lang.output.Output object at 0x7fa073ca29a0>, BEM_model.induced_velocity_model._00BJ
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00BI
+	SUCCESSORS
+		_00BS
+
+_00BS, <csdl.operations.power_combination.power_combination object at 0x7fa073ca26d0>
+	PREDECESSORS
+		_00BJ,(1,) 
+		_00BR,(1,) 
+	SUCCESSORS
+		_00BT,(1,) 
+
+_00BT, <csdl.lang.output.Output object at 0x7fa073ca26a0>, BEM_model.induced_velocity_model._00BT
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00BS
+	SUCCESSORS
+		_00C3
+
+_00BL, <csdl.lang.output.Output object at 0x7fa073ca2880>, BEM_model.induced_velocity_model._00BL
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00BK
+	SUCCESSORS
+		_00BM
+
+_00BM, <csdl.operations.power_combination.power_combination object at 0x7fa073ca2850>
+	PREDECESSORS
+		_00BL,(1,) 
+	SUCCESSORS
+		_00BN,(1,) 
+
+_00BN, <csdl.lang.output.Output object at 0x7fa073ca2820>, BEM_model.induced_velocity_model._00BN
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00BM
+	SUCCESSORS
+		_00BO
+
+_00BO, <csdl.operations.power_combination.power_combination object at 0x7fa073ca27f0>
+	PREDECESSORS
+		_00BN,(1,) 
+	SUCCESSORS
+		_00BP,(1,) 
+
+_00BP, <csdl.lang.output.Output object at 0x7fa073ca27c0>, BEM_model.induced_velocity_model._00BP
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00BO
+	SUCCESSORS
+		_00BQ
+
+_00BQ, <csdl.operations.power_combination.power_combination object at 0x7fa073ca2760>
+	PREDECESSORS
+		_00BP,(1,) 
+	SUCCESSORS
+		_00BR,(1,) 
+
+_00BR, <csdl.lang.output.Output object at 0x7fa073ca2730>, BEM_model.induced_velocity_model._00BR
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00BQ
+	SUCCESSORS
+		_00BS
+
+_00C3, <csdl.operations.power_combination.power_combination object at 0x7fa073ca2340>
+	PREDECESSORS
+		_00BT,(1,) 
+		_00C2,(1,) 
+	SUCCESSORS
+		C_Q,(1,) 
+
+C_Q, <csdl.lang.output.Output object at 0x7fa073ca2310>, BEM_model.induced_velocity_model.C_Q
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00C3
+	SUCCESSORS
+		_00C5
+
+_00BV, <csdl.lang.output.Output object at 0x7fa073ca2580>, BEM_model.induced_velocity_model._00BV
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00BU
+	SUCCESSORS
+		_00BW
+
+_00BW, <csdl.operations.power_combination.power_combination object at 0x7fa073ca2550>
+	PREDECESSORS
+		_00BV,(1,) 
+	SUCCESSORS
+		_00BX,(1,) 
+
+_00BX, <csdl.lang.output.Output object at 0x7fa073ca2520>, BEM_model.induced_velocity_model._00BX
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00BW
+	SUCCESSORS
+		_00BY
+
+_00BY, <csdl.operations.power_combination.power_combination object at 0x7fa073ca24f0>
+	PREDECESSORS
+		_00BX,(1,) 
+	SUCCESSORS
+		_00BZ,(1,) 
+
+_00BZ, <csdl.lang.output.Output object at 0x7fa073ca24c0>, BEM_model.induced_velocity_model._00BZ
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00BY
+	SUCCESSORS
+		_00B_
+
+_00B_, <csdl.operations.power_combination.power_combination object at 0x7fa073ca2460>
+	PREDECESSORS
+		_00BZ,(1,) 
+	SUCCESSORS
+		_00C0,(1,) 
+
+_00C0, <csdl.lang.output.Output object at 0x7fa073ca2430>, BEM_model.induced_velocity_model._00C0
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00B_
+	SUCCESSORS
+		_00C1
+
+_00C1, <csdl.operations.power_combination.power_combination object at 0x7fa073ca23d0>
+	PREDECESSORS
+		_00C0,(1,) 
+	SUCCESSORS
+		_00C2,(1,) 
+
+_00C2, <csdl.lang.output.Output object at 0x7fa073ca23a0>, BEM_model.induced_velocity_model._00C2
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00C1
+	SUCCESSORS
+		_00C3
+
+_00C5, <csdl.operations.power_combination.power_combination object at 0x7fa073ca22e0>
+	PREDECESSORS
+		C_Q,(1,) 
+	SUCCESSORS
+		C_P,(1,) 
+
+C_P, <csdl.lang.output.Output object at 0x7fa073ca22b0>, BEM_model.induced_velocity_model.C_P
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00C5
+	SUCCESSORS
+		_00Cl
+		_00Ct
+
+_00Cl, <csdl.operations.power_combination.power_combination object at 0x7fa073c1d190>
+	PREDECESSORS
+		C_P,(1,) 
+		_00Ck,(1,) 
+	SUCCESSORS
+		eta,(1,) 
+
+_00Ct, <csdl.operations.power_combination.power_combination object at 0x7fa073c1d3d0>
+	PREDECESSORS
+		C_P,(1,) 
+		_00Cs,(1,) 
+	SUCCESSORS
+		FOM,(1,) 
+
+_00Ck, <csdl.lang.output.Output object at 0x7fa073c1d160>, BEM_model.induced_velocity_model._00Ck
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Cj
+	SUCCESSORS
+		_00Cl
+
+_00C8, <csdl.lang.output.Output object at 0x7fa073ca21f0>, BEM_model.induced_velocity_model._00C8
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00C7
+	SUCCESSORS
+		_00Cb
+
+_00Cb, <csdl.operations.power_combination.power_combination object at 0x7fa073ca2130>
+	PREDECESSORS
+		_00C8,(1, 30, 1) 
+		_00Ca,(1, 30, 1) 
+	SUCCESSORS
+		_00Cc,(1, 30, 1) 
+
+_00Cc, <csdl.lang.output.Output object at 0x7fa073ca2100>, BEM_model.induced_velocity_model._00Cc
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Cb
+	SUCCESSORS
+		_00Cd
+
+_00Ca, <csdl.lang.output.Output object at 0x7fa073ca2190>, BEM_model.induced_velocity_model._00Ca
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00C9
+	SUCCESSORS
+		_00Cb
+
+_00Cd, <csdl.operations.sum.sum object at 0x7fa073ca20d0>
+	PREDECESSORS
+		_00Cc,(1, 30, 1) 
+	SUCCESSORS
+		_00Ce,(1,) 
+
+_00Ce, <csdl.lang.output.Output object at 0x7fa073ca2040>, BEM_model.induced_velocity_model._00Ce
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Cd
+	SUCCESSORS
+		_00Cf
+
+_00Cf, <csdl.operations.power_combination.power_combination object at 0x7fa073c1d040>
+	PREDECESSORS
+		_00Ce,(1,) 
+	SUCCESSORS
+		_00Cg,(1,) 
+
+_00Cg, <csdl.lang.output.Output object at 0x7fa073c1d070>, BEM_model.induced_velocity_model._00Cg
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Cf
+	SUCCESSORS
+		_00Ch
+
+_00Ch, <csdl.operations.power_combination.power_combination object at 0x7fa073c1d0a0>
+	PREDECESSORS
+		_00Cg,(1,) 
+	SUCCESSORS
+		J,(1,) 
+
+J, <csdl.lang.output.Output object at 0x7fa073c1d0d0>, BEM_model.induced_velocity_model.J
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Ch
+	SUCCESSORS
+		_00Cj
+
+eta, <csdl.lang.output.Output object at 0x7fa073c1d1c0>, BEM_model.induced_velocity_model.eta
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Cl
+	SUCCESSORS
+
+_00Cs, <csdl.lang.output.Output object at 0x7fa073c1d3a0>, BEM_model.induced_velocity_model._00Cs
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Cr
+	SUCCESSORS
+		_00Ct
+
+_00Co, <csdl.lang.output.Output object at 0x7fa073c1d220>, BEM_model.induced_velocity_model._00Co
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Cn
+	SUCCESSORS
+		_00Cp
+
+_00Cp, <csdl.operations.power_combination.power_combination object at 0x7fa073c1d2e0>
+	PREDECESSORS
+		_00Co,(1,) 
+	SUCCESSORS
+		_00Cq,(1,) 
+
+_00Cq, <csdl.lang.output.Output object at 0x7fa073c1d310>, BEM_model.induced_velocity_model._00Cq
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Cp
+	SUCCESSORS
+		_00Cr
+
+FOM, <csdl.lang.output.Output object at 0x7fa073c1d400>, BEM_model.induced_velocity_model.FOM
+	CONNECTED TO: False
+	PROMOTED TO: False
+	PREDECESSORS
+		_00Ct
+	SUCCESSORS

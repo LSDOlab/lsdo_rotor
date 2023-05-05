@@ -3,6 +3,7 @@ from xmlrpc.client import Boolean
 import numpy as np
 from csdl import Model
 import csdl
+from lsdo_modules.module_csdl.module_csdl import ModuleCSDL
 
 # from lsdo_rotor.rotor_parameters import RotorParameters
 from lsdo_rotor.core.BEM.inputs.BEM_external_inputs_model import BEMExternalInputsModel
@@ -21,7 +22,7 @@ from lsdo_rotor.utils.atmosphere_model import AtmosphereModel
 from lsdo_rotor.core.BEM.functions.get_bspline_mtx import   get_bspline_mtx
 from lsdo_rotor.core.BEM.BEM_b_spline_comp import BsplineComp
 
-class BEMModel(Model):
+class BEMModel(ModuleCSDL):
 
     def initialize(self):
         self.parameters.declare(name='name', default='propulsion')

@@ -65,7 +65,7 @@ class BEMRunModel(Model):
         # self.create_input(name='twist_cp', shape=(num_cp,), units='rad', val=np.linspace(50, 10, num_cp)*180/np.pi) #np.array([8.60773973e-01,6.18472835e-01,3.76150609e-01,1.88136239e-01]))#np.linspace(35,10,4)*np.pi/180)
         # self.create_input(name='chord_cp', shape=(num_cp,), units='rad', val=np.linspace(0.3, 0.1, num_cp))
 
-        if BILD_twist is not None and BILD_chord is not None and chord_B_spline_rep is True and twist_B_spline_rep is True:        
+        if BILD_twist is not None and BILD_chord is not None and chord_B_spline_rep is True and twist_B_spline_rep is True:     
             self.create_input(name='twist_cp', shape=(num_cp,), units='rad', val=np.linspace(BILD_twist[0], BILD_twist[-1], num_cp)) #np.array([8.60773973e-01,6.18472835e-01,3.76150609e-01,1.88136239e-01]))#np.linspace(35,10,4)*np.pi/180)
             self.create_input(name='chord_cp', shape=(num_cp,), units='rad', val=np.linspace(BILD_chord[0], BILD_chord[-1], num_cp))
             self.add_design_variable('twist_cp', lower=min(BILD_twist),upper=max(BILD_twist))
@@ -80,7 +80,7 @@ class BEMRunModel(Model):
         # self.add_design_variable('chord_profile', lower=0.01, upper=0.3)
         
         
-        self.create_input('omega', shape=(num_nodes, 1), units='rpm', val=rpm)
+        self.create_input('rpm', shape=(num_nodes, 1), units='rpm', val=rpm)
         self.create_input(name='u', shape=(num_nodes, 1), units='m/s', val=Vx)
         self.create_input(name='z', shape=(num_nodes,  1), units='m', val=altitude)
 
@@ -96,10 +96,10 @@ class BEMRunModel(Model):
             thrust_origin=thrust_origin,
             ref_pt=reference_point,
             num_blades=num_blades,
-            chord_b_spline=chord_B_spline_rep,
-            pitch_b_spline=twist_B_spline_rep,
+            chord_b_spline_rep=chord_B_spline_rep,
+            twist_b_spline_rep=twist_B_spline_rep,
             num_cp=num_cp,
-            order=order,
+            b_spline_order=order,
             normalized_hub_radius=0.20,
         ), name='BEM_model')
 

@@ -96,10 +96,10 @@ class BEMRunModel(Model):
             thrust_origin=thrust_origin,
             ref_pt=reference_point,
             num_blades=num_blades,
-            chord_b_spline=chord_B_spline_rep,
-            pitch_b_spline=twist_B_spline_rep,
+            chord_b_spline_rep=chord_B_spline_rep,
+            twist_b_spline_rep=twist_B_spline_rep,
             num_cp=num_cp,
-            order=order,
+            b_spline_order=order,
             normalized_hub_radius=0.20,
         ), name='BEM_model')
 

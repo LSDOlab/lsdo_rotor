@@ -33,16 +33,16 @@ class BEMExternalInputsModel(ModuleCSDL):
         omega = self.register_module_input('rpm', shape=(num_nodes, 1), units='rpm') #* 1000
 
         u = self.register_module_input(name='u', shape=(num_nodes, 1), units='m/s') * -1
-        v = self.register_module_input(name='v', shape=(num_nodes, 1), units='m/s') 
-        w = self.register_module_input(name='w', shape=(num_nodes, 1), units='m/s') 
+        v = self.register_module_input(name='v', shape=(num_nodes, 1), units='m/s', val=0) 
+        w = self.register_module_input(name='w', shape=(num_nodes, 1), units='m/s', val=0) 
 
         V = self.register_module_output('velocity_vector', shape=(num_nodes,3))
 
-        p = self.register_module_input(name='p', shape=(num_nodes, 1), units='rad/s')
+        p = self.register_module_input(name='p', shape=(num_nodes, 1), units='rad/s', val=0)
         self.register_module_output('p1',p*1)
-        q = self.register_module_input(name='q', shape=(num_nodes, 1), units='rad/s')
+        q = self.register_module_input(name='q', shape=(num_nodes, 1), units='rad/s', val=0)
         self.register_module_output('q1',q*1)
-        r = self.register_module_input(name='r', shape=(num_nodes, 1), units='rad/s')
+        r = self.register_module_input(name='r', shape=(num_nodes, 1), units='rad/s', val=0)
         self.register_module_output('r1',r*1)
 
         inflow_velocity = self.register_module_output('inflow_velocity', shape=shape + (3,))
@@ -87,7 +87,7 @@ class BEMExternalInputsModel(ModuleCSDL):
         
         self.register_module_output('in_plane_ex', in_plane_ex)
         self.register_module_output('in_plane_ey', in_plane_ey)
-        self.register_module_input('x_dir',val=x_dir)
-        self.register_module_input('y_dir',val=y_dir)
-        self.register_module_input('z_dir',val=z_dir)
+        self.create_input('x_dir', val=x_dir)
+        self.create_input('y_dir', val=y_dir)
+        self.create_input('z_dir', val=z_dir)
 
