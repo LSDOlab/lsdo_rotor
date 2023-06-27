@@ -21,7 +21,7 @@ from lsdo_rotor.utils.atmosphere_model import AtmosphereModel
 
 from lsdo_rotor.core.BEM.functions.get_bspline_mtx import get_bspline_mtx
 from lsdo_rotor.core.BEM.BEM_b_spline_comp import BsplineComp
-# from lsdo_rotor.core.BEM.BEM_caddee import BEMMesh
+from lsdo_rotor.core.BEM.BEM_caddee import BEMMesh
 
 
 class BEMModel(ModuleCSDL):
@@ -30,7 +30,7 @@ class BEMModel(ModuleCSDL):
         self.parameters.declare(name='name', default='propulsion')
         self.parameters.declare('mesh')# , types=BEMMesh)
         self.parameters.declare('prefix')
-        self.parameters.declare('num_nodes')
+        self.parameters.declare('num_nodes', default=1, types=int, allow_none=True)
 
     def define(self):
         mesh = self.parameters['mesh']
@@ -87,14 +87,15 @@ class BEMModel(ModuleCSDL):
             pass
 
 
-        omega_a = self.register_module_input('rpm', shape=(num_nodes, 1), units='rpm', vectorized=True, computed_upstream=False)
-        u_a = self.register_module_input(name='u', shape=(num_nodes, 1), units='m/s', vectorized=True)
-        v_a = self.register_module_input(name='v', shape=(num_nodes, 1), units='m/s', vectorized=True) 
-        w_a = self.register_module_input(name='w', shape=(num_nodes, 1), units='m/s', vectorized=True) 
-        p_a = self.register_module_input(name='p', shape=(num_nodes, 1), units='rad/s', vectorized=True)
-        q_a = self.register_module_input(name='q', shape=(num_nodes, 1), units='rad/s', vectorized=True)
-        r_a = self.register_module_input(name='r', shape=(num_nodes, 1), units='rad/s', vectorized=True)
+        omega = self.register_module_input('rpm', shape=(num_nodes, 1), units='rpm', vectorized=True, computed_upstream=False)
+        u = self.register_module_input(name='u', shape=(num_nodes, 1), units='m/s', vectorized=True)
+        v = self.register_module_input(name='v', shape=(num_nodes, 1), units='m/s', vectorized=True) 
+        w = self.register_module_input(name='w', shape=(num_nodes, 1), units='m/s', vectorized=True) 
+        p = self.register_module_input(name='p', shape=(num_nodes, 1), units='rad/s', vectorized=True)
+        q = self.register_module_input(name='q', shape=(num_nodes, 1), units='rad/s', vectorized=True)
+        r = self.register_module_input(name='r', shape=(num_nodes, 1), units='rad/s', vectorized=True)
         
+  
 
         in_plane_y = self.register_module_input(f'{prefix}_in_plane_y', shape=(3, ), promotes=True) * 0.3048
         in_plane_x = self.register_module_input(f'{prefix}_in_plane_x', shape=(3, ), promotes=True) * 0.3048
@@ -129,15 +130,15 @@ class BEMModel(ModuleCSDL):
         ),name='BEM_pre_process_model')
 
         self.add(AtmosphereModel(
-            shape=(num_nodes, 1),
+            shape=(num_nodes,1),
         ),name='atmosphere_model')
     
         chord = self.declare_variable('_chord',shape=shape)
         Vx = self.declare_variable('_axial_inflow_velocity', shape=shape)
         Vt = self.declare_variable('_tangential_inflow_velocity', shape=shape)
         W = (Vx**2 + Vt**2)**0.5
-        rho = csdl.expand(self.declare_variable('density', shape=(num_nodes, )), shape,'i->ijk')
-        mu = csdl.expand(self.declare_variable('dynamic_viscosity', shape=(num_nodes, )), shape, 'i->ijk')
+        rho = csdl.expand(self.declare_variable('density', shape=(num_nodes,)), shape,'i->ijk')
+        mu = csdl.expand(self.declare_variable('dynamic_viscosity', shape=(num_nodes,)), shape, 'i->ijk')
         Re = rho * W * chord / mu
         self.register_output('Re', Re)
 
@@ -179,6 +180,7 @@ class BEMModel(ModuleCSDL):
         # Post-Processing
         T = self.declare_variable('T', shape=(num_nodes,))
         F = self.create_output('F', shape=(num_nodes,3))
+        M = self.create_output('M', shape=(num_nodes,3))
         ref_pt = self.declare_variable('reference_point',shape=(num_nodes,3), val=np.tile(reference_point,(num_nodes,1)))
         thrust_vector = self.register_module_input('thrust_vector', shape=(num_nodes, 3))
         # self.print_var(thrust_vector)
@@ -190,8 +192,23 @@ class BEMModel(ModuleCSDL):
             F[i, 1] = csdl.reshape(T[i], (1, 1)) * thrust_vector[i, 1]
             F[i, 2] = csdl.reshape(T[i], (1, 1)) * thrust_vector[i, 2]
             
-        M = csdl.cross(thrust_origin-ref_pt, F, axis=1)
-        self.register_module_output('M', csdl.transpose(M))
+
+        moments = csdl.cross(thrust_origin-ref_pt, F, axis=1)
+        M[:,0] = moments[:,0] 
+        M[:,1] = moments[:,1] 
+        M[:,2] = moments[:,2] 
+
+        # expansion_mat = np.zeros((num_active_nodes, num_nodes))
+        # for i in range(num_active_nodes):
+        #     column_index = int(active_nodes[i])
+        #     expansion_mat[i, column_index] = 1
+        # expansion_mat_csdl = self.create_input('expansion_mat', shape=(num_active_nodes, num_nodes), val=expansion_mat)
+
+        # F = csdl.matmat(csdl.reshape(F_active, (3, num_active_nodes)), expansion_mat_csdl)
+        # M = csdl.matmat(csdl.reshape(M_active, (3, num_active_nodes)), expansion_mat_csdl)
+
+        # self.register_module_output('F', csdl.transpose(F))
+        # self.register_module_output('M', csdl.transpose(M))
 
         # self.print_var(F)
         # self.print_var(M)

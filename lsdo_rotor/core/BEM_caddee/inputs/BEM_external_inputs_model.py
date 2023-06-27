@@ -30,19 +30,19 @@ class BEMExternalInputsModel(ModuleCSDL):
         # self.print_var(rotor_radius)
 
         # Inputs changing across conditions (segments)
-        omega = self.register_module_input('rpm_active_nodes', shape=(num_nodes, 1), units='rpm') #* 1000
+        omega = self.register_module_input('rpm', shape=(num_nodes, 1), units='rpm') #* 1000
 
-        u = self.register_module_input(name='u_active_nodes', shape=(num_nodes, 1), units='m/s') * -1
-        v = self.register_module_input(name='v_active_nodes', shape=(num_nodes, 1), units='m/s', val=0) 
-        w = self.register_module_input(name='w_active_nodes', shape=(num_nodes, 1), units='m/s', val=0) 
+        u = self.register_module_input(name='u', shape=(num_nodes, 1), units='m/s') * -1
+        v = self.register_module_input(name='v', shape=(num_nodes, 1), units='m/s', val=0) 
+        w = self.register_module_input(name='w', shape=(num_nodes, 1), units='m/s', val=0) 
 
         V = self.create_output('velocity_vector', shape=(num_nodes,3), units='m/s')
 
-        p = self.register_module_input(name='p_active_nodes', shape=(num_nodes, 1), units='rad/s')
+        p = self.register_module_input(name='p', shape=(num_nodes, 1), units='rad/s')
         self.register_output('p1',p*1)
-        q = self.register_module_input(name='q_active_nodes', shape=(num_nodes, 1), units='rad/s')
+        q = self.register_module_input(name='q', shape=(num_nodes, 1), units='rad/s')
         self.register_output('q1',q*1)
-        r = self.register_module_input(name='r_active_nodes', shape=(num_nodes, 1), units='rad/s')
+        r = self.register_module_input(name='r', shape=(num_nodes, 1), units='rad/s')
         self.register_output('r1',r*1)
 
         inflow_velocity = self.create_output('inflow_velocity', shape=shape + (3,))
