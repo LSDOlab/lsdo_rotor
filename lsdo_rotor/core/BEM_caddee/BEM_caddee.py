@@ -11,20 +11,20 @@ class BEM(m3l.ExplicitOperation):
     def initialize(self, kwargs):
         self.parameters.declare('component', types=Component)
         self.parameters.declare('mesh', default=None, allow_none=True)#, types=BEMMesh)
+        self.parameters.declare('disk_prefix', types=str)
+        self.parameters.declare('blade_prefix', types=str)
         self.num_nodes = 1
-        self.num_active_nodes = 1
-        self.model_selection = None
-    
     
     def compute(self) -> csdl.Model:
         from lsdo_rotor.core.BEM_caddee.BEM_model import BEMModel
         mesh = self.parameters['mesh']
-        component = self.parameters['component']
-        prefix = component.parameters['name']
+        disk_prefix = self.parameters['disk_prefix']
+        blade_prefix = self.parameters['blade_prefix']
         csdl_model = BEMModel(
             module=self,
             mesh=mesh,
-            prefix=prefix,
+            blade_prefix=blade_prefix,
+            disk_prefix=disk_prefix,
             num_nodes=self.num_nodes,
         )
         # csdl_model.register_module_input('thrust_vector', )

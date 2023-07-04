@@ -29,13 +29,15 @@ class BEMModel(ModuleCSDL):
     def initialize(self):
         self.parameters.declare(name='name', default='propulsion')
         self.parameters.declare('mesh')# , types=BEMMesh)
-        self.parameters.declare('prefix')
+        self.parameters.declare('disk_prefix', default='rotor_disk', types=str)
+        self.parameters.declare('blade_prefix', default='rotor_blade', types=str)
         self.parameters.declare('num_nodes')
 
     def define(self):
         mesh = self.parameters['mesh']
         name = self.parameters['name']
-        prefix = self.parameters['prefix']
+        disk_prefix = self.parameters['disk_prefix']
+        blade_prefix = self.parameters['blade_prefix']
         num_nodes = self.parameters['num_nodes']
 
         num_radial = mesh.parameters['num_radial']
@@ -53,52 +55,66 @@ class BEMModel(ModuleCSDL):
         rotor = get_BEM_rotor_dictionary(airfoil, interp, custom_polar)
     
         # prop_radius = self.declare_variable(name='propeller_radius', shape=(1, ), units='m')
-        pitch_b_spline = mesh.parameters['twist_b_spline_rep']
-        chord_b_spline = mesh.parameters['chord_b_spline_rep']
-        order = mesh.parameters['b_spline_order']
-        num_cp = mesh.parameters['num_cp']
-        if pitch_b_spline == True:
-            twist_cp = self.declare_variable(name='twist_cp', shape=(num_cp,), units='rad', val=np.linspace(50, 10, num_cp) *np.pi/180)
+        # pitch_b_spline = mesh.parameters['twist_b_spline_rep']
+        # chord_b_spline = mesh.parameters['chord_b_spline_rep']
+        # order = mesh.parameters['b_spline_order']
+        # num_cp = mesh.parameters['num_cp']
+        # if pitch_b_spline == True:
+        #     twist_cp = self.declare_variable(name='twist_cp', shape=(num_cp,), units='rad', val=np.linspace(50, 10, num_cp) *np.pi/180)
             
-            pitch_A = get_bspline_mtx(num_cp, num_radial, order=order)
-            comp = csdl.custom(twist_cp,op=BsplineComp(
-                num_pt=num_radial,
-                num_cp=num_cp,
-                in_name='twist_cp',
-                jac=pitch_A,
-                out_name='twist_profile',
-            ))
-            self.register_output('twist_profile', comp)
-        else:
-            pass
+        #     pitch_A = get_bspline_mtx(num_cp, num_radial, order=order)
+        #     comp = csdl.custom(twist_cp,op=BsplineComp(
+        #         num_pt=num_radial,
+        #         num_cp=num_cp,
+        #         in_name='twist_cp',
+        #         jac=pitch_A,
+        #         out_name='twist_profile',
+        #     ))
+        #     self.register_output('twist_profile', comp)
+        # else:
+        #     pass
 
-        if chord_b_spline == True:
-            chord_cp = self.declare_variable(name='chord_cp', shape=(num_cp,), units='rad', val=np.linspace(0.3, 0.1, num_cp))
-            chord_A = get_bspline_mtx(num_cp, num_radial, order=order)
-            comp_chord = csdl.custom(chord_cp,op=BsplineComp(
-                num_pt=num_radial,
-                num_cp=num_cp,
-                in_name='chord_cp',
-                jac=chord_A,
-                out_name='chord_profile',
-            ))
-            self.register_output('chord_profile', comp_chord)
-        else:
-            pass
+        # if chord_b_spline == True:
+        #     chord_cp = self.declare_variable(name='chord_cp', shape=(num_cp,), units='rad', val=np.linspace(0.3, 0.1, num_cp))
+        #     chord_A = get_bspline_mtx(num_cp, num_radial, order=order)
+        #     comp_chord = csdl.custom(chord_cp,op=BsplineComp(
+        #         num_pt=num_radial,
+        #         num_cp=num_cp,
+        #         in_name='chord_cp',
+        #         jac=chord_A,
+        #         out_name='chord_profile',
+        #     ))
+        #     self.register_output('chord_profile', comp_chord)
+        # else:
+        #     pass
 
+        chord = self.register_module_input(f'{blade_prefix}_chord_length', shape=(num_radial, 3), val=np.linspace(0.4, 0.1, num_radial), promotes=True)
+        chord_length = csdl.reshape(csdl.pnorm(chord, 2, axis=1), (num_radial, 1))
+        chord_profile = self.register_output('chord_profile', chord_length * 0.3048)
+        
+        rel_v_dist_array = self.register_module_input(f'{blade_prefix}_twist', shape=(num_radial, 3), val=np.linspace(np.deg2rad(30), np.deg2rad(5), num_radial), promotes=True)
+        rel_v_dist = csdl.reshape(csdl.sum(rel_v_dist_array, axes=(1, )), (num_radial, 1))
+        twist_profile = self.register_output('twist_profile', csdl.arcsin(rel_v_dist/chord_length) + np.deg2rad(5))
+        # self.print_var(twist_profile * 180/np.pi)
 
-        omega_a = self.register_module_input('rpm', shape=(num_nodes, 1), units='rpm', vectorized=True, computed_upstream=False)
-        u_a = self.register_module_input(name='u', shape=(num_nodes, 1), units='m/s', vectorized=True)
-        v_a = self.register_module_input(name='v', shape=(num_nodes, 1), units='m/s', vectorized=True) 
-        w_a = self.register_module_input(name='w', shape=(num_nodes, 1), units='m/s', vectorized=True) 
-        p_a = self.register_module_input(name='p', shape=(num_nodes, 1), units='rad/s', vectorized=True)
-        q_a = self.register_module_input(name='q', shape=(num_nodes, 1), units='rad/s', vectorized=True)
-        r_a = self.register_module_input(name='r', shape=(num_nodes, 1), units='rad/s', vectorized=True)
+        # twist_profile = self.create_input('twist_profile', val=np.linspace(np.deg2rad(15), np.deg2rad(5), num_radial))
+
+        omega_a = self.register_module_input('rpm', shape=(num_nodes, 1), units='rpm', vectorized=False, computed_upstream=False)
+        # oemga = self.create_input('rpm', val=1200, shape=(num_nodes, 1))
+        # self.add_design_variable('rpm', lower=300, 
+        #                               upper=2000,
+        #                               scaler=1e-3)
+        u_a = self.register_module_input(name='u', shape=(num_nodes, 1), units='m/s', vectorized=False)
+        v_a = self.register_module_input(name='v', shape=(num_nodes, 1), units='m/s', vectorized=False) 
+        w_a = self.register_module_input(name='w', shape=(num_nodes, 1), units='m/s', vectorized=False) 
+        p_a = self.register_module_input(name='p', shape=(num_nodes, 1), units='rad/s', vectorized=False)
+        q_a = self.register_module_input(name='q', shape=(num_nodes, 1), units='rad/s', vectorized=False)
+        r_a = self.register_module_input(name='r', shape=(num_nodes, 1), units='rad/s', vectorized=False)
         
 
-        in_plane_y = self.register_module_input(f'{prefix}_in_plane_y', shape=(3, ), promotes=True) * 0.3048
-        in_plane_x = self.register_module_input(f'{prefix}_in_plane_x', shape=(3, ), promotes=True) * 0.3048
-        to = self.register_module_input(f'{prefix}_origin', shape=(3, ), promotes=True) * 0.3048
+        in_plane_y = self.register_module_input(f'{disk_prefix}_in_plane_1', shape=(3, ), promotes=True) * 0.3048
+        in_plane_x = self.register_module_input(f'{disk_prefix}_in_plane_2', shape=(3, ), promotes=True) * 0.3048
+        to = self.register_module_input(f'{disk_prefix}_origin', shape=(3, ), promotes=True) * 0.3048
         # R = self.register_module_input(f'{prefix}_radius', shape=(1, ), promotes=True)
         R = csdl.pnorm(in_plane_y, 2) / 2
         self.register_module_output('propeller_radius', R)
