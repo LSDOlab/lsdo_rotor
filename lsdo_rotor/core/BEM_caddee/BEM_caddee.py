@@ -31,21 +31,18 @@ class BEM(m3l.ExplicitOperation):
         return csdl_model
 
     def evaluate(self, ac_states):
-        operation_csdl = self.compute()
-        arguments = {}
-        arguments['u'] = ac_states['u']
-        arguments['v'] = ac_states['v']
-        arguments['w'] = ac_states['w']
-        arguments['p'] = ac_states['p']
-        arguments['q'] = ac_states['q']
-        arguments['r'] = ac_states['r']
+        component_name = self.parameters['component'].parameters['name']
+        self.name = f"{component_name}_bem_model"
+        self.arguments = {}
+        self.arguments['u'] = ac_states['u']
+        self.arguments['v'] = ac_states['v']
+        self.arguments['w'] = ac_states['w']
+        self.arguments['p'] = ac_states['p']
+        self.arguments['q'] = ac_states['q']
+        self.arguments['r'] = ac_states['r']
 
-        component = self.parameters['component']
-        prefix = component.parameters['name']
-
-        bem_operation = m3l.CSDLOperation(name=f'{prefix}_bem', arguments=arguments, operation_csdl=operation_csdl)
-        forces = m3l.Variable(name='F', shape=(self.num_nodes, 3), operation=bem_operation)
-        moments = m3l.Variable(name='M', shape=(self.num_nodes, 3), operation=bem_operation)
+        forces = m3l.Variable(name='F', shape=(self.num_nodes, 3), operation=self)
+        moments = m3l.Variable(name='M', shape=(self.num_nodes, 3), operation=self)
     
         return forces, moments
         
