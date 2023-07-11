@@ -9,29 +9,39 @@ import csdl
 
 class BEM(m3l.ExplicitOperation):
     def initialize(self, kwargs):
-        self.parameters.declare('component', types=Component)
-        self.parameters.declare('mesh', default=None, allow_none=True)#, types=BEMMesh)
+        self.parameters.declare('component', types=Component, allow_none=True)
+        self.parameters.declare('mesh', allow_none=True)#, types=BEMMesh)
         self.parameters.declare('disk_prefix', types=str)
         self.parameters.declare('blade_prefix', types=str)
-        self.num_nodes = 1
+        self.parameters.declare('num_nodes', types=int, default=1)
+        self.parameters.declare('use_caddee', types=bool, default=True)
+
     
     def compute(self) -> csdl.Model:
         from lsdo_rotor.core.BEM_caddee.BEM_model import BEMModel
         mesh = self.parameters['mesh']
         disk_prefix = self.parameters['disk_prefix']
         blade_prefix = self.parameters['blade_prefix']
+        num_nodes = self.parameters['num_nodes']
+        use_caddee = self.parameters['use_caddee']
         csdl_model = BEMModel(
             module=self,
             mesh=mesh,
             blade_prefix=blade_prefix,
             disk_prefix=disk_prefix,
-            num_nodes=self.num_nodes,
+            num_nodes=num_nodes,
+            use_caddee=use_caddee,
         )
         # csdl_model.register_module_input('thrust_vector', )
         return csdl_model
 
     def evaluate(self, ac_states):
-        component_name = self.parameters['component'].parameters['name']
+        component = self.parameters['component']
+        if component is not None:
+            component_name = component.parameters['name'] 
+        else:
+            component_name = 'rotor'
+        
         self.name = f"{component_name}_bem_model"
         self.arguments = {}
         self.arguments['u'] = ac_states['u']
@@ -46,20 +56,6 @@ class BEM(m3l.ExplicitOperation):
     
         return forces, moments
         
-    def _assemble_csdl(self):
-        from lsdo_rotor.core.BEM_caddee.BEM_model import BEMModel
-        mesh = self.parameters['mesh']
-        component = self.parameters['component']
-        prefix = component.parameters['name']
-        csdl_model = BEMModel(
-            # module=self,
-            mesh=mesh,
-            model_selection=self.model_selection,
-            prefix=prefix,
-        )
-        # csdl_model.register_module_input('thrust_vector', )
-        return csdl_model
-
 
 class BEMMesh(Module):
     def initialize(self, kwargs):
@@ -70,6 +66,11 @@ class BEMMesh(Module):
         self.parameters.declare('airfoil', types=str, allow_none=True)
         self.parameters.declare('airfoil_polar', default=None, types=dict, allow_none=True)
 
+        self.parameters.declare('use_airfoil_ml', types=bool, default=True)
+        self.parameters.declare('use_rotor_geometry', types=bool, default=True)
+        
+        self.parameters.declare('mesh_units', values=['ft', 'm'], default='m')
+
         # NOTE: 'thrust_vector' and 'thrust_origin' won't always be parameters
         # self.parameters.declare('thrust_vector', types=np.ndarray, allow_none=True)
         # self.parameters.declare('thrust_origin', types=np.ndarray, allow_none=True)
@@ -77,8 +78,6 @@ class BEMMesh(Module):
         self.parameters.declare('num_blades', types=int)
         self.parameters.declare('chord_b_spline_rep',types=bool, default=False)
         self.parameters.declare('twist_b_spline_rep',types=bool, default=False)
-        self.parameters.declare('chord_dv', types=bool, default=False)
-        self.parameters.declare('twist_dv', types=bool, default=False)
         self.parameters.declare('num_cp', default=4, allow_none=True)
         self.parameters.declare('b_spline_order', default=3, allow_none=True)
         self.parameters.declare('normalized_hub_radius', default=0.2)

@@ -6,3 +6,6 @@ class BEMRotorParameters(OptionsDictionary):
         self.declare('airfoil_name', types=str, allow_none=True)
         self.declare('interp')
         self.declare('custom_polar', types=dict, allow_none=True)
+        self.declare('cl_ml_model', default=None, allow_none=True)
+        self.declare('cd_ml_model', default=None, allow_none=True)
+        self.declare('use_airfoil_ml', default=False, types=bool)

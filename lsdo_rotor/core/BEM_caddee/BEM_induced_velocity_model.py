@@ -38,8 +38,11 @@ class BEMInducedVelocityModel(Model):
         F = self.declare_variable('prandtl_loss_factor', shape=shape)
 
 
-        Cl = self.declare_variable('Cl_2', shape=shape)
-        Cd = self.declare_variable('Cd_2', shape=shape)
+        # Cl = self.declare_variable('Cl_2', shape=shape)
+        # Cd = self.declare_variable('Cd_2', shape=shape)
+
+        Cl = self.declare_variable('Cl', shape=shape)
+        Cd = self.declare_variable('Cd', shape=shape)
 
         Cx1 = Cl * csdl.cos(phi) - Cd * csdl.sin(phi)
         Ct1 = Cl * csdl.sin(phi) + Cd * csdl.cos(phi)
@@ -97,6 +100,7 @@ class BEMInducedVelocityModel(Model):
         self.register_output('_local_thrust_induced', dT_induced)
         # self.register_output('total_thrust', T)
         self.register_output('T', T)
+        self.print_var(T)
         self.register_output('Q', Q*1)
         # self.print_var(T)
         self.register_output('dC_T',dC_T)
@@ -125,6 +129,7 @@ class BEMInducedVelocityModel(Model):
         self.register_output('C_Q',C_Q)
         self.register_output('C_P',C_P)
         self.register_output('eta', eta)
+        self.print_var(eta)
         self.register_output('J',J)
         self.register_output('FOM', FOM)
 
