@@ -51,10 +51,17 @@ class BEM(m3l.ExplicitOperation):
         self.arguments['q'] = ac_states['q']
         self.arguments['r'] = ac_states['r']
 
-        forces = m3l.Variable(name='F', shape=(self.num_nodes, 3), operation=self)
-        moments = m3l.Variable(name='M', shape=(self.num_nodes, 3), operation=self)
+        num_nodes = self.parameters['num_nodes']
+        num_radial = self.parameters['mesh'].parameters['num_radial'] 
+        num_tangential = self.parameters['mesh'].parameters['num_tangential'] 
+
+        forces = m3l.Variable(name='F', shape=(num_nodes, 3), operation=self)
+        moments = m3l.Variable(name='M', shape=(num_nodes, 3), operation=self)
+        dT = m3l.Variable(name='_dT', shape=(num_nodes, num_radial, num_tangential), operation=self)
+        dQ = m3l.Variable(name='_dQ', shape=(num_nodes, num_radial, num_tangential), operation=self)
+        dD = m3l.Variable(name='_dD', shape=(num_nodes, num_radial, num_tangential), operation=self)
     
-        return forces, moments
+        return forces, moments, dT, dQ, dD
         
 
 class BEMMesh(Module):

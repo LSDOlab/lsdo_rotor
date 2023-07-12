@@ -62,6 +62,8 @@ class BEMInducedVelocityModel(Model):
 
         dT2 = num_blades * Cx1 * 0.5 * rho_exp * (ux_2**2 + (Vt - 0.5 * ut)**2) * chord * dr
         dQ2 = num_blades * Ct1 * 0.5 * rho_exp * (ux_2**2 + (Vt - 0.5 * ut)**2) * chord * dr * radius
+        
+        dDrag = num_blades * Cd * 0.5 * rho_exp * (ux_2**2 + (Vt - 0.5 * ut)**2) * chord * dr
 
         dT_induced = num_blades * Cx2 * 0.5 * rho_exp * (ux_2**2 + (Vt - 0.5 * ut)**2) * chord * dr
         dQ_induced = num_blades * Ct2 * 0.5 * rho_exp * (ux_2**2 + (Vt - 0.5 * ut)**2) * chord * dr
@@ -100,13 +102,13 @@ class BEMInducedVelocityModel(Model):
         self.register_output('_local_thrust_induced', dT_induced)
         # self.register_output('total_thrust', T)
         self.register_output('T', T)
-        self.print_var(T)
         self.register_output('Q', Q*1)
         # self.print_var(T)
         self.register_output('dC_T',dC_T)
         
         self.register_output('_local_thrust_2', dT2)
         self.register_output('total_thrust_2', T2)
+        self.register_output('_dD', dDrag)
 
         self.register_output('_local_thrust_star', dT_star)
         self.register_output('total_thrust_star', T_star)
@@ -129,7 +131,6 @@ class BEMInducedVelocityModel(Model):
         self.register_output('C_Q',C_Q)
         self.register_output('C_P',C_P)
         self.register_output('eta', eta)
-        self.print_var(eta)
         self.register_output('J',J)
         self.register_output('FOM', FOM)
 
