@@ -35,14 +35,19 @@ class BEM(m3l.ExplicitOperation):
         # csdl_model.register_module_input('thrust_vector', )
         return csdl_model
 
-    def evaluate(self, ac_states):
+    def evaluate(self, ac_states, design_condition=None):
         component = self.parameters['component']
         if component is not None:
             component_name = component.parameters['name'] 
         else:
             component_name = 'rotor'
         
-        self.name = f"{component_name}_bem_model"
+        if design_condition:
+            dc_name = design_condition.parameters['name']
+            self.name = f"{dc_name}_{component_name}_bem_model"
+        else:
+            self.name = f"{component_name}_bem_model"
+
         self.arguments = {}
         self.arguments['u'] = ac_states['u']
         self.arguments['v'] = ac_states['v']
@@ -50,10 +55,13 @@ class BEM(m3l.ExplicitOperation):
         self.arguments['p'] = ac_states['p']
         self.arguments['q'] = ac_states['q']
         self.arguments['r'] = ac_states['r']
+        self.arguments['theta'] = ac_states['theta']
 
         num_nodes = self.parameters['num_nodes']
         num_radial = self.parameters['mesh'].parameters['num_radial'] 
         num_tangential = self.parameters['mesh'].parameters['num_tangential'] 
+
+
 
         forces = m3l.Variable(name='F', shape=(num_nodes, 3), operation=self)
         moments = m3l.Variable(name='M', shape=(num_nodes, 3), operation=self)

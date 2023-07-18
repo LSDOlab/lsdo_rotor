@@ -56,6 +56,32 @@ class BEMModel(ModuleCSDL):
 
         shape = (num_nodes, num_radial, num_tangential)       
         
+        omega_a = self.register_module_input('rpm', shape=(num_nodes, 1), units='rpm', computed_upstream=False)
+
+        if use_caddee is True:
+            u_a = self.register_module_input(name='u', shape=(num_nodes, 1), units='m/s')
+            v_a = self.register_module_input(name='v', shape=(num_nodes, 1), units='m/s') 
+            w_a = self.register_module_input(name='w', shape=(num_nodes, 1), units='m/s') 
+            p_a = self.register_module_input(name='p', shape=(num_nodes, 1), units='rad/s')
+            q_a = self.register_module_input(name='q', shape=(num_nodes, 1), units='rad/s')
+            r_a = self.register_module_input(name='r', shape=(num_nodes, 1), units='rad/s')
+            theta = self.register_module_input(name='theta', shape=(num_nodes, 1))
+        else:
+            u_a = self.register_module_input(name='u', shape=(num_nodes, 1), units='m/s', computed_upstream=False)
+            v_a = self.register_module_input(name='v', shape=(num_nodes, 1), units='m/s', computed_upstream=False) 
+            w_a = self.register_module_input(name='w', shape=(num_nodes, 1), units='m/s', computed_upstream=False) 
+            p_a = self.create_input(name='p', shape=(num_nodes, 1), val=0, units='rad/s')
+            q_a = self.create_input(name='q', shape=(num_nodes, 1), val=0, units='rad/s')
+            r_a = self.create_input(name='r', shape=(num_nodes, 1), val=0, units='rad/s')
+            theta = self.create_input(name='theta', shape=(num_nodes, 1), val=0)
+
+        rotation_matrix = self.create_output('rotation_matrix', shape=(3, 3), val=0)
+        rotation_matrix[0, 0] = csdl.cos(theta)
+        rotation_matrix[0, 2] = -1 * csdl.sin(theta)
+        rotation_matrix[1, 1] = (theta + 1) / (theta + 1)
+        rotation_matrix[2, 0] = -1 * csdl.sin(theta)
+        rotation_matrix[2, 2] = -1 * csdl.cos(theta)
+
         if use_airfoil_ml is False:
             interp = get_surrogate_model(airfoil, custom_polar)
             rotor = get_BEM_rotor_dictionary(airfoil, interp, custom_polar)
@@ -104,8 +130,8 @@ class BEMModel(ModuleCSDL):
             self.register_module_output('propeller_radius', R)
 
             tv_raw = csdl.cross(in_plane_x, in_plane_y, axis=0)
-            tv = tv_raw / csdl.expand(csdl.pnorm(tv_raw), (3, ))
-            
+            # tv = tv_raw / csdl.expand(csdl.pnorm(tv_raw), (3, ))
+            tv = csdl.matvec(rotation_matrix, tv_raw / csdl.expand(csdl.pnorm(tv_raw), (3, )))
             # TODO: This assumes a fixed thrust vector and doesn't take into account actuations
             self.register_module_output('thrust_vector', csdl.expand(tv, (num_nodes, 3), 'j->ij'))
             self.register_module_output('thrust_origin', csdl.expand(to, (num_nodes, 3), 'j->ij'))
@@ -192,23 +218,6 @@ class BEMModel(ModuleCSDL):
         # self.print_var(twist_profile * 180/np.pi)
 
         # twist_profile = self.create_input('twist_profile', val=np.linspace(np.deg2rad(15), np.deg2rad(5), num_radial))
-
-        omega_a = self.register_module_input('rpm', shape=(num_nodes, 1), units='rpm', computed_upstream=False)
-        
-        if use_caddee is True:
-            u_a = self.register_module_input(name='u', shape=(num_nodes, 1), units='m/s')
-            v_a = self.register_module_input(name='v', shape=(num_nodes, 1), units='m/s') 
-            w_a = self.register_module_input(name='w', shape=(num_nodes, 1), units='m/s') 
-            p_a = self.register_module_input(name='p', shape=(num_nodes, 1), units='rad/s')
-            q_a = self.register_module_input(name='q', shape=(num_nodes, 1), units='rad/s')
-            r_a = self.register_module_input(name='r', shape=(num_nodes, 1), units='rad/s')
-        else:
-            u_a = self.register_module_input(name='u', shape=(num_nodes, 1), units='m/s', computed_upstream=False)
-            v_a = self.register_module_input(name='v', shape=(num_nodes, 1), units='m/s', computed_upstream=False) 
-            w_a = self.register_module_input(name='w', shape=(num_nodes, 1), units='m/s', computed_upstream=False) 
-            p_a = self.create_input(name='p', shape=(num_nodes, 1), val=0, units='rad/s')
-            q_a = self.create_input(name='q', shape=(num_nodes, 1), val=0, units='rad/s')
-            r_a = self.create_input(name='r', shape=(num_nodes, 1), val=0, units='rad/s')
         
 
         # self.print_var(tv)
@@ -291,12 +300,15 @@ class BEMModel(ModuleCSDL):
         # self.print_var(thrust_vector)
         thrust_origin = self.register_module_input('thrust_origin', shape=(num_nodes, 3))
         # loop over pt set list 
+        
+
         for i in range(num_nodes):
             # F[i,:] = csdl.expand(T[i],(1,3)) * n[i,:]
             F[i, 0] = csdl.reshape(T[i], (1, 1)) * thrust_vector[i, 0] #- 9 * hub_drag[i,0]
             F[i, 1] = csdl.reshape(T[i], (1, 1)) * thrust_vector[i, 1]
             F[i, 2] = csdl.reshape(T[i], (1, 1)) * thrust_vector[i, 2]
             
+
         M = csdl.cross(thrust_origin-ref_pt, F, axis=1)
         self.register_module_output('M', csdl.transpose(M))
 
