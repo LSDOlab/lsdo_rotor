@@ -23,7 +23,7 @@ class PittPetersExternalInputsModel(Model):
         ft2m = 1/3.281
         rotor_radius = self.declare_variable(name='propeller_radius', shape=(1,), units='m') #* ft2m / 2
         # Inputs changing across conditions (segments)
-        omega = self.declare_variable('omega', shape=(num_nodes, 1), units='rpm') #* 1000
+        omega = self.declare_variable('rpm', shape=(num_nodes, 1), units='rpm') #* 1000
 
         u = self.declare_variable(name='u', shape=(num_nodes, 1), units='m/s') * -1
         v = self.declare_variable(name='v', shape=(num_nodes, 1), units='m/s') 
@@ -44,12 +44,12 @@ class PittPetersExternalInputsModel(Model):
         z_dir = np.zeros((num_evaluations,3))
 
         R_h = 0.2 * rotor_radius
-        self.register_output('hub_radius',R_h)
+        self.register_output('hub_radius', R_h)
         dr = ((rotor_radius)-(0.2 * rotor_radius))/ (num_radial - 1)
-        self.register_output('dr',dr)
+        self.register_output('dr', dr)
 
-        n = self.create_output('rotational_speed', shape=(num_evaluations,1))
-        thrust_vector = self.declare_variable('thrust_vector', shape=(num_nodes,3))
+        n = self.create_output('rotational_speed', shape=(num_evaluations, 1))
+        thrust_vector = self.declare_variable('thrust_vector', shape=(num_nodes, 3))
        
 
         # normal_vec = self.create_input('thrust_vector', val=thrust_vector)

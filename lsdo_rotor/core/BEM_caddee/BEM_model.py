@@ -158,6 +158,7 @@ class BEMModel(ModuleCSDL):
             chord_b_spline = mesh.parameters['chord_b_spline_rep']
             if chord_b_spline is True:
                 num_cp = mesh.parameters['num_cp']
+                order = mesh.parameters['b_spline_order']
                 chord_cp = self.register_module_input(name='chord_cp', shape=(num_cp,), units='rad', computed_upstream=False)
                 chord_A = get_bspline_mtx(num_cp, num_radial, order=order)
                 comp_chord = csdl.custom(chord_cp,op=BsplineComp(

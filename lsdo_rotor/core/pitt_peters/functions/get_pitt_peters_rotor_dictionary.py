@@ -23,13 +23,13 @@ def get_pitt_peters_rotor_dictionary(airfoil,interp,normal_inflow,in_plane_inflo
     
     # -------non-dimensiona quantities ------- #
     # print('------SHAPES-------')
-    print(normal_inflow.shape)
-    print(angular_speed.shape)
-    print(rotor_radius.shape)
+    # print(normal_inflow.shape)
+    # print(angular_speed.shape)
+    # print(rotor_radius.shape)
     # print('------SHAPES-------')
     # print('------SHAPES-------')
    
-    print(in_plane_inflow.shape)
+    # print(in_plane_inflow.shape)
 
     # print('------SHAPES-------')
 
