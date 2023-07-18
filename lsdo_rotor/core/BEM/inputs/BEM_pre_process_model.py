@@ -37,9 +37,12 @@ class BEMPreprocessModel(Model):
         self.register_output('_blade_solidity', num_blades * _chord / 2. / np.pi / _radius)
         # -----
 
-        _inflow_x = csdl.einsum(_inflow_velocity, _x_dir, subscripts='ijkl,ijkl->ijk')
+        # _inflow_x = csdl.einsum(_inflow_velocity, _x_dir, subscripts='ijkl,ijkl->ijk')
         _inflow_y = csdl.einsum(_inflow_velocity, _y_dir, subscripts='ijkl,ijkl->ijk')
         _inflow_z = csdl.einsum(_inflow_velocity, _z_dir, subscripts='ijkl,ijkl->ijk')
+        exit()
+        _inflow_x = csdl.dot(_inflow_velocity, _x_dir, axis = 3)
+        # _inflow_x = csdl.pnorm(_inflow_velocity, pnorm_type=2, axis=3)
 
         self.register_output('_axial_inflow_velocity', _inflow_x)
         self.register_output('_in_plane_inflow_velocity',_inflow_y)
