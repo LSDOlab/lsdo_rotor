@@ -143,11 +143,11 @@ class PittPetersCustomImplicitOperation(csdl.CustomImplicitOperation):
         alpha = twist - self.phi 
 
         # Apply airfoil surrogate model to compute Cl and Cd (ne, nr, nt)
-        self.airfoil_model_inputs[:,0] = alpha.flatten()
-        self.airfoil_model_inputs[:,1] = Re.flatten() / 2e6
+        self.airfoil_model_inputs[:, 0] = alpha.flatten()
+        self.airfoil_model_inputs[:, 1] = Re.flatten() / 2e6
         self.airfoil_model_outputs = interp.predict_values(self.airfoil_model_inputs).reshape((shape[0] , shape[1] , shape[2], 2))
-        self.Cl = self.airfoil_model_outputs[:,:,:,0]
-        self.Cd = self.airfoil_model_outputs[:,:,:,1]
+        self.Cl = self.airfoil_model_outputs[:, :, :, 0]
+        self.Cd = self.airfoil_model_outputs[:, :, :, 1]
 
         # self.dT = 0.5 * B * rho_exp * (self.ux**2 + Vt**2) * chord * (self.Cl * np.cos(self.phi) - self.Cd * np.sin(self.phi)) * dr
         self.dT = 0.5 * B * rho_exp * (self.ux**2 + (Vt - 0.5 * u_theta)**2) * chord * (self.Cl * np.cos(self.phi) - self.Cd * np.sin(self.phi)) * dr
