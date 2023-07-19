@@ -28,13 +28,13 @@ pitt_peters_mesh = PittPetersMesh(
 
 pitt_peters_model = PittPeters(mesh=pitt_peters_mesh, disk_prefix='', blade_prefix='', use_caddee=False)
 pitt_peters_model.set_module_input('rpm', val=1200, dv_flag=True, lower=1100, upper=1300, scaler=1e-3)
-pitt_peters_model.set_module_input('u', val=50)
+pitt_peters_model.set_module_input('u', val=30)
 pitt_peters_model.set_module_input('v', val=0)
 pitt_peters_model.set_module_input('w', val=0)
 pitt_peters_model.set_module_input('twist_cp', val=np.deg2rad(np.linspace(60, 10, 4)), dv_flag=True, lower=np.deg2rad(1), upper=np.deg2rad(60))
 pitt_peters_model.set_module_input('chord_cp', val=np.linspace(0.3, 0.1, 4), dv_flag=True, lower=0.01, upper=0.3)
 pitt_peters_model.set_module_input('propeller_radius', val=1.2)
-pitt_peters_model.set_module_input('thrust_vector', val=np.array([0, 0, -1]))
+pitt_peters_model.set_module_input('thrust_vector', val=np.array([1, 0, 0]))
 pitt_peters_model.set_module_input('thrust_origin', val=np.array([0, 0, 0]))
 
 csdl_model = pitt_peters_model.compute()
@@ -42,6 +42,11 @@ csdl_model.add_constraint('T', equals=3000, scaler=5e-4)
 csdl_model.add_objective('total_torque', scaler=1e-3)
 sim = Simulator(csdl_model)
 sim.run()
+
+print('Thrust: ',sim['T'])
+print('F:' ,sim['F'] )
+exit()
+
 
 Q_initial = sim['total_torque']
 
@@ -57,10 +62,10 @@ optimizer.solve()
 optimizer.print_results()
 
 
-# print('Thrust: ',sim['T'])
-# print('F:' ,sim['F'] )
-print('Torque initial:   ', Q_initial)
-print('Torque optimized: ',sim['total_torque'])
+print('Thrust: ',sim['T'])
+print('F:' ,sim['F'] )
+# print('Torque initial:   ', Q_initial)
+# print('Torque optimized: ',sim['total_torque'])
 # print('M: ', sim['M'])
 # print('eta', sim['eta'])
 
