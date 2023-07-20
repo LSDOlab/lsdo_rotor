@@ -12,6 +12,7 @@ class BEM(m3l.ExplicitOperation):
         self.parameters.declare('component', types=Component, allow_none=True)
         self.parameters.declare('mesh', allow_none=True)#, types=BEMMesh)
         self.parameters.declare('disk_prefix', types=str)
+        self.parameters.declare('disk_suffix', types=str, default=None, allow_none=True)
         self.parameters.declare('blade_prefix', types=str)
         self.parameters.declare('num_nodes', types=int, default=1)
         self.parameters.declare('use_caddee', types=bool, default=True)
@@ -21,6 +22,7 @@ class BEM(m3l.ExplicitOperation):
         from lsdo_rotor.core.BEM_caddee.BEM_model import BEMModel
         mesh = self.parameters['mesh']
         disk_prefix = self.parameters['disk_prefix']
+        disk_suffix = self.parameters['disk_suffix']
         blade_prefix = self.parameters['blade_prefix']
         num_nodes = self.parameters['num_nodes']
         use_caddee = self.parameters['use_caddee']
@@ -29,6 +31,7 @@ class BEM(m3l.ExplicitOperation):
             mesh=mesh,
             blade_prefix=blade_prefix,
             disk_prefix=disk_prefix,
+            disk_suffix=disk_suffix,
             num_nodes=num_nodes,
             use_caddee=use_caddee,
         )

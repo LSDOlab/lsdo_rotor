@@ -30,6 +30,7 @@ class BEMModel(ModuleCSDL):
         self.parameters.declare(name='name', default='propulsion')
         self.parameters.declare('mesh')# , types=BEMMesh)
         self.parameters.declare('disk_prefix', default='rotor_disk', types=str)
+        self.parameters.declare('disk_suffix', types=str, default=None, allow_none=True)
         self.parameters.declare('blade_prefix', default='rotor_blade', types=str)
         self.parameters.declare('num_nodes')
         self.parameters.declare('use_caddee', types=bool, default=True)
@@ -38,6 +39,7 @@ class BEMModel(ModuleCSDL):
         mesh = self.parameters['mesh']
         name = self.parameters['name']
         disk_prefix = self.parameters['disk_prefix']
+        disk_suffix = self.parameters['disk_suffix']
         blade_prefix = self.parameters['blade_prefix']
         num_nodes = self.parameters['num_nodes']
 
@@ -118,13 +120,24 @@ class BEMModel(ModuleCSDL):
         
             # Thrust vector and origin
             if units == 'ft':
-                in_plane_y = self.register_module_input(f'{disk_prefix}_in_plane_1', shape=(3, ), promotes=True) * 0.3048
-                in_plane_x = self.register_module_input(f'{disk_prefix}_in_plane_2', shape=(3, ), promotes=True) * 0.3048
-                to = self.register_module_input(f'{disk_prefix}_origin', shape=(3, ), promotes=True) * 0.3048
+                if disk_suffix:
+                    in_plane_y = self.register_module_input(f'{disk_prefix}_in_plane_1_{disk_suffix}', shape=(3, ), promotes=True) * 0.3048
+                    in_plane_x = self.register_module_input(f'{disk_prefix}_in_plane_2_{disk_suffix}', shape=(3, ), promotes=True) * 0.3048
+                    to = self.register_module_input(f'{disk_prefix}_origin', shape=(3, ), promotes=True) * 0.3048
+                else:
+                    in_plane_y = self.register_module_input(f'{disk_prefix}_in_plane_1', shape=(3, ), promotes=True) * 0.3048
+                    in_plane_x = self.register_module_input(f'{disk_prefix}_in_plane_2', shape=(3, ), promotes=True) * 0.3048
+                    to = self.register_module_input(f'{disk_prefix}_origin', shape=(3, ), promotes=True) * 0.3048
             else:
-                in_plane_y = self.register_module_input(f'{disk_prefix}_in_plane_1', shape=(3, ), promotes=True)
-                in_plane_x = self.register_module_input(f'{disk_prefix}_in_plane_2', shape=(3, ), promotes=True)
-                to = self.register_module_input(f'{disk_prefix}_origin', shape=(3, ), promotes=True)
+                if disk_suffix:
+                    in_plane_y = self.register_module_input(f'{disk_prefix}_in_plane_1_{disk_suffix}', shape=(3, ), promotes=True) 
+                    in_plane_x = self.register_module_input(f'{disk_prefix}_in_plane_2_{disk_suffix}', shape=(3, ), promotes=True) 
+                    to = self.register_module_input(f'{disk_prefix}_origin', shape=(3, ), promotes=True) * 0.3048
+
+                else: 
+                    in_plane_y = self.register_module_input(f'{disk_prefix}_in_plane_1', shape=(3, ), promotes=True)
+                    in_plane_x = self.register_module_input(f'{disk_prefix}_in_plane_2', shape=(3, ), promotes=True)
+                    to = self.register_module_input(f'{disk_prefix}_origin', shape=(3, ), promotes=True)
                         
             R = csdl.pnorm(in_plane_y, 2) / 2
             self.register_module_output('propeller_radius', R)
