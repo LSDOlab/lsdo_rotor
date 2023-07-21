@@ -62,11 +62,12 @@ class PittPeters(m3l.ExplicitOperation):
 
         forces = m3l.Variable(name='F', shape=(num_nodes, 3), operation=self)
         moments = m3l.Variable(name='M', shape=(num_nodes, 3), operation=self)
+        C_T = m3l.Variable(name='C_T', shape=(num_nodes, 3), operation=self)
         dT = m3l.Variable(name='_dT', shape=(num_nodes, num_radial, num_tangential), operation=self)
         dQ = m3l.Variable(name='_dQ', shape=(num_nodes, num_radial, num_tangential), operation=self)
         dD = m3l.Variable(name='_ux', shape=(num_nodes, num_radial, num_tangential), operation=self)
     
-        return forces, moments, dT, dQ, dD
+        return forces, moments, dT, dQ, dD, C_T
     
 
 class PittPetersMesh(Module):

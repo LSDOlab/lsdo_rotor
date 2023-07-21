@@ -116,7 +116,7 @@ class BEMModel(ModuleCSDL):
             # Twist
             rel_v_dist_array = self.register_module_input(f'{blade_prefix}_twist', shape=(num_radial, 3), promotes=True)
             rel_v_dist = csdl.reshape(csdl.sum(rel_v_dist_array, axes=(1, )), (num_radial, 1))
-            twist_profile = self.register_output('twist_profile', csdl.arcsin(rel_v_dist/chord_length) + np.deg2rad(5))
+            twist_profile = self.register_output('twist_profile', csdl.arcsin(rel_v_dist/chord_length))#  + np.deg2rad(5))
         
             # Thrust vector and origin
             if units == 'ft':

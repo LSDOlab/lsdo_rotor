@@ -103,7 +103,7 @@ class BEMModel(ModuleCSDL):
         # R = self.register_module_input(f'{prefix}_radius', shape=(1, ), promotes=True)
         R = csdl.pnorm(in_plane_y, 2) / 2
         self.register_module_output('propeller_radius', R)
-        self.print_var(in_plane_y)
+        # self.print_var(in_plane_y)
 
 
         tv_raw = csdl.cross(in_plane_x, in_plane_y, axis=0)

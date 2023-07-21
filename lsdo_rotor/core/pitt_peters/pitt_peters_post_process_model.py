@@ -120,7 +120,7 @@ class PittPetersPostProcessModel(Model):
         self.register_output('total_thrust_all_rotors', T_total)
         # self.register_output('total_thrust', T)
         self.register_output('T', T)
-        self.print_var(T)
+        # self.print_var(T)
         self.register_output('_dT',dT)
         self.register_output('_dQ',dQ)
         self.register_output('_ux',ux)
