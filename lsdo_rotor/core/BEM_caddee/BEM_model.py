@@ -114,9 +114,23 @@ class BEMModel(ModuleCSDL):
                 chord_profile = self.register_output('chord_profile', chord_length)
                 
             # Twist
-            rel_v_dist_array = self.register_module_input(f'{blade_prefix}_twist', shape=(num_radial, 3), promotes=True)
-            rel_v_dist = csdl.reshape(csdl.sum(rel_v_dist_array, axes=(1, )), (num_radial, 1))
-            twist_profile = self.register_output('twist_profile', csdl.arcsin(rel_v_dist/chord_length))#  + np.deg2rad(5))
+            # rel_v_dist_array = self.register_module_input(f'{blade_prefix}_twist', shape=(num_radial, 3), promotes=True)
+            # rel_v_dist = csdl.reshape(csdl.sum(rel_v_dist_array, axes=(1, )), (num_radial, 1))
+            # twist_profile = self.register_output('twist_profile', csdl.arcsin(rel_v_dist/chord_length))#  + np.deg2rad(5))
+            # Twist
+            num_cp = mesh.parameters['num_cp']
+            order = mesh.parameters['b_spline_order']
+            twist_cp = self.register_module_input(name=f'{blade_prefix}_twist_cp', shape=(num_cp,), units='rad', promotes=True) 
+            self.print_var(twist_cp)
+            pitch_A = get_bspline_mtx(num_cp, num_radial, order=order)
+            comp = csdl.custom(twist_cp,op=BsplineComp(
+                num_pt=num_radial,
+                num_cp=num_cp,
+                in_name=f'{blade_prefix}_twist_cp',
+                jac=pitch_A,
+                out_name='twist_profile',
+            ))
+            self.register_output('twist_profile', comp)
         
             # Thrust vector and origin
             if units == 'ft':

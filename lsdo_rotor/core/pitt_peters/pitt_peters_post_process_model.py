@@ -79,6 +79,7 @@ class PittPetersPostProcessModel(Model):
         Cx = (Cl * csdl.cos(phi) - Cd * csdl.sin(phi))
         Ct = (Cl * csdl.sin(phi) + Cd * csdl.cos(phi))
 
+        dDrag = B * Cd * 0.5 * rho_exp * (ux**2 + (Vt)**2) * chord * dr
         dT = 0.5 * B * rho_exp * (ux**2 + (Vt)**2) * chord * Cx * dr
         T = csdl.sum(dT, axes = (1,2)) / shape[2]
         dQ = 0.5 * B * rho_exp * (ux**2 + (Vt)**2) * chord * Ct * radius * dr
@@ -124,6 +125,7 @@ class PittPetersPostProcessModel(Model):
         self.register_output('_dT',dT)
         self.register_output('_dQ',dQ)
         self.register_output('_ux',ux)
+        self.register_output('_dD', dDrag)
 
         self.register_output('C_T',C_T)
         self.register_output('dC_T',dC_T)
