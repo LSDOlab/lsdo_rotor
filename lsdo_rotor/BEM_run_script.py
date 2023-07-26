@@ -58,8 +58,9 @@ print(sim['eta'])
 
 print(sim['Cl'])
 print(sim['Cd'])
+print(sim['Q'])
 
-# exit()
+exit()
 prob = CSDLProblem(problem_name='blade_shape_opt', simulator=sim)
 optimizer = SLSQP(
     prob,

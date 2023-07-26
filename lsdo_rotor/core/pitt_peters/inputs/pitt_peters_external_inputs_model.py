@@ -119,6 +119,8 @@ class PittPetersExternalInputsModel(Model):
             inflow_velocity[i,:,:,2] = csdl.expand(in_plane_uy, (1,num_radial,num_tangential,1),'i->ijkl')
         
         # self.register_output('_mu_z_expanded', csdl.expand(mu_z,shape,'il->ijk'))
+        self.register_output('in_plane_ex', in_plane_ex)
+        self.register_output('in_plane_ey', in_plane_ey)
         self.create_input('x_dir',val=x_dir)
         self.create_input('y_dir',val=y_dir)
         self.create_input('z_dir',val=z_dir)
