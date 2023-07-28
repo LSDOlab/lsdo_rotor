@@ -61,13 +61,15 @@ class PittPeters(m3l.ExplicitOperation):
         num_tangential = self.parameters['mesh'].parameters['num_tangential'] 
 
         forces = m3l.Variable(name='F', shape=(num_nodes, 3), operation=self)
+        Q = m3l.Variable(name='total_torque', shape=(num_nodes, 3), operation=self)
         moments = m3l.Variable(name='M', shape=(num_nodes, 3), operation=self)
         C_T = m3l.Variable(name='C_T', shape=(num_nodes, 3), operation=self)
         dT = m3l.Variable(name='_dT', shape=(num_nodes, num_radial, num_tangential), operation=self)
         dQ = m3l.Variable(name='_dQ', shape=(num_nodes, num_radial, num_tangential), operation=self)
         dD = m3l.Variable(name='_dD', shape=(num_nodes, num_radial, num_tangential), operation=self)
-    
-        return forces, moments, dT, dQ, dD, C_T
+        ux = m3l.Variable(name='_ux', shape=(num_nodes, num_radial, num_tangential), operation=self)
+        
+        return forces, moments, dT, dQ, dD, C_T, Q, ux
     
 
 class PittPetersMesh(Module):
