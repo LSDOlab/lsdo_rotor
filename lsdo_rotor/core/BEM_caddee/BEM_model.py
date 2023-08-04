@@ -79,10 +79,17 @@ class BEMModel(ModuleCSDL):
 
         rotation_matrix = self.create_output('rotation_matrix', shape=(3, 3), val=0)
         rotation_matrix[0, 0] = csdl.cos(theta)
-        rotation_matrix[0, 2] = -1 * csdl.sin(theta)
-        rotation_matrix[1, 1] = (theta + 1) / (theta + 1)
+        rotation_matrix[0, 2] = 1 * csdl.sin(theta)
+        rotation_matrix[1, 1] = (theta + 1) / (theta + 1)   # csdl doesn't like just taking the number 1
         rotation_matrix[2, 0] = -1 * csdl.sin(theta)
         rotation_matrix[2, 2] = -1 * csdl.cos(theta)
+
+        # coordinate_frame_rotation_matrix_python = np.array([
+        #     [-1., 0., 0.],
+        #     [0., 1., 0.],
+        #     [0., 0., -1.]])
+        # coordinate_frame_rotation_matrix = self.create_input('coordinate_frame_rotation_matrix', val=coordinate_frame_rotation_matrix_python)
+
 
         if use_airfoil_ml is False:
             interp = get_surrogate_model(airfoil, custom_polar)
@@ -195,6 +202,7 @@ class BEMModel(ModuleCSDL):
             tv_raw = csdl.cross(in_plane_x, in_plane_y, axis=0)
             # tv = tv_raw / csdl.expand(csdl.pnorm(tv_raw), (3, ))
             tv = csdl.matvec(rotation_matrix, tv_raw / csdl.expand(csdl.pnorm(tv_raw), (3, )))
+            # tv = csdl.matvec(coordinate_frame_rotation_matrix, csdl.matvec(rotation_matrix, tv_raw / csdl.expand(csdl.pnorm(tv_raw), (3, ))))
             # TODO: This assumes a fixed thrust vector and doesn't take into account actuations
             self.register_module_output('thrust_vector', csdl.expand(tv, (num_nodes, 3), 'j->ij'))
             self.register_module_output('thrust_origin', csdl.expand(to, (num_nodes, 3), 'j->ij'))
