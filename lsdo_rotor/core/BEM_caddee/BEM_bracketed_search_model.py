@@ -85,6 +85,45 @@ class BEMBracketedSearchGroup(Model):
             # Cl = output_Cl
             # Cd = output_Cd
 
+        elif rotor['use_custom_airfoil_ml'] is True:
+            from lsdo_rotor.airfoil.ml_trained_models.custom_ml_surrogate_model import CdModel, ClModel
+
+            cl_model = rotor['cl_ml_model']
+            cd_model = rotor['cd_ml_model']
+
+            X_min = model.declare_variable('X_min', shape=(shape[0] * shape[1] * shape[2], 3))
+            X_max = model.declare_variable('X_max', shape=(shape[0] * shape[1] * shape[2], 3))
+
+            mach_ml = model.declare_variable('mach_number_ml_input', shape=(shape[0] * shape[1] * shape[2], 1))
+            Re_ml = model.declare_variable('Re_ml_input', shape=(shape[0] * shape[1] * shape[2], 1))
+            alpha_ml = csdl.reshape(alpha, new_shape=(shape[0] * shape[1] * shape[2], 1)) * 180 / np.pi
+            model.register_output('alpha_ml_input', alpha_ml)
+
+            inputs = model.create_output('neural_net_input_extrap_unscaled', shape=(shape[0] * shape[1] * shape[2], 3))
+            inputs[:, 0] = alpha_ml
+            inputs[:, 1] = Re_ml
+            inputs[:, 2] = mach_ml
+
+            scaled_inputs_poststall = (inputs - X_min) / (X_max - X_min)
+            x_extrap = model.register_output('neural_net_input_extrap', scaled_inputs_poststall)
+
+            output_Cl = csdl.custom(x_extrap, op=ClModel(
+                    neural_net=cl_model,
+                    num_nodes=int(shape[0] * shape[1] * shape[2]),
+                )
+            )
+
+            output_Cd = csdl.custom(x_extrap, op=CdModel(
+                    neural_net=cd_model,
+                    num_nodes=int(shape[0] * shape[1] * shape[2]),
+                )
+            )
+            model.register_output('Cd', output_Cd) #csdl.reshape(cd, new_shape=shape))
+            model.register_output('Cl', output_Cl) #csdl.reshape(cl, new_shape=shape))
+
+            Cl = csdl.reshape(model.declare_variable('Cl', shape=(shape[0] * shape[1] * shape[2],)), new_shape=shape)
+            Cd = csdl.reshape(model.declare_variable('Cd', shape=(shape[0] * shape[1] * shape[2],)), new_shape=shape)
+
         
         elif not rotor['custom_polar']:
             airfoil_model_output = csdl.custom(Re, alpha, chord, op= BEMAirfoilSurrogateModelGroup(
@@ -140,7 +179,7 @@ class BEMBracketedSearchGroup(Model):
         solve_BEM_residual = self.create_implicit_operation(model)
         solve_BEM_residual.declare_state('phi_distribution', residual='BEM_residual_function', bracket=(eps, np.pi/2 - eps))
 
-        if rotor['use_airfoil_ml'] is False:
+        if rotor['use_airfoil_ml'] is False and rotor['use_custom_airfoil_ml'] is False:
             sigma = self.declare_variable('_blade_solidity', shape=shape)
             Vx = self.declare_variable('_axial_inflow_velocity', shape=shape)
             Vt = self.declare_variable('_tangential_inflow_velocity', shape=shape)
@@ -155,7 +194,7 @@ class BEMBracketedSearchGroup(Model):
             # phi, Cl, Cd,F, Cx, Ct = solve_BEM_residual(sigma,Vx,Vt,radius,rotor_radius,hub_radius,chord,twist,Re, expose=['Cl', 'Cd','F','Cx','Ct'])
             phi = solve_BEM_residual(sigma,Vx,Vt,radius,rotor_radius,hub_radius,chord,twist,Re, expose=['Cl', 'Cd', 'alpha_distribution'])
 
-        else:
+        elif rotor['use_airfoil_ml'] is True and rotor['use_custom_airfoil_ml'] is False:
             sigma = self.declare_variable('_blade_solidity', shape=shape)
             Vx = self.declare_variable('_axial_inflow_velocity', shape=shape)
             Vt = self.declare_variable('_tangential_inflow_velocity', shape=shape)
@@ -171,4 +210,26 @@ class BEMBracketedSearchGroup(Model):
             mach_ml = self.declare_variable('mach_number_ml_input', shape=(shape[0] * shape[1] * shape[2], 1))
             Re_ml = self.declare_variable('Re_ml_input', shape=(shape[0] * shape[1] * shape[2], 1))
 
-            phi = solve_BEM_residual(sigma, Vx, Vt, radius, rotor_radius, hub_radius, twist, Re_ml, mach_ml, X_max, X_min, control_points, expose=['Cl', 'Cd', 'alpha_ml_input'])
+            phi = solve_BEM_residual(sigma, Vx, Vt, radius, rotor_radius, hub_radius, twist, Re_ml, mach_ml, X_max, X_min, control_points, expose=['Cl', 'Cd', 'alpha_distribution'])
+
+        
+        elif rotor['use_airfoil_ml'] is False and rotor['use_custom_airfoil_ml'] is True:
+            sigma = self.declare_variable('_blade_solidity', shape=shape)
+            Vx = self.declare_variable('_axial_inflow_velocity', shape=shape)
+            Vt = self.declare_variable('_tangential_inflow_velocity', shape=shape)
+            radius = self.declare_variable('_radius',shape= shape)
+            rotor_radius = self.declare_variable('_rotor_radius', shape= shape)
+            hub_radius = self.declare_variable('_hub_radius', shape=shape)
+            twist = self.declare_variable('_pitch', shape=shape)
+            
+            X_min = self.declare_variable('X_min', shape=(shape[0] * shape[1] * shape[2], 3))
+            X_max = self.declare_variable('X_max', shape=(shape[0] * shape[1] * shape[2], 3))
+
+            mach_ml = self.declare_variable('mach_number_ml_input', shape=(shape[0] * shape[1] * shape[2], 1))
+            Re_ml = self.declare_variable('Re_ml_input', shape=(shape[0] * shape[1] * shape[2], 1))
+
+            phi = solve_BEM_residual(sigma, Vx, Vt, radius, rotor_radius, hub_radius, twist, Re_ml, mach_ml, X_max, X_min,  expose=['Cl', 'Cd', 'alpha_distribution'])
+
+
+        else:
+            raise NotImplementedError

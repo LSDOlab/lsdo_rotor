@@ -87,7 +87,8 @@ class BEMMesh(Module):
         self.parameters.declare('airfoil', types=str, allow_none=True)
         self.parameters.declare('airfoil_polar', default=None, types=dict, allow_none=True)
 
-        self.parameters.declare('use_airfoil_ml', types=bool, default=True)
+        self.parameters.declare('use_airfoil_ml', types=bool, default=False)
+        self.parameters.declare('use_custom_airfoil_ml', types=bool, default=False)
         self.parameters.declare('use_rotor_geometry', types=bool, default=True)
         
         self.parameters.declare('mesh_units', values=['ft', 'm'], default='m')

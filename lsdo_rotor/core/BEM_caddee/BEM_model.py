@@ -52,6 +52,7 @@ class BEMModel(ModuleCSDL):
         num_blades = mesh.parameters['num_blades']
 
         use_airfoil_ml = mesh.parameters['use_airfoil_ml']
+        use_custom_airfoil_ml = mesh.parameters['use_custom_airfoil_ml']
         use_geometry = mesh.parameters['use_rotor_geometry']
         use_caddee = self.parameters['use_caddee']
         units = mesh.parameters['mesh_units']
@@ -84,10 +85,26 @@ class BEMModel(ModuleCSDL):
         rotation_matrix[2, 0] = -1 * csdl.sin(theta)
         rotation_matrix[2, 2] = -1 * csdl.cos(theta)
 
-        if use_airfoil_ml is False:
+        if (use_airfoil_ml is False) and (use_custom_airfoil_ml is False):
             interp = get_surrogate_model(airfoil, custom_polar)
             rotor = get_BEM_rotor_dictionary(airfoil, interp, custom_polar)
-        else:
+        
+        elif (use_custom_airfoil_ml is True) and (use_airfoil_ml is False):
+            X_max_numpy = np.array([90., 8e6, 0.65])
+            X_min_numpy = np.array([-90., 1e5, 0.])
+            
+            X_min = self.create_input('X_min', val=np.tile(X_min_numpy.reshape(3, 1), num_nodes*num_radial*num_tangential).T)
+            X_max = self.create_input('X_max', val=np.tile(X_max_numpy.reshape(3, 1), num_nodes*num_radial*num_tangential).T)
+
+            from lsdo_rotor.airfoil.ml_trained_models.get_airfoil_model import get_airfoil_models
+
+            neural_nets = get_airfoil_models(airfoil=airfoil)
+            cl_model = neural_nets.Cl
+            cd_model = neural_nets.Cd
+            rotor = get_BEM_rotor_dictionary(airfoil_name=airfoil, ml_cl=cl_model, ml_cd=cd_model, use_airfoil_ml=use_airfoil_ml,use_custom_airfoil_ml=use_custom_airfoil_ml)
+            
+
+        elif (use_custom_airfoil_ml is False) and (use_airfoil_ml is True):
             from lsdo_airfoil.utils.load_control_points import load_control_points
             from lsdo_airfoil.utils.get_airfoil_model import get_airfoil_models
             from lsdo_airfoil.core.airfoil_model_csdl import X_max_numpy_poststall, X_min_numpy_poststall
@@ -103,6 +120,11 @@ class BEMModel(ModuleCSDL):
             cd_model = airfoil_models['Cd']
             rotor = get_BEM_rotor_dictionary(airfoil_name=airfoil, ml_cl=cl_model, ml_cd=cd_model, use_airfoil_ml=use_airfoil_ml)
         
+        elif (use_custom_airfoil_ml is True) and (use_airfoil_ml is True):
+            raise ValueError("Cannot specify 'use_custom_airfoil_ml=True' and 'use_airfoil_ml=True' at the same time")
+
+        else:
+            raise NotImplementedError
 
         if use_geometry is True:
             # Chord 
