@@ -2,7 +2,7 @@ import numpy as np
 from python_csdl_backend import Simulator
 from lsdo_rotor.core.BEM.BEM_run_model import BEMRunModel
 from lsdo_rotor.utils.print_output import print_output
-from lsdo_rotor.core.BEM_caddee.BEM_caddee import BEM, BEMMesh
+from lsdo_rotor.core.BEM_caddee.BEM_caddee import BEM, BEMMesh, RotorGeometry
 from modopt.scipy_library import SLSQP
 from modopt.csdl_library import CSDLProblem
 
@@ -21,8 +21,6 @@ bem_mesh = BEMMesh(
     airfoil='NACA_4412',
     use_custom_airfoil_ml=True,
     # use_airfoil_ml=False,
-    twist_b_spline_rep=True,
-    chord_b_spline_rep=True,
 )
 
 
@@ -32,8 +30,8 @@ bem_model = BEM(
     mesh=bem_mesh,
     disk_prefix='disk',
     blade_prefix='blade',
-    use_caddee=False,
 )
+
 bem_model.set_module_input('chord_cp', val=np.linspace(0.3, 0.1, 4), dv_flag=True, lower=0.01, upper=0.4)
 bem_model.set_module_input('twist_cp', val=np.deg2rad(np.linspace(75, 10, 4)), dv_flag=True, lower=np.deg2rad(5), upper=np.deg2rad(85))
 bem_model.set_module_input('thrust_vector', val=np.array([1, 0, 0]).reshape(num_nodes, 3))
