@@ -27,6 +27,7 @@ bem_mesh = BEMMesh(
 
 
 bem_model = BEM(
+    name='single_BEM',
     component=None,
     mesh=bem_mesh,
     disk_prefix='disk',
@@ -51,6 +52,9 @@ bem_csdl.add_constraint('T', equals=800)
 sim = Simulator(bem_csdl, analytics=True)
 sim.run()
 
+print(sim['_radius'])
+
+exit()
 
 prob = CSDLProblem(problem_name='blade_shape_opt', simulator=sim)
 optimizer = SLSQP(

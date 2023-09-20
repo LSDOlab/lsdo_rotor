@@ -16,6 +16,7 @@ class BEM(m3l.ExplicitOperation):
         self.parameters.declare('blade_prefix', types=str)
         self.parameters.declare('num_nodes', types=int, default=1)
         self.parameters.declare('use_caddee', types=bool, default=True)
+        super().initialize(kwargs=kwargs)
 
     
     def compute(self) -> csdl.Model:
