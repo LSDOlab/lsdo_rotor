@@ -109,7 +109,7 @@ class BEM(m3l.ExplicitOperation):
                  thrust_vector : m3l.Variable, thrust_origin : m3l.Variable,
                  atmosphere : cd.AtmosphericProperties, blade_chord : Union[m3l.Variable, None] = None,
                  blade_twist : Union[m3l.Variable, None] = None, blade_chord_cp : Union[m3l.Variable, None] = None,
-                 blade_twist_cp : Union[m3l.Variable, None] = None , design_condition=None) -> BEMOutputs:
+                 blade_twist_cp : Union[m3l.Variable, None] = None) -> BEMOutputs:
         """
         This method evaluates BEM and returns a data class with top-level analysis outputs
 
@@ -134,17 +134,6 @@ class BEM(m3l.ExplicitOperation):
         else:
             pass
 
-        # component = self.parameters['component']
-        # if component is not None:
-        #     component_name = component.parameters['name'] 
-        # else:
-        #     component_name = 'rotor'
-        
-        # if design_condition:
-        #     dc_name = design_condition.parameters['name']
-        #     self.name = f"{dc_name}_{component_name}_bem_model"
-        # else:
-        #     self.name = f"{component_name}_bem_model"
 
         self.arguments = {}
         self.arguments['u'] = ac_states.u

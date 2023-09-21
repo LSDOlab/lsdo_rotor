@@ -64,7 +64,7 @@ class BEMExternalInputsModel(ModuleCSDL):
             
             in_plane_1 = projection_vec - csdl.expand(csdl.dot(projection_vec,normal_vec,axis=1),(1,3) ) * normal_vec
             in_plane_ey =  (in_plane_1 / csdl.expand(csdl.pnorm(in_plane_1,pnorm_type=2),(1,3)))
-            in_plane_ex = csdl.cross(normal_vec,in_plane_ey, axis=1)
+            in_plane_ex = csdl.cross(normal_vec, in_plane_ey, axis=1)
             
             
             x_dir[i,0] = 1 
