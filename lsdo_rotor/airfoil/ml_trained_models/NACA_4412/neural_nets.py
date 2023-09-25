@@ -1,6 +1,6 @@
 from torch import nn 
 import torch
-
+from lsdo_rotor import CUSTOM_ML_FOLDER
 
 # cd_reg = nn.Sequential(
 #     nn.Linear(3, 104),
@@ -53,7 +53,7 @@ cd_reg = nn.Sequential(
 )
 
 
-cd_reg.load_state_dict(torch.load(f'lsdo_rotor/airfoil/ml_trained_models/NACA_4412/NACA_4412_Cd_nn_optuna_trial_10', map_location=torch.device('cpu')))
+cd_reg.load_state_dict(torch.load(CUSTOM_ML_FOLDER / f'NACA_4412_Cd_nn_optuna_trial_10', map_location=torch.device('cpu')))
 
 
 cl_reg = nn.Sequential(
@@ -78,4 +78,4 @@ cl_reg = nn.Sequential(
             nn.Linear(81, 1), 
 )
 
-cl_reg.load_state_dict(torch.load(f'lsdo_rotor/airfoil/ml_trained_models/NACA_4412/NACA_4412_Cl_nn_optuna_trial_1', map_location=torch.device('cpu')))
+cl_reg.load_state_dict(torch.load(CUSTOM_ML_FOLDER / f'NACA_4412_Cl_nn_optuna_trial_1', map_location=torch.device('cpu')))
