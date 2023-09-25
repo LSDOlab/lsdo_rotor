@@ -72,12 +72,13 @@ class BEMModel(Model):
         r_a = self.declare_variable(name='r', shape=(num_nodes, 1), units='rad/s')
         theta = self.declare_variable(name='theta', shape=(num_nodes, 1))
        
-        rotation_matrix = self.create_output('rotation_matrix', shape=(3, 3), val=0)
-        rotation_matrix[0, 0] = csdl.cos(theta)
-        rotation_matrix[0, 2] = -1 * csdl.sin(theta)
-        rotation_matrix[1, 1] = (theta + 1) / (theta + 1)
-        rotation_matrix[2, 0] = -1 * csdl.sin(theta)
-        rotation_matrix[2, 2] = -1 * csdl.cos(theta)
+        rotation_matrix = self.create_output('rotation_matrix', shape=(num_nodes, 3, 3), val=0)
+        for i in range(num_nodes):
+            rotation_matrix[i, 0, 0] = csdl.reshape(csdl.cos(theta[i, 0]), new_shape=(1, 1, 1))
+            rotation_matrix[i, 0, 2] = csdl.reshape(-1 * csdl.sin(theta[i, 0]), new_shape=(1, 1, 1))
+            rotation_matrix[i, 1, 1] = csdl.reshape((theta[i, 0] + 1) / (theta[i, 0] + 1), new_shape=(1, 1, 1))
+            rotation_matrix[i, 2, 0] = csdl.reshape(-1 * csdl.sin(theta[i, 0]), new_shape=(1, 1, 1))
+            rotation_matrix[i, 2, 2] = csdl.reshape(-1 * csdl.cos(theta[i, 0]), new_shape=(1, 1, 1))
 
         if (use_airfoil_ml is False) and (use_custom_airfoil_ml is False):
             interp = get_surrogate_model(airfoil, custom_polar)

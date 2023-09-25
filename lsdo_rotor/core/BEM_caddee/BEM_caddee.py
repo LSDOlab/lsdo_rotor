@@ -83,7 +83,7 @@ class BEM(m3l.ExplicitOperation):
         self.parameters.declare('disk_prefix', types=str)
         self.parameters.declare('disk_suffix', types=str, default=None, allow_none=True)
         self.parameters.declare('blade_prefix', types=str)
-        self.parameters.declare('num_nodes', types=int, default=1)
+        self.parameters.declare('num_nodes', types=int)
         super().initialize(kwargs=kwargs)
 
     
