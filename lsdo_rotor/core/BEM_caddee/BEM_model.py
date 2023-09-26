@@ -53,6 +53,7 @@ class BEMModel(ModuleCSDL):
 
         use_airfoil_ml = mesh.parameters['use_airfoil_ml']
         use_custom_airfoil_ml = mesh.parameters['use_custom_airfoil_ml']
+        use_byu_airfoil_model = mesh.parameters['use_byu_airfoil_model']
         use_geometry = mesh.parameters['use_rotor_geometry']
         use_caddee = self.parameters['use_caddee']
         units = mesh.parameters['mesh_units']
@@ -78,18 +79,19 @@ class BEMModel(ModuleCSDL):
             r_a = self.create_input(name='r', shape=(num_nodes, 1), val=0, units='rad/s')
             theta = self.create_input(name='theta', shape=(num_nodes, 1), val=0)
 
-        rotation_matrix = self.create_output('rotation_matrix', shape=(3, 3), val=0)
-        rotation_matrix[0, 0] = csdl.cos(theta)
-        rotation_matrix[0, 2] = -1 * csdl.sin(theta)
-        rotation_matrix[1, 1] = (theta + 1) / (theta + 1)
-        rotation_matrix[2, 0] = -1 * csdl.sin(theta)
-        rotation_matrix[2, 2] = -1 * csdl.cos(theta)
+        rotation_matrix = self.create_output('rotation_matrix', shape=(num_nodes, 3, 3), val=0)
+        for i in range(num_nodes):
+            rotation_matrix[i, 0, 0] = csdl.reshape(csdl.cos(theta[i, 0]), new_shape=(1, 1, 1))
+            rotation_matrix[i, 0, 2] = csdl.reshape(-1 * csdl.sin(theta[i, 0]), new_shape=(1, 1, 1))
+            rotation_matrix[i, 1, 1] = csdl.reshape((theta[i, 0] + 1) / (theta[i, 0] + 1), new_shape=(1, 1, 1))
+            rotation_matrix[i, 2, 0] = csdl.reshape(-1 * csdl.sin(theta[i, 0]), new_shape=(1, 1, 1))
+            rotation_matrix[i, 2, 2] = csdl.reshape(-1 * csdl.cos(theta[i, 0]), new_shape=(1, 1, 1))
 
-        if (use_airfoil_ml is False) and (use_custom_airfoil_ml is False):
+        if (use_airfoil_ml is False) and (use_custom_airfoil_ml is False)and (use_byu_airfoil_model is False):
             interp = get_surrogate_model(airfoil, custom_polar)
             rotor = get_BEM_rotor_dictionary(airfoil, interp, custom_polar)
         
-        elif (use_custom_airfoil_ml is True) and (use_airfoil_ml is False):
+        elif (use_custom_airfoil_ml is True) and (use_airfoil_ml is False) and (use_byu_airfoil_model is False):
             X_max_numpy = np.array([90., 8e6, 0.65])
             X_min_numpy = np.array([-90., 1e5, 0.])
             
@@ -104,7 +106,7 @@ class BEMModel(ModuleCSDL):
             rotor = get_BEM_rotor_dictionary(airfoil_name=airfoil, ml_cl=cl_model, ml_cd=cd_model, use_airfoil_ml=use_airfoil_ml,use_custom_airfoil_ml=use_custom_airfoil_ml)
             
 
-        elif (use_custom_airfoil_ml is False) and (use_airfoil_ml is True):
+        elif (use_custom_airfoil_ml is False) and (use_airfoil_ml is True) and (use_byu_airfoil_model is False):
             from lsdo_airfoil.utils.load_control_points import load_control_points
             from lsdo_airfoil.utils.get_airfoil_model import get_airfoil_models
             from lsdo_airfoil.core.airfoil_model_csdl import X_max_numpy_poststall, X_min_numpy_poststall
@@ -120,9 +122,18 @@ class BEMModel(ModuleCSDL):
             cd_model = airfoil_models['Cd']
             rotor = get_BEM_rotor_dictionary(airfoil_name=airfoil, ml_cl=cl_model, ml_cd=cd_model, use_airfoil_ml=use_airfoil_ml)
         
+        elif (use_custom_airfoil_ml is False) and (use_airfoil_ml is False) and (use_byu_airfoil_model is True):
+            rotor = get_BEM_rotor_dictionary(airfoil_name=airfoil, use_airfoil_ml=use_airfoil_ml, use_byu_airfoil_model=use_byu_airfoil_model)
+
         elif (use_custom_airfoil_ml is True) and (use_airfoil_ml is True):
             raise ValueError("Cannot specify 'use_custom_airfoil_ml=True' and 'use_airfoil_ml=True' at the same time")
+        
+        elif (use_custom_airfoil_ml is True) and (use_byu_airfoil_model is True):
+            raise ValueError("Cannot specify 'use_custom_airfoil_ml=True' and 'use_byu_airfoil_model=True' at the same time")
 
+        elif (use_byu_airfoil_model is True) and (use_airfoil_ml is True):
+            raise ValueError("Cannot specify 'use_byu_airfoil_model=True' and 'use_airfoil_ml=True' at the same time")
+       
         else:
             raise NotImplementedError
 
@@ -202,7 +213,7 @@ class BEMModel(ModuleCSDL):
                 self.register_output('twist_profile', comp)
             
             else:
-                self.register_module_input('chord_profile', shape=(num_radial, ), computed_upstream=False)
+                self.register_module_input('twist_profile', shape=(num_radial, ), computed_upstream=False)
             
             chord_b_spline = mesh.parameters['chord_b_spline_rep']
             if chord_b_spline is True:
@@ -220,7 +231,7 @@ class BEMModel(ModuleCSDL):
                 self.register_output('chord_profile', comp_chord)
 
             else:
-                self.register_module_input('twist_profile', shape=(num_radial, ), computed_upstream=False)
+                self.register_module_input('chord_profile', shape=(num_radial, ), computed_upstream=False)
             
             
             

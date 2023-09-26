@@ -124,7 +124,21 @@ class BEMBracketedSearchGroup(Model):
             Cl = csdl.reshape(model.declare_variable('Cl', shape=(shape[0] * shape[1] * shape[2],)), new_shape=shape)
             Cd = csdl.reshape(model.declare_variable('Cd', shape=(shape[0] * shape[1] * shape[2],)), new_shape=shape)
 
-        
+        elif rotor['use_byu_airfoil_model']:
+            from lsdo_rotor.airfoil.byu_model.naca_4412_byu_model import BYUAirfoilModel
+
+            Re = model.declare_variable('Re', shape=shape)
+            mach = model.declare_variable('mach_number', shape=shape)
+
+            airfoil_model_output = csdl.custom(alpha, Re, mach, op=BYUAirfoilModel(
+                shape=shape
+            ))
+            model.register_output('Cl',airfoil_model_output[0])
+            model.register_output('Cd',airfoil_model_output[1])
+            
+            Cl = airfoil_model_output[0]
+            Cd = airfoil_model_output[1]
+
         elif not rotor['custom_polar']:
             airfoil_model_output = csdl.custom(Re, alpha, chord, op= BEMAirfoilSurrogateModelGroup(
                 rotor=rotor,
@@ -179,7 +193,7 @@ class BEMBracketedSearchGroup(Model):
         solve_BEM_residual = self.create_implicit_operation(model)
         solve_BEM_residual.declare_state('phi_distribution', residual='BEM_residual_function', bracket=(eps, np.pi/2 - eps))
 
-        if rotor['use_airfoil_ml'] is False and rotor['use_custom_airfoil_ml'] is False:
+        if rotor['use_airfoil_ml'] is False and rotor['use_custom_airfoil_ml'] is False and rotor['use_byu_airfoil_model'] is False:
             sigma = self.declare_variable('_blade_solidity', shape=shape)
             Vx = self.declare_variable('_axial_inflow_velocity', shape=shape)
             Vt = self.declare_variable('_tangential_inflow_velocity', shape=shape)
@@ -194,7 +208,7 @@ class BEMBracketedSearchGroup(Model):
             # phi, Cl, Cd,F, Cx, Ct = solve_BEM_residual(sigma,Vx,Vt,radius,rotor_radius,hub_radius,chord,twist,Re, expose=['Cl', 'Cd','F','Cx','Ct'])
             phi = solve_BEM_residual(sigma,Vx,Vt,radius,rotor_radius,hub_radius,chord,twist,Re, expose=['Cl', 'Cd', 'alpha_distribution'])
 
-        elif rotor['use_airfoil_ml'] is True and rotor['use_custom_airfoil_ml'] is False:
+        elif rotor['use_airfoil_ml'] is True and rotor['use_custom_airfoil_ml'] is False and rotor['use_byu_airfoil_model'] is False:
             sigma = self.declare_variable('_blade_solidity', shape=shape)
             Vx = self.declare_variable('_axial_inflow_velocity', shape=shape)
             Vt = self.declare_variable('_tangential_inflow_velocity', shape=shape)
@@ -213,7 +227,7 @@ class BEMBracketedSearchGroup(Model):
             phi = solve_BEM_residual(sigma, Vx, Vt, radius, rotor_radius, hub_radius, twist, Re_ml, mach_ml, X_max, X_min, control_points, expose=['Cl', 'Cd', 'alpha_distribution'])
 
         
-        elif rotor['use_airfoil_ml'] is False and rotor['use_custom_airfoil_ml'] is True:
+        elif rotor['use_airfoil_ml'] is False and rotor['use_custom_airfoil_ml'] is True and rotor['use_byu_airfoil_model'] is False:
             sigma = self.declare_variable('_blade_solidity', shape=shape)
             Vx = self.declare_variable('_axial_inflow_velocity', shape=shape)
             Vt = self.declare_variable('_tangential_inflow_velocity', shape=shape)
@@ -229,6 +243,21 @@ class BEMBracketedSearchGroup(Model):
             Re_ml = self.declare_variable('Re_ml_input', shape=(shape[0] * shape[1] * shape[2], 1))
 
             phi = solve_BEM_residual(sigma, Vx, Vt, radius, rotor_radius, hub_radius, twist, Re_ml, mach_ml, X_max, X_min,  expose=['Cl', 'Cd', 'alpha_distribution'])
+
+        elif rotor['use_airfoil_ml'] is False and rotor['use_custom_airfoil_ml'] is False and rotor['use_byu_airfoil_model'] is True:
+            sigma = self.declare_variable('_blade_solidity', shape=shape)
+            Vx = self.declare_variable('_axial_inflow_velocity', shape=shape)
+            Vt = self.declare_variable('_tangential_inflow_velocity', shape=shape)
+            radius = self.declare_variable('_radius',shape= shape)
+            rotor_radius = self.declare_variable('_rotor_radius', shape= shape)
+            hub_radius = self.declare_variable('_hub_radius', shape=shape)
+            twist = self.declare_variable('_pitch', shape=shape)
+            
+
+            mach = self.declare_variable('mach_number', shape=shape)
+            Re = self.declare_variable('Re', shape=shape)
+
+            phi = solve_BEM_residual(sigma, Vx, Vt, radius, rotor_radius, hub_radius, twist, Re, mach,  expose=['Cl', 'Cd', 'alpha_distribution'])
 
 
         else:

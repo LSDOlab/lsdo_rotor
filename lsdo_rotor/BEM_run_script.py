@@ -19,8 +19,9 @@ bem_mesh = BEMMesh(
     num_blades=num_blades,
     use_rotor_geometry=False,
     airfoil='NACA_4412',
-    use_custom_airfoil_ml=True,
+    # use_custom_airfoil_ml=True,
     # use_airfoil_ml=False,
+    use_byu_airfoil_model=True,
     twist_b_spline_rep=True,
     chord_b_spline_rep=True,
 )
@@ -51,15 +52,26 @@ bem_csdl.add_constraint('T', equals=800)
 sim = Simulator(bem_csdl, analytics=True)
 sim.run()
 
+# print(sim['F'])
+# print(sim['eta'])
+# print(sim['alpha_distribution'] * 180/np.pi)
+# print(sim['alpha_ml_input'])
 
-prob = CSDLProblem(problem_name='blade_shape_opt', simulator=sim)
-optimizer = SLSQP(
-    prob,
-    maxiter=150, 
-    ftol=1e-4,
-)
-optimizer.solve()
-optimizer.print_results()
+# print(sim['Cl'])
+# print(sim['Cd'])
+print(sim['T'])
+print(sim['Q'])
+
+exit()
+
+# prob = CSDLProblem(problem_name='blade_shape_opt', simulator=sim)
+# optimizer = SLSQP(
+#     prob,
+#     maxiter=150, 
+#     ftol=1e-4,
+# )
+# optimizer.solve()
+# optimizer.print_results()
 
 chord = sim['chord_profile'].flatten()
 twist = sim['twist_profile'].flatten()

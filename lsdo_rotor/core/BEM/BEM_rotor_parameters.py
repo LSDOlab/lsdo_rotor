@@ -10,3 +10,4 @@ class BEMRotorParameters(OptionsDictionary):
         self.declare('cd_ml_model', default=None, allow_none=True)
         self.declare('use_airfoil_ml', default=False, types=bool)
         self.declare('use_custom_airfoil_ml', default=False, types=bool)
+        self.declare('use_byu_airfoil_model', default=False, types=bool)
