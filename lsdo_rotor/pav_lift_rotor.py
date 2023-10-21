@@ -10,6 +10,7 @@ from lsdo_rotor.utils.print_output import print_output
 from lsdo_rotor.core.BEM_caddee.BEM_caddee import BEM, BEMMesh
 from modopt.scipy_library import SLSQP
 from modopt.csdl_library import CSDLProblem
+import matplotlib.pyplot as plt
 
 
 ft2m = 0.3048
@@ -76,8 +77,8 @@ def optimize_lift_rotor(rotor_radius: float,
     
     # region Optimization setup
     bem_csdl.add_objective('fom_obj_func')
-    bem_csdl.add_constraint('T', equals=expected_thrust)
-    bem_csdl.add_constraint('Q', upper=maximum_torque)
+    bem_csdl.add_constraint('T', equals=expected_thrust) # , scaler=1e-3
+    bem_csdl.add_constraint('Q', upper=maximum_torque)  # , scaler=1e-2
     # endregion
 
     sim = Simulator(bem_csdl, analytics=True)
@@ -103,6 +104,8 @@ def optimize_lift_rotor(rotor_radius: float,
     alpha =  np.rad2deg(sim['alpha_distribution'].flatten())
     Cl = sim['Cl'].flatten()
     Cd = sim['Cd'].flatten()
+    dT = sim['induced_velocity_model._dT'].flatten()
+    dQ = sim['induced_velocity_model._dQ'].flatten()
 
     rotorDf = pd.DataFrame(
         data={
@@ -114,19 +117,22 @@ def optimize_lift_rotor(rotor_radius: float,
             'AoA (deg)': alpha,
             'Cl': Cl,
             'Cd': Cd,
+            'Sectional T': dT,
+            'Sectional Q': dQ,
         }
     )
     print(rotorDf)
     rotorDf.to_excel('pav_lift_rotor_analysis.xlsx')
 
-    print('Forces about refenence point (N): ', sim['F'].flatten())
-    print('Moments about refenence point (Nm): ', sim['M'].flatten())
+    print('Forces about reference point (N): ', sim['F'].flatten())
+    print('Moments about reference point (Nm): ', sim['M'].flatten())
     print('Thrust (N): ', sim['T'])
     print('Torque (Nm): ', sim['Q'])
     print('Figure of merit: ', sim['FOM'])
     print('FOM Objective Function: ', sim['fom_obj_func'])
     print('Twist cp: ', sim['twist_cp'])
     print('Chord cp: ', sim['chord_cp'])
+    print('Rotor total thrust coefficient: ', sim['C_T'])
     return
 
 
