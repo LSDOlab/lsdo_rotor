@@ -10,7 +10,7 @@ rotor_analysis = RotorAnalysis()
 u = rotor_analysis.create_input('u', val=0, shape=(1, ))
 v = rotor_analysis.create_input('v', val=0, shape=(1, ))
 w = rotor_analysis.create_input('w', val=0, shape=(1, ))
-altitude = rotor_analysis.create_input('altitude', val=1000, shape=(1, )) # in meter
+altitude = rotor_analysis.create_input('altitude', val=0, shape=(1, )) # in meter
 
 ac_states = AcStates(u=u, v=v, w=w)
 atmos = get_atmosphere(altitude=altitude)
@@ -27,7 +27,7 @@ twist_cp_guess = np.array([0.55207943, 0.35981639, 0.16753661, 0.12377559, 0.177
 chord_cp_guess = np.array([0.07295861, 0.10717677, 0.09075833, 0.06437597, 0.03848824, 0.02721645])  # m
 
 chord_cp = rotor_analysis.create_input('chord_cp', val=chord_cp_guess, dv_flag=True, lower=0.01, upper=0.4)
-twist_cp = rotor_analysis.create_input('twist_cp', val=twist_cp_guess, dv_flag=True, lower=np.deg2rad(5), upper=np.deg2rad(85))
+twist_cp = rotor_analysis.create_input('twist_cp', val=twist_cp_guess, dv_flag=True, lower=np.deg2rad(0), upper=np.deg2rad(85))
 thrust_vector = rotor_analysis.create_input('thrust_vector', val=np.array([0, 0, -1]).reshape(num_nodes, 3))
 thrust_origin = rotor_analysis.create_input('thrust_origin', val=np.array([-1.146, 1.619, -0.162]).reshape(num_nodes, 3)) # in m
 propeller_radius = rotor_analysis.create_input('propeller_radius', val=6/2*ft2m)
@@ -55,8 +55,8 @@ rotor_analysis.register_output(bem_outputs)
 
 
 csdl_model = rotor_analysis.assemble_csdl()
-csdl_model.add_constraint('bem_analysis.T', equals=2000)
-csdl_model.add_constraint('bem_analysis.Q', upper=160)
+csdl_model.add_constraint('bem_analysis.T', equals=2000, scaler=1e-3)
+csdl_model.add_constraint('bem_analysis.Q', upper=160, scaler=1e-2)
 FOM = csdl_model.declare_variable('bem_analysis.FOM', shape=(num_nodes, ))
 csdl_model.register_output('FOM_obj', FOM * -1)
 csdl_model.add_objective('FOM_obj')

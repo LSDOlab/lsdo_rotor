@@ -30,8 +30,8 @@ ft2m = 0.3048
 m2in = 39.3701
 
 # twist_cp_guess = np.deg2rad(np.linspace(55, 11, 6))  # rad
-twist_cp_guess = np.array([0.55207943, 0.35981639, 0.16753661, 0.12377559])#, 0.17724111, 0.07146789]) 
-chord_cp_guess = np.array([0.07295861, 0.10717677, 0.09075833, 0.06437597])#, 0.03848824, 0.02721645])  # m
+twist_cp_guess = np.array([0.55207943, 0.35981639, 0.16753661, 0.12377559, 0.17724111, 0.07146789]) 
+chord_cp_guess = np.array([0.07295861, 0.10717677, 0.09075833, 0.06437597, 0.03848824, 0.02721645])  # m
 
 chord_cp = rotor_analysis.create_input('chord_cp', val=chord_cp_guess, dv_flag=True, lower=0.01, upper=0.4)
 twist_cp = rotor_analysis.create_input('twist_cp', val=twist_cp_guess, dv_flag=True, lower=np.deg2rad(0), upper=np.deg2rad(85))
@@ -47,7 +47,7 @@ bem_parameters = BEMParameters(
     airfoil='NACA_4412',
     use_custom_airfoil_ml=True,
     normalized_hub_radius=0.2,
-    num_cp=4, 
+    num_cp=6, 
 )
 
 bem_model = BEM(
