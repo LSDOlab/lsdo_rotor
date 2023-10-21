@@ -10,9 +10,15 @@ rotor_analysis = RotorAnalysis()
 u = rotor_analysis.create_input('u', val=50.06848, shape=(1, ))
 v = rotor_analysis.create_input('v', val=0, shape=(1, ))
 w = rotor_analysis.create_input('w', val=0, shape=(1, ))
+p = rotor_analysis.create_input('p', val=0, shape=(1, ))
+q = rotor_analysis.create_input('q', val=0, shape=(1, ))
+r = rotor_analysis.create_input('r', val=0, shape=(1, ))
+phi = rotor_analysis.create_input('phi', val=0, shape=(1, ))
+theta = rotor_analysis.create_input('theta', val=0, shape=(1, ))
+psi = rotor_analysis.create_input('psi', val=0, shape=(1, ))
 altitude = rotor_analysis.create_input('altitude', val=0, shape=(1, )) # in meter
 
-ac_states = AcStates(u=u, v=v, w=w)
+ac_states = AcStates(u=u, v=v, w=w, p=p, q=q, r=r, phi=phi, theta=theta, psi=psi)
 atmos = get_atmosphere(altitude=altitude)
 
 num_nodes = 1
@@ -24,13 +30,13 @@ ft2m = 0.3048
 m2in = 39.3701
 
 # twist_cp_guess = np.deg2rad(np.linspace(55, 11, 6))  # rad
-twist_cp_guess = np.array([0.55207943, 0.35981639, 0.16753661, 0.12377559, 0.17724111, 0.07146789]) 
-chord_cp_guess = np.array([0.07295861, 0.10717677, 0.09075833, 0.06437597, 0.03848824, 0.02721645])  # m
+twist_cp_guess = np.array([0.55207943, 0.35981639, 0.16753661, 0.12377559])#, 0.17724111, 0.07146789]) 
+chord_cp_guess = np.array([0.07295861, 0.10717677, 0.09075833, 0.06437597])#, 0.03848824, 0.02721645])  # m
 
 chord_cp = rotor_analysis.create_input('chord_cp', val=chord_cp_guess, dv_flag=True, lower=0.01, upper=0.4)
 twist_cp = rotor_analysis.create_input('twist_cp', val=twist_cp_guess, dv_flag=True, lower=np.deg2rad(0), upper=np.deg2rad(85))
 thrust_vector = rotor_analysis.create_input('thrust_vector', val=np.array([1., 0, 0]).reshape(num_nodes, 3))
-thrust_origin = rotor_analysis.create_input('thrust_origin', val=np.array([19.700, 0., 2.625]).reshape(num_nodes, 3)) # in m
+thrust_origin = rotor_analysis.create_input('thrust_origin', val=np.array([19.700, 0., 2.625]).reshape(num_nodes, 3)*ft2m) # in m
 propeller_radius = rotor_analysis.create_input('propeller_radius', val=4/2*ft2m)
 rpm = rotor_analysis.create_input('rpm', val=4000)
 
@@ -41,7 +47,7 @@ bem_parameters = BEMParameters(
     airfoil='NACA_4412',
     use_custom_airfoil_ml=True,
     normalized_hub_radius=0.2,
-    num_cp=6, 
+    num_cp=4, 
 )
 
 bem_model = BEM(
@@ -63,12 +69,12 @@ expected_thrust = 1.*D
 max_torque = 160. # Nm
 
 csdl_model = rotor_analysis.assemble_csdl()
-csdl_model.add_constraint('bem_analysis.eta', equals=efficiency)
-csdl_model.add_constraint('bem_analysis.Q', upper=max_torque, scaler=1e-2)
+csdl_model.add_constraint('bem_analysis.eta_compute', equals=efficiency)
+csdl_model.add_constraint('bem_analysis.Q_compute', upper=max_torque, scaler=1e-2)
 bem_thrust = csdl_model.declare_variable('computed_thrust')
-csdl_model.connect('bem_analysis.T', 'computed_thrust')
+csdl_model.connect('bem_analysis.T_compute', 'computed_thrust')
 thrust_needed = csdl_model.create_input('expected_thrust', val=expected_thrust)
-csdl_model.register_output('thrust_res', ((bem_thrust + -1* thrust_needed)**2))
+csdl_model.register_output('thrust_res', ((thrust_needed + -1* bem_thrust)**2))
 csdl_model.add_objective('thrust_res', scaler=1e-2)
 
 sim =  Simulator(csdl_model, analytics=True)
