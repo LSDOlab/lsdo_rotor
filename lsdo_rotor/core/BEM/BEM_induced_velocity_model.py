@@ -38,8 +38,11 @@ class BEMInducedVelocityModel(Model):
         F = self.declare_variable('prandtl_loss_factor', shape=shape)
 
 
-        Cl = self.declare_variable('Cl_2', shape=shape)
-        Cd = self.declare_variable('Cd_2', shape=shape)
+        # Cl = self.declare_variable('Cl_2', shape=shape)
+        # Cd = self.declare_variable('Cd_2', shape=shape)
+
+        Cl = self.declare_variable('Cl', shape=shape)
+        Cd = self.declare_variable('Cd', shape=shape)
 
         Cx1 = Cl * csdl.cos(phi) - Cd * csdl.sin(phi)
         Ct1 = Cl * csdl.sin(phi) + Cd * csdl.cos(phi)
@@ -59,6 +62,8 @@ class BEMInducedVelocityModel(Model):
 
         dT2 = num_blades * Cx1 * 0.5 * rho_exp * (ux_2**2 + (Vt - 0.5 * ut)**2) * chord * dr
         dQ2 = num_blades * Ct1 * 0.5 * rho_exp * (ux_2**2 + (Vt - 0.5 * ut)**2) * chord * dr * radius
+        
+        dDrag = num_blades * Cd * 0.5 * rho_exp * (ux_2**2 + (Vt - 0.5 * ut)**2) * chord * dr
 
         dT_induced = num_blades * Cx2 * 0.5 * rho_exp * (ux_2**2 + (Vt - 0.5 * ut)**2) * chord * dr
         dQ_induced = num_blades * Ct2 * 0.5 * rho_exp * (ux_2**2 + (Vt - 0.5 * ut)**2) * chord * dr
@@ -88,45 +93,46 @@ class BEMInducedVelocityModel(Model):
         eta = C_T * J / C_P
         FOM = C_T * (C_T/2)**0.5 / C_P
 
-        self.register_output('_ux',ux)
-        self.register_output('_ux_2',ux_2)
-        self.register_output('_ut', ut)
+        self.register_output('_ux_compute',ux)
+        self.register_output('_ux_2_compute',ux_2)
+        self.register_output('_ut_compute', ut)
 
-        self.register_output('_local_thrust', dT)
-        self.register_output('_dT', dT*1)
-        self.register_output('_local_thrust_induced', dT_induced)
+        self.register_output('_local_thrust_compute', dT)
+        self.register_output('_dT_compute', dT*1)
+        self.register_output('_local_thrust_induced_compute', dT_induced)
         # self.register_output('total_thrust', T)
-        self.register_output('T', T)
-        self.register_output('Q', Q*1)
+        self.register_output('T_compute', T)
+        self.register_output('Q_compute', Q*1)
         # self.print_var(T)
-        self.register_output('dC_T',dC_T)
+        self.register_output('dC_T_compute',dC_T)
         
-        self.register_output('_local_thrust_2', dT2)
-        self.register_output('total_thrust_2', T2)
+        self.register_output('_local_thrust_2_compute', dT2)
+        self.register_output('total_thrust_2_compute', T2)
+        self.register_output('_dD_compute', dDrag)
 
-        self.register_output('_local_thrust_star', dT_star)
-        self.register_output('total_thrust_star', T_star)
+        self.register_output('_local_thrust_star_compute', dT_star)
+        self.register_output('total_thrust_star_compute', T_star)
 
         # self.register_output('')
 
-        self.register_output('_local_torque', dQ)
-        self.register_output('_dQ', dQ*1)
-        self.register_output('_local_torque_induced', dQ_induced)
-        self.register_output('total_torque', Q)
+        self.register_output('_local_torque_compute', dQ)
+        self.register_output('_dQ_compute', dQ*1)
+        self.register_output('_local_torque_induced_compute', dQ_induced)
+        self.register_output('total_torque_compute', Q)
         
-        self.register_output('_local_torque_2', dQ2)
-        self.register_output('total_torque_2', Q2)
+        self.register_output('_local_torque_2_compute', dQ2)
+        self.register_output('total_torque_2_compute', Q2)
 
-        self.register_output('_local_energy_loss', dE)
-        self.register_output('total_energy_loss', E)
+        self.register_output('_local_energy_loss_compute', dE)
+        self.register_output('total_energy_loss_compute', E)
         
-        self.register_output('C_T',C_T)
+        self.register_output('C_T_compute',C_T)
         # self.register_output('C_T',T_C)
-        self.register_output('C_Q',C_Q)
-        self.register_output('C_P',C_P)
-        self.register_output('eta', eta)
-        self.register_output('J',J)
-        self.register_output('FOM', FOM)
+        self.register_output('C_Q_compute',C_Q)
+        self.register_output('C_P_compute',C_P)
+        self.register_output('eta_compute', eta)
+        self.register_output('J_compute',J)
+        self.register_output('FOM_compute', FOM)
 
         # self.add_objective('total_torque')
         # self.add_objective('total_energy_loss')

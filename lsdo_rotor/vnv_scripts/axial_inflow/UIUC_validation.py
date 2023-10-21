@@ -2,11 +2,7 @@ import numpy as np
 import os
 import csdl
 from csdl import Model
-try:
-    from csdl_om import Simulator
-except:
-    raise ModuleNotFoundError("This run file requires a backend for CSDL")
-# from python_csdl_backend import Simulator
+from python_csdl_backend import Simulator
 
 from lsdo_rotor.core.BEM.BEM_model import BEMModel
 

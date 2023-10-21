@@ -1,10 +1,10 @@
 import numpy as np
 from csdl import Model, ScipyKrylov, NewtonSolver, NonlinearBlockGS
 import csdl
-from lsdo_modules.module_csdl.module_csdl import ModuleCSDL
 
 
-class BILDPhiBracketedSearchModuleCSDL(ModuleCSDL):
+
+class BILDPhiBracketedSearchModuleCSDL(csdl.Model):
 
     def initialize(self):
         self.parameters.declare('shape', types=tuple)
@@ -15,7 +15,7 @@ class BILDPhiBracketedSearchModuleCSDL(ModuleCSDL):
         B = num_blades = self.parameters['num_blades']
         num_nodes = shape[0]
 
-        module = ModuleCSDL()
+        module = csdl.Model()
 
         Vx = module.register_module_input('u' , shape=(num_nodes,))
         Vt = module.register_module_input('BILD_tangential_inflow_velocity', shape=(num_nodes,))

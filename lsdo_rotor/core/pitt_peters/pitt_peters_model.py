@@ -4,18 +4,18 @@ import csdl
 
 from lsdo_rotor.airfoil.get_surrogate_model import get_surrogate_model
 from lsdo_rotor.core.pitt_peters.functions.get_pitt_peters_rotor_dictionary import get_pitt_peters_rotor_dictionary
-from lsdo_modules.module_csdl.module_csdl import ModuleCSDL
+
 
 from lsdo_rotor.core.pitt_peters.inputs.pitt_peters_external_inputs_model import PittPetersExternalInputsModel 
 from lsdo_rotor.core.pitt_peters.inputs.pitt_peters_core_inputs_model import PittPetersCoreInputsModel
 from lsdo_rotor.core.pitt_peters.inputs.pitt_peters_pre_process_model import PittPetersPreprocessModel
 from lsdo_rotor.core.pitt_peters.pitt_peters_custom_implicit_operation import PittPetersCustomImplicitOperation
 from lsdo_rotor.core.pitt_peters.pitt_peters_post_process_model import PittPetersPostProcessModel
-from lsdo_rotor.core.BEM_caddee.functions.get_bspline_mtx import get_bspline_mtx
-from lsdo_rotor.core.BEM_caddee.BEM_b_spline_comp import BsplineComp
+from lsdo_rotor.core.BEM.functions.get_bspline_mtx import get_bspline_mtx
+from lsdo_rotor.core.BEM.BEM_b_spline_comp import BsplineComp
 from lsdo_rotor.utils.atmosphere_model import AtmosphereModel
 
-class PittPetersModel(ModuleCSDL):
+class PittPetersModel(csdl.Model):
 
     def initialize(self):
         self.parameters.declare(name='name', default='propulsion')

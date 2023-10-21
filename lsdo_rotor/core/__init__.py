@@ -1,1 +1,1 @@
-from lsdo_rotor.core.BEM_caddee.BEM_caddee import BEM, BEMMesh
+from lsdo_rotor.core.BEM.BEM_caddee import BEM, BEMParameters

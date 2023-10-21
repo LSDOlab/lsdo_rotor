@@ -2,8 +2,8 @@ import numpy as np
 from csdl import Model
 import csdl
 from lsdo_rotor.core.pitt_peters.pitt_peters_model import PittPetersModel
-from lsdo_rotor.core.BEM_caddee.functions.get_bspline_mtx import get_bspline_mtx
-from lsdo_rotor.core.BEM_caddee.BEM_b_spline_comp import BsplineComp
+from lsdo_rotor.core.BEM.functions.get_bspline_mtx import get_bspline_mtx
+from lsdo_rotor.core.BEM.BEM_b_spline_comp import BsplineComp
 from python_csdl_backend import Simulator
 from modopt.scipy_library import SLSQP
 from modopt.csdl_library import CSDLProblem

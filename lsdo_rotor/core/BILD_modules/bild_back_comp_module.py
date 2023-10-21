@@ -1,8 +1,8 @@
 import numpy as np
-from lsdo_modules.module_csdl.module_csdl import ModuleCSDL
+
 import csdl
 
-class BILDBackCompModuleCSDL(ModuleCSDL):
+class BILDBackCompModuleCSDL(csdl.Model):
 
     def initialize(self):
         self.parameters.declare('num_blades', types=int)

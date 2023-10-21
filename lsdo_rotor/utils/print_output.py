@@ -2,35 +2,51 @@ import numpy as np
 import pandas as pd 
 pd.set_option('colheader_justify', 'center')
 import os
+from lsdo_rotor import BEM
 
 
-def print_output(sim, write_to_csv : bool=False):
-    T = sim['T'].flatten()
-    Q = sim['Q'].flatten()
-    M = sim['M'].flatten()
-    eta = sim['eta'].flatten()
-    FM = sim['FOM'].flatten()
-    C_T = sim['C_T'].flatten()
-    C_Q = sim['C_Q'].flatten()
-    C_P = sim['C_P'].flatten()
+def print_output(sim, rotor, write_to_csv : bool=False, file_name : str=None):
+    """
+    Function to print out BEM outputs and write them to a csv file if desired.
+    """
+    if write_to_csv is False and file_name is not None:
+        raise Exception("Cannot specifiy 'file_name' if 'write_to_csv' is False")
+    if not isinstance(file_name, (type(str), type(None))):
+        raise TypeError("argument 'file_name' must be of type string")
 
-    chord = sim['_chord'].flatten()
-    dr = sim['_dr'].flatten()
-    twist = sim['_pitch'].flatten()
-    radius = sim['_radius'].flatten()
-    B = sim['blade_number'].flatten()
-    R = sim['propeller_radius'].flatten()
+    bem_object = None
+    for operation_name, operation in rotor.operations.items():
+        if isinstance(operation, BEM):
+            bem_object = operation
 
-    sigma = B * sum(chord * dr) / np.pi / R**2
+    B = bem_object.parameters['BEM_parameters'].parameters['num_blades']
+    bem_name = bem_object.name
+
+    T = sim[f'{bem_name}.T'].flatten()
+    Q = sim[f'{bem_name}.Q'].flatten()
+    M = sim[f'{bem_name}.M'].flatten()
+    eta = sim[f'{bem_name}.eta'].flatten()
+    FM = sim[f'{bem_name}.FOM'].flatten()
+    C_T = sim[f'{bem_name}.C_T'].flatten()
+    C_Q = sim[f'{bem_name}.C_Q'].flatten()
+    C_P = sim[f'{bem_name}.C_P_compute'].flatten()
+
+    chord = sim[f'{bem_name}._chord'].flatten()
+    dr = sim[f'{bem_name}._dr'].flatten()
+    twist = sim[f'{bem_name}._pitch'].flatten()
+    radius = sim[f'{bem_name}._radius'].flatten()
+    R = sim[f'{bem_name}.propeller_radius'].flatten()
+
+    sigma = B * np.trapz(chord, radius) / np.pi / R**2
     na = '-----'
     high_level_data = {
         'Efficiency' : [na, np.round(eta, 2)],
         'Figure of merit' : [na, np.round(FM, 2)],
         'Thrust' : [np.round(T, 2), np.round(C_T, 2)], 
         'Torque' : [np.round(Q, 2), np.round(C_Q, 2)], 
-        'Blade solidity' : [na, np.round(sigma, 2)],
-        'Blade loading': [na, np.round(C_T/sigma, 2)],
-        'Disk loading' : [np.round(T / np.pi/R**2, 2),  na],
+        'Blade solidity' : [na, np.round(sigma, 3)],
+        'Blade loading': [na, np.round(C_T/sigma, 3)],
+        'Disk loading' : [np.round(T / np.pi/R**2, 3),  na],
         'Moments (Mx, My, Mz)' : [np.round(M, 2), na],
     }
 
@@ -40,14 +56,14 @@ def print_output(sim, write_to_csv : bool=False):
     high_level_df.index = ['Value (SI)', 'Coeff./ dim.-less qty.']
 
     # distributions 
-    radius = sim['_radius'].flatten()
-    twist = sim['_pitch'].flatten() * 180/np.pi
-    chord = sim['_chord'].flatten()
-    dT = sim['_dT'].flatten()
-    dQ = sim['_dQ'].flatten()
-    aoa = sim['AoA'].flatten() * 180/np.pi
-    Cl = sim['Cl_2'].flatten()
-    Cd = sim['Cd_2'].flatten()
+    radius = sim[f'{bem_name}._radius'].flatten()
+    twist = sim[f'{bem_name}._pitch'].flatten() * 180/np.pi
+    chord = sim[f'{bem_name}._chord'].flatten()
+    dT = sim[f'{bem_name}._dT'].flatten()
+    dQ = sim[f'{bem_name}._dQ'].flatten()
+    aoa = sim[f'{bem_name}.alpha_distribution'].flatten() * 180/np.pi
+    Cl = sim[f'{bem_name}.Cl'].flatten()
+    Cd = sim[f'{bem_name}.Cd'].flatten()
     LoD = Cl/Cd
 
     distributions = {
@@ -78,8 +94,8 @@ def print_output(sim, write_to_csv : bool=False):
 
     if write_to_csv == True:
         cwd = os.getcwd()
-        file_path_1 = cwd + '/rotor_performance.csv'
-        file_path_2 = cwd + '/rotor_performance_distributions.csv'
+        file_path_1 = cwd + f'/{file_name}_performance.csv'
+        file_path_2 = cwd + f'/{file_name}_performance_distributions.csv'
         high_level_df.to_csv(file_path_1)
         distributions_df.to_csv(file_path_2)
     # print(s)

@@ -1,9 +1,9 @@
-from lsdo_modules.module_csdl.module_csdl import ModuleCSDL
+
 import numpy as np
 import csdl
 
 
-class BILDPreprocessModuleCSDL(ModuleCSDL):
+class BILDPreprocessModuleCSDL(csdl.Model):
 
     def initialize(self):
         self.parameters.declare('shape', types=tuple)

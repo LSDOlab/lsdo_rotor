@@ -1,4 +1,4 @@
-from lsdo_modules.module_csdl.module_csdl import ModuleCSDL
+
 from lsdo_rotor.core.BILD_modules.bild_external_inputs_module import BILDExternalInputsModuleCSDL
 from lsdo_rotor.core.BILD_modules.bild_core_inputs_module import BILDCoreInputsModuleCSDL
 from lsdo_rotor.core.BILD_modules.bild_pre_process_module import BILDPreprocessModuleCSDL
@@ -14,7 +14,7 @@ from lsdo_rotor.core.BILD_modules.bilde_quartic_solver_module import BILDQuartic
 from lsdo_rotor.core.BILD_modules.bild_back_comp_module import BILDBackCompModuleCSDL
 
 
-class BILDModuleCSDL(ModuleCSDL):
+class BILDModuleCSDL(csdl.Model):
     def initialize(self):
         self.parameters.declare('airfoil_polar')
         self.parameters.declare('airfoil', default='NACA_4412')

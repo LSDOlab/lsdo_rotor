@@ -1,10 +1,10 @@
 import numpy as np
 import csdl
-from lsdo_modules.module_csdl.module_csdl import ModuleCSDL
 
 
 
-class BILDQuarticCoeffsModuleCSDL(ModuleCSDL):
+
+class BILDQuarticCoeffsModuleCSDL(csdl.Model):
     def initialize(self):
         self.parameters.declare('shape', types=tuple)
 

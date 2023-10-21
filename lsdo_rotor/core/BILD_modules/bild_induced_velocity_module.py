@@ -1,9 +1,9 @@
 import numpy as np
-from lsdo_modules.module_csdl.module_csdl import ModuleCSDL
+
 import csdl
 
 
-class BILDInducedVelocityModuleCSDL(ModuleCSDL):
+class BILDInducedVelocityModuleCSDL(csdl.Model):
     
     def initialize(self):
         self.parameters.declare('shape',types=tuple)

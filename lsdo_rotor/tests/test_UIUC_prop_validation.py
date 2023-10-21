@@ -1,5 +1,4 @@
 from lsdo_rotor.vnv_scripts.axial_inflow.UIUC_validation import return_validation_model
-from csdl_om import Simulator
 import pytest
 
 

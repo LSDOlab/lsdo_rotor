@@ -1,8 +1,8 @@
 import numpy as np
-from lsdo_modules.module_csdl.module_csdl import ModuleCSDL
 
 
-class BILDQuarticSolverModuleCSDL(ModuleCSDL):
+
+class BILDQuarticSolverModuleCSDL(csdl.Model):
 
     def initialize(self):
         self.parameters.declare('shape', types=tuple)
@@ -10,7 +10,7 @@ class BILDQuarticSolverModuleCSDL(ModuleCSDL):
     def define(self):
         shape = self.parameters['shape']
 
-        module = ModuleCSDL()
+        module = csdl.Model()
 
         coeff_4 =  module.register_module_input('coeff_4', shape=shape)
         coeff_3 =  module.register_module_input('coeff_3', shape=shape)

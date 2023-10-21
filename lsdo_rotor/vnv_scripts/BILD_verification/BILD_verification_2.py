@@ -4,7 +4,7 @@ from python_csdl_backend import Simulator
 
 # from lsdo_rotor.core.BEM.BEM_run_model import BEMRunModel
 from lsdo_rotor.core.BILD.BILD_run_model import BILDRunModel
-from lsdo_rotor.core.BEM_caddee.BEM_run_model import BEMRunModel
+from lsdo_rotor.core.BEM.BEM_run_model import BEMRunModel
 
 import time
 from smt.sampling_methods import FullFactorial

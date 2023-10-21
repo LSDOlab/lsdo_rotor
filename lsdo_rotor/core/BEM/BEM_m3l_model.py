@@ -5,8 +5,8 @@ from csdl import Model
 import csdl
 
 # from lsdo_rotor.rotor_parameters import RotorParameters
-from lsdo_modules.module_csdl.module_csdl import ModuleCSDL
-from lsdo_rotor.core.BEM_caddee.inputs.BEM_external_inputs_model import BEMExternalInputsModel
+
+from lsdo_rotor.core.BEM.inputs.BEM_external_inputs_model import BEMExternalInputsModel
 from lsdo_rotor.core.BEM.inputs.BEM_core_inputs_model import BEMCoreInputsModel
 from lsdo_rotor.core.BEM.inputs.BEM_pre_process_model import BEMPreprocessModel
 from lsdo_rotor.core.BEM.BEM_bracketed_search_model import BEMBracketedSearchGroup
@@ -24,7 +24,7 @@ from lsdo_rotor.core.BEM.BEM_b_spline_comp import BsplineComp
 from lsdo_rotor.core.BEM.BEM_caddee import BEMMesh
 
 
-class BEMModel(ModuleCSDL):
+class BEMModel(csdl.Model):
 
     def initialize(self):
         self.parameters.declare(name='name', default='propulsion')
