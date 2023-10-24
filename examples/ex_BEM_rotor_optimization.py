@@ -1,8 +1,9 @@
+"""
+Example 1: Rotor chord and twist profile optimization
+"""
 import numpy as np 
 from python_csdl_backend import Simulator
 from lsdo_rotor import RotorAnalysis, BEM, BEMParameters, AcStates, get_atmosphere, print_output
-from modopt.scipy_library import SLSQP
-from modopt.csdl_library import CSDLProblem
 from modopt.scipy_library import SLSQP
 from modopt.csdl_library import CSDLProblem
 
@@ -10,11 +11,9 @@ from modopt.csdl_library import CSDLProblem
 rotor_analysis = RotorAnalysis()
 
 u = rotor_analysis.create_input('u', val=50.06, shape=(1, ))
-v = rotor_analysis.create_input('v', val=0, shape=(1, ))
-w = rotor_analysis.create_input('w', val=0, shape=(1, ))
 altitude = rotor_analysis.create_input('altitude', val=1000, shape=(1, ))
 
-ac_states = AcStates(u=u, v=v, w=w)
+ac_states = AcStates(u=u)
 atmos = get_atmosphere(altitude=altitude)
 
 

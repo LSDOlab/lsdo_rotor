@@ -21,7 +21,6 @@ from lsdo_rotor.utils.atmosphere_model import AtmosphereModel
 
 from lsdo_rotor.core.BEM.functions.get_bspline_mtx import get_bspline_mtx
 from lsdo_rotor.core.BEM.BEM_b_spline_comp import BsplineComp
-# from lsdo_rotor.core.BEM.BEM_caddee import BEMMesh
 
 
 class BEMModel(Model):

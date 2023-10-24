@@ -2,7 +2,6 @@
 import numpy as np
 import m3l
 import csdl
-from caddee.core.caddee_core.system_representation.component.component import Component
 
 
 class PittPeters(m3l.ExplicitOperation):
