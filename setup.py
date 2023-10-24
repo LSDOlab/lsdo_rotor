@@ -41,8 +41,9 @@ setup(
         'matplotlib',
         'csdl @ git+https://github.com/LSDOlab/csdl.git',
         'python_csdl_backend @ git+https://github.com/LSDOlab/python_csdl_backend.git',
-        'lsdo_airfoil @ git+https://github.com/LSDOlab/lsdo_airfoil.git'
-        'modopt @ git+https://github.com/LSDOlab/modopt.git'
+        'lsdo_airfoil @ git+https://github.com/LSDOlab/lsdo_airfoil.git',
+        'modopt @ git+https://github.com/LSDOlab/modopt.git',
+        'm3l @ git+https://github.com/LSDOlab/m3l.git',
         'smt',
     ],
     classifiers=[
