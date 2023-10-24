@@ -5,13 +5,13 @@ import os
 from lsdo_rotor import BEM
 
 
-def print_output(sim, rotor, write_to_csv : bool=False, file_name : str=None):
+def print_output(sim, rotor, comprehensive_print : bool=False, write_to_csv : bool=False, file_name : str=None):
     """
     Function to print out BEM outputs and write them to a csv file if desired.
     """
     if write_to_csv is False and file_name is not None:
         raise Exception("Cannot specifiy 'file_name' if 'write_to_csv' is False")
-    if not isinstance(file_name, (type(str), type(None))):
+    if not isinstance(file_name, (str, type(None))):
         raise TypeError("argument 'file_name' must be of type string")
 
     bem_object = None
@@ -99,3 +99,19 @@ def print_output(sim, rotor, write_to_csv : bool=False, file_name : str=None):
         high_level_df.to_csv(file_path_1)
         distributions_df.to_csv(file_path_2)
     # print(s)
+
+    if comprehensive_print:
+        message3 =  '---------------------------' + '\n' \
+                    '| User-registered outputs |' + '\n' + \
+                    '---------------------------'
+        print('\n')
+        print(message3)
+        for output, var in rotor.outputs.items():
+            try:
+                var.value = sim[f"{var.operation.name}.{var.name}"]
+                print('Variable name:\t\t', var.name)
+                print('Variable operation:\t', var.operation.name)
+                print('Variable value:',  '\t' + str(var.value).replace('\n', '\n\t\t\t'))
+                print('\n')
+            except:
+                pass

@@ -4,6 +4,7 @@ import csdl
 from dataclasses import dataclass
 from typing import Union
 from lsdo_rotor.utils.atmosphere_model import AtmosphericProperties
+from python_csdl_backend import Simulator
 
 
 @dataclass

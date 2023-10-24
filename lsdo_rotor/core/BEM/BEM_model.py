@@ -161,8 +161,10 @@ class BEMModel(Model):
             self.register_output('twist_profile', comp)
                     
         self.declare_variable('propeller_radius', shape=(1, ))
-        self.declare_variable('thrust_vector', shape=(num_nodes, 3))
-        self.declare_variable('thrust_origin', shape=(num_nodes, 3))
+        tv = self.declare_variable('thrust_vector', shape=(num_nodes, 3))
+        # self.print_var(tv)
+        to = self.declare_variable('thrust_origin', shape=(num_nodes, 3))
+        # self.print_var(to)
         
 
         # External inputs
