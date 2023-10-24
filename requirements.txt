@@ -2,8 +2,8 @@
 Deprecated==1.2.13
 pytest
 -e git+https://github.com/LSDOlab/python_csdl_backend.git@master#egg=python_csdl_backend
-scipy==1.8.0
-sympy==1.10.1
+scipy
+sympy
 python-utils==2.5.6
 
 # Includes the list of all dependencies required to run setup() and use the package

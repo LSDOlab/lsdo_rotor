@@ -39,6 +39,7 @@ setup(
         'pytest',
         'pandas',
         'matplotlib',
+        'scipy',
         'csdl @ git+https://github.com/LSDOlab/csdl.git',
         'python_csdl_backend @ git+https://github.com/LSDOlab/python_csdl_backend.git',
         'lsdo_airfoil @ git+https://github.com/LSDOlab/lsdo_airfoil.git',
