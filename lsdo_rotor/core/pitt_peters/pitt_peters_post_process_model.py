@@ -2,7 +2,7 @@ import numpy as np
 from csdl import Model
 import csdl
 
-from lsdo_rotor.airfoil.pitt_peters_airfoil_model_2 import PittPetersAirfoilModel2
+from lsdo_rotor.core.airfoil.pitt_peters_airfoil_model_2 import PittPetersAirfoilModel2
 from lsdo_rotor.core.pitt_peters.pitt_peters_rotor_parameters import PittPetersRotorParameters
 
 class PittPetersPostProcessModel(Model):

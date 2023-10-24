@@ -1,7 +1,7 @@
 import numpy as np
 from csdl import Model, ScipyKrylov, NewtonSolver, NonlinearBlockGS
 import csdl
-from lsdo_rotor.airfoil.BEM_airfoil_surrogate_model_group import BEMAirfoilSurrogateModelGroup
+from lsdo_rotor.core.airfoil.BEM_airfoil_surrogate_model_group import BEMAirfoilSurrogateModelGroup
 from lsdo_rotor.core.BEM.BEM_rotor_parameters import BEMRotorParameters
 
 
@@ -86,7 +86,7 @@ class BEMBracketedSearchGroup(Model):
             # Cd = output_Cd
 
         elif rotor['use_custom_airfoil_ml'] is True:
-            from lsdo_rotor.airfoil.ml_trained_models.custom_ml_surrogate_model import CdModel, ClModel
+            from lsdo_rotor.core.airfoil.ml_trained_models.custom_ml_surrogate_model import CdModel, ClModel
 
             cl_model = rotor['cl_ml_model']
             cd_model = rotor['cd_ml_model']

@@ -12,9 +12,9 @@ from lsdo_rotor.core.BEM.inputs.BEM_pre_process_model import BEMPreprocessModel
 from lsdo_rotor.core.BEM.BEM_bracketed_search_model import BEMBracketedSearchGroup
 from lsdo_rotor.core.BEM.BEM_prandtl_loss_factor_model import BEMPrandtlLossFactorModel
 from lsdo_rotor.core.BEM.BEM_induced_velocity_model import BEMInducedVelocityModel
-from lsdo_rotor.airfoil.BEM_airfoil_surrogate_model_group_2 import BEMAirfoilSurrogateModelGroup2
+from lsdo_rotor.core.airfoil.BEM_airfoil_surrogate_model_group_2 import BEMAirfoilSurrogateModelGroup2
 
-from lsdo_rotor.airfoil.get_surrogate_model import get_surrogate_model
+from lsdo_rotor.core.airfoil.get_surrogate_model import get_surrogate_model
 from lsdo_rotor.core.BEM.functions.get_BEM_rotor_dictionary import get_BEM_rotor_dictionary
 
 from lsdo_rotor.utils.atmosphere_model import AtmosphereModel

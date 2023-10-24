@@ -2,7 +2,7 @@ import numpy as np
 from csdl import Model
 import csdl
 
-from lsdo_rotor.airfoil.get_surrogate_model import get_surrogate_model
+from lsdo_rotor.core.airfoil.get_surrogate_model import get_surrogate_model
 from lsdo_rotor.core.pitt_peters.functions.get_pitt_peters_rotor_dictionary import get_pitt_peters_rotor_dictionary
 
 

@@ -6,3 +6,5 @@ _build/
 .vscode/
 *.out
 *.egg-info
+*.csv
+*.txt

@@ -12,9 +12,9 @@ from lsdo_rotor.core.BEM.inputs.BEM_pre_process_model import BEMPreprocessModel
 from lsdo_rotor.core.BEM.BEM_bracketed_search_model import BEMBracketedSearchGroup
 from lsdo_rotor.core.BEM.BEM_prandtl_loss_factor_model import BEMPrandtlLossFactorModel
 from lsdo_rotor.core.BEM.BEM_induced_velocity_model import BEMInducedVelocityModel
-from lsdo_rotor.airfoil.BEM_airfoil_surrogate_model_group_2 import BEMAirfoilSurrogateModelGroup2
+from lsdo_rotor.core.airfoil.BEM_airfoil_surrogate_model_group_2 import BEMAirfoilSurrogateModelGroup2
 
-from lsdo_rotor.airfoil.get_surrogate_model import get_surrogate_model
+from lsdo_rotor.core.airfoil.get_surrogate_model import get_surrogate_model
 from lsdo_rotor.core.BEM.functions.get_BEM_rotor_dictionary import get_BEM_rotor_dictionary
 
 from lsdo_rotor.utils.atmosphere_model import AtmosphereModel
@@ -93,7 +93,7 @@ class BEMModel(Model):
             X_min = self.create_input('X_min', val=np.tile(X_min_numpy.reshape(3, 1), num_nodes*num_radial*num_tangential).T)
             X_max = self.create_input('X_max', val=np.tile(X_max_numpy.reshape(3, 1), num_nodes*num_radial*num_tangential).T)
 
-            from lsdo_rotor.airfoil.ml_trained_models.get_airfoil_model import get_airfoil_models
+            from lsdo_rotor.core.airfoil.ml_trained_models.get_airfoil_model import get_airfoil_models
 
             neural_nets = get_airfoil_models(airfoil=airfoil)
             cl_model = neural_nets.Cl
