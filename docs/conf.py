@@ -160,23 +160,23 @@ def split_first_string_between_quotes(code_string, quotes):
 
 collections = {
     
-    # copy_tutorials collection copies the contents inside `/tutorials` 
-    # directory into `/src/_temp/tutorials`
-   'copy_tutorials': {
-      'driver': 'copy_folder',
-      'source': '../tutorials', # source relative to path of makefile, not wrt /src
-      'target': 'tutorials/',
-      'ignore': [],
-    #   'active': True,         # default: True. If False, this collection is ignored during doc build.
-    #   'safe': True,           # default: True. If True, any problem will raise an exception and stops the build.
-      'clean': True,            # default: True. If False, no cleanup is done before collections get executed.
-      'final_clean': True,      # default: True. If True, a final cleanup is done at the end of a Sphinx build.
-    #   'tags': ['my_collection', 'dummy'],     # List of tags, which trigger an activation of the collection.
-                                        # Should be used together with active set to False, 
-                                        # otherwise the collection gets always executed.
-                                        # Use -t tag option of sphinx-build command to trigger related collections.
-                                        # e.g. : `sphinx-build -b html -t dummy . _build/html`
-   },
+  #   # copy_tutorials collection copies the contents inside `/tutorials` 
+  #   # directory into `/src/_temp/tutorials`
+  #  'copy_tutorials': {
+  #     'driver': 'copy_folder',
+  #     'source': '../tutorials', # source relative to path of makefile, not wrt /src
+  #     'target': 'tutorials/',
+  #     'ignore': [],
+  #   #   'active': True,         # default: True. If False, this collection is ignored during doc build.
+  #   #   'safe': True,           # default: True. If True, any problem will raise an exception and stops the build.
+  #     'clean': True,            # default: True. If False, no cleanup is done before collections get executed.
+  #     'final_clean': True,      # default: True. If True, a final cleanup is done at the end of a Sphinx build.
+  #   #   'tags': ['my_collection', 'dummy'],     # List of tags, which trigger an activation of the collection.
+  #                                       # Should be used together with active set to False, 
+  #                                       # otherwise the collection gets always executed.
+  #                                       # Use -t tag option of sphinx-build command to trigger related collections.
+  #                                       # e.g. : `sphinx-build -b html -t dummy . _build/html`
+  #  },
 
    'copy_examples': {
       'driver': 'copy_folder',
