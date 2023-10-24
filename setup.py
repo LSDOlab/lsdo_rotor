@@ -46,6 +46,8 @@ setup(
         'modopt @ git+https://github.com/LSDOlab/modopt.git',
         'm3l @ git+https://github.com/LSDOlab/m3l.git',
         'smt',
+        'astroid==2.15.5',
+
     ],
     classifiers=[
         'Programming Language :: Python',
