@@ -123,23 +123,69 @@ class BEMModel(Model):
             raise NotImplementedError
 
         # --------------- Rotor geometry --------------- #
-        if 'chord_profile' in arguments: 
-            self.declare_variable('chord_profile', shape=(num_radial, ))
-        
-        elif arguments['chord_cp']:
-            chord_cp_shape = arguments['chord_cp'].shape
-            chord_cp = self.declare_variable(name='chord_cp', shape=chord_cp_shape)
-            order = bem_parameters.parameters['b_spline_order']
-            num_cp = bem_parameters.parameters['num_cp']
-            chord_A = get_bspline_mtx(num_cp, num_radial, order=order)
-            comp_chord = csdl.custom(chord_cp,op=BsplineComp(
-                num_pt=num_radial,
-                num_cp=num_cp,
-                in_name='chord_cp',
-                jac=chord_A,
-                out_name='chord_profile',
-            ))
-            self.register_output('chord_profile', comp_chord)
+        if units == 'ft':
+            r = self.declare_variable('R', shape=(1, ))
+            radius = self.register_output('propeller_radius', r * 0.3048) 
+            # self.print_var(radius)
+
+            to = self.declare_variable('to', shape=(num_nodes, 3)) 
+            self.register_output('thrust_origin', to * 0.3048)
+            self.print_var(to)
+
+
+            if 'chord_dist' in arguments: 
+                chord = self.declare_variable('chord_dist', shape=(num_radial, ))
+                chord_in_m = self.register_output('chord_profile', chord * 0.3048)
+                # self.print_var(chord_in_m)
+                
+
+            elif arguments['chord_cp']:
+                chord_cp_shape = arguments['chord_cp'].shape
+                chord_cp = self.declare_variable(name='chord_cp', shape=chord_cp_shape)
+                order = bem_parameters.parameters['b_spline_order']
+                num_cp = bem_parameters.parameters['num_cp']
+                chord_A = get_bspline_mtx(num_cp, num_radial, order=order)
+                comp_chord = csdl.custom(chord_cp,op=BsplineComp(
+                    num_pt=num_radial,
+                    num_cp=num_cp,
+                    in_name='chord_cp',
+                    jac=chord_A,
+                    out_name='chord_profile',
+                ))
+                self.register_output('chord_profile', comp_chord * 0.3048)
+
+            else:
+                raise NotImplementedError
+
+        else:
+            r = self.declare_variable('R', shape=(1, ))
+            radius = self.register_output('propeller_radius', r * 1) 
+            # self.print_var(radius)
+
+            to = self.declare_variable('to', shape=(num_nodes, 3)) 
+            self.register_output('thrust_origin', to * 1)
+            self.print_var(to)
+
+
+            if 'chord_dist' in arguments: 
+                chord = self.declare_variable('chord_dist', shape=(num_radial, ))
+                self.register_output('chord_profile', chord * 1)
+            
+            elif arguments['chord_cp']:
+                chord_cp_shape = arguments['chord_cp'].shape
+                chord_cp = self.declare_variable(name='chord_cp', shape=chord_cp_shape)
+                order = bem_parameters.parameters['b_spline_order']
+                num_cp = bem_parameters.parameters['num_cp']
+                chord_A = get_bspline_mtx(num_cp, num_radial, order=order)
+                comp_chord = csdl.custom(chord_cp,op=BsplineComp(
+                    num_pt=num_radial,
+                    num_cp=num_cp,
+                    in_name='chord_cp',
+                    jac=chord_A,
+                    out_name='chord_profile',
+                ))
+                self.register_output('chord_profile', comp_chord)
+
 
         if 'twist_profile' in arguments:
             self.declare_variable('twist_profile', shape=(num_radial, ))
@@ -159,11 +205,8 @@ class BEMModel(Model):
             ))
             self.register_output('twist_profile', comp)
                     
-        self.declare_variable('propeller_radius', shape=(1, ))
-        tv = self.declare_variable('thrust_vector', shape=(num_nodes, 3))
-        # self.print_var(tv)
-        to = self.declare_variable('thrust_origin', shape=(num_nodes, 3))
-        # self.print_var(to)
+        tv = self.declare_variable('thrust_vector', shape=(num_nodes, 3)) 
+        
         
 
         # External inputs
@@ -285,6 +328,7 @@ class BEMModel(Model):
             thrust_vector = self.declare_variable('thrust_vector', shape=(num_nodes, 3))
             # self.print_var(thrust_vector)
             thrust_origin = self.declare_variable('thrust_origin', shape=(num_nodes, 3))
+            self.print_var(thrust_origin)
             # loop over pt set list 
             
 

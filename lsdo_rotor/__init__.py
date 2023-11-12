@@ -1,6 +1,8 @@
 __version__ = '0.1.0'
 
-from lsdo_rotor.core.BEM.BEM_caddee import BEM, BEMParameters, AcStates, AtmosphericProperties
+from lsdo_rotor.core.BEM.BEM_caddee import BEM, BEMParameters, evaluate_multiple_BEM_instances
+from lsdo_rotor.utils.helper_classes import AcStates, RotorMeshes
+from lsdo_rotor.utils.atmosphere_model import AtmosphericProperties
 from lsdo_rotor.core.rotor_model import RotorAnalysis
 from lsdo_rotor.utils.atmosphere_model import get_atmosphere
 from lsdo_rotor.utils.print_output import print_output

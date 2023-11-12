@@ -11,9 +11,12 @@ from modopt.csdl_library import CSDLProblem
 rotor_analysis = RotorAnalysis()
 
 u = rotor_analysis.create_input('u', val=50.06, shape=(1, ))
-altitude = rotor_analysis.create_input('altitude', val=1000, shape=(1, ))
+v = rotor_analysis.create_input('v', val=0.0, shape=(1, ))
+w = rotor_analysis.create_input('w', val=0.0, shape=(1, ))
+theta = rotor_analysis.create_input('theta', val=np.deg2rad(0))
+altitude = rotor_analysis.create_input('altitude', val=0, shape=(1, ))
 
-ac_states = AcStates(u=u)
+ac_states = AcStates(u=u, v=v, w=w, theta=theta)
 atmos = get_atmosphere(altitude=altitude)
 
 
@@ -55,13 +58,13 @@ desired_thrust = 981
 thrust_residual = ((thrust-desired_thrust)**2)**0.5
 rotor_analysis.register_output(thrust_residual)
 
-# Option 1) Minimize torque subject to a thrust constraint
+# # Option 1) Minimize torque subject to a thrust constraint
 rotor_analysis.add_constraint(bem_outputs.T, equals=desired_thrust, scaler=1e-3)
 rotor_analysis.add_objective(bem_outputs.Q, scaler=1e-2)
 
 # Option 2) Minimize a thrust residual subject to a constant efficiency
 # rotor_analysis.add_constraint(bem_outputs.eta, equals=0.8)
-# rotor_analysis.add_objective(thrust_residual, scaler=1e-1)
+# rotor_analysis.add_objective(thrust_residual, scaler=1e-2)
 
 csdl_model = rotor_analysis.assemble_csdl()
 
@@ -69,7 +72,6 @@ sim = Simulator(csdl_model, analytics=True)
 sim.run()
 
 print_output(sim, rotor=rotor_analysis, comprehensive_print=True, write_to_csv=True, file_name='test_BEM')
-
 # Optimization
 prob = CSDLProblem(problem_name='bem_blade_shape_optimization', simulator=sim)
 optimizer = SLSQP(prob, maxiter=100, ftol=1E-7)

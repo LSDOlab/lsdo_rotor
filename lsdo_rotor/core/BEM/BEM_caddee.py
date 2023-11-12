@@ -1,100 +1,11 @@
 import numpy as np
 import m3l
 import csdl
-from dataclasses import dataclass
 from typing import Union
 from lsdo_rotor.utils.atmosphere_model import AtmosphericProperties
 from python_csdl_backend import Simulator
-
-
-@dataclass
-class AcStates:
-    """
-    Container data class for aircraft states and time (time for steady cases only)
-    """
-    u: m3l.Variable = None
-    v: m3l.Variable = None
-    w: m3l.Variable = None
-    p: m3l.Variable = None
-    q: m3l.Variable = None
-    r: m3l.Variable = None
-    theta: m3l.Variable = None
-    phi: m3l.Variable = None
-    gamma: m3l.Variable = None
-    psi: m3l.Variable = None
-    x: m3l.Variable = None
-    y: m3l.Variable = None
-    z: m3l.Variable = None
-    time: m3l.Variable = None
-    stability_flag: bool = False
-
-
-@dataclass
-class BEMOutputs:
-    """
-    Data class containing BEM outputs. All quantities are in SI units 
-    unless otherwise specified.
-
-    Parameters
-    ----------
-    forces : m3l.Variable
-        The forces vector in the body-fixed reference frame
-
-    moments : m3l.Variable
-        The moments vector in the body-fixed reference frame
-
-    T : m3l.Variable
-        The total rotor thrust
-
-    C_T : m3l.Variable
-        The total thrust coefficient 
-
-    Q : m3l.Variable
-        The total rotor torque
-
-    C_Q : m3l.Variable
-        The total torque coefficient
-
-    eta : m3l.Variable
-        The total rotor efficiency
-
-    FOM : m3l.Variable
-        The total rotor figure of merit
-    
-    dT : m3l.Variable
-        The sectional thrust in the span-wise direction 
-
-    dQ : m3l.Variable
-        The sectional torque in the span-wise direction
-
-    dD : m3l.Variable
-        The sectional drag in the span-wise direction 
-
-    u_x : m3l.Variable
-        The sectional axial-induced velocity 
-
-    phi : m3l.Variable
-        The sectional inflow angle
-
-        
-    """
-    
-    forces : m3l.Variable = None
-    forces_perturbed : m3l.Variable = None
-    moments : m3l.Variable = None
-    moments_perturbed : m3l.Variable = None
-    T : m3l.Variable = None
-    C_T : m3l.Variable = None
-    Q : m3l.Variable = None
-    C_Q : m3l.Variable = None
-    eta : m3l.Variable = None
-    FOM : m3l.Variable = None
-    dT : m3l.Variable = None
-    dQ : m3l.Variable = None
-    dD : m3l.Variable = None
-    u_x : m3l.Variable = None
-    phi : m3l.Variable = None
-
+from typing import List, Union
+from lsdo_rotor.utils.helper_classes import RotorMeshes, AcStates, BEMOutputs
 
 
 
@@ -228,12 +139,12 @@ class BEM(m3l.ExplicitOperation):
         self.arguments['dynamic_viscosity'] = atmosphere.dynamic_viscosity
         self.arguments['speed_of_sound'] = atmosphere.speed_of_sound
 
-        self.arguments['propeller_radius'] = rotor_radius
+        self.arguments['R'] = rotor_radius
         self.arguments['thrust_vector'] = thrust_vector
-        self.arguments['thrust_origin'] = thrust_origin
+        self.arguments['to'] = thrust_origin
 
         if blade_chord:
-            self.arguments['chord_profile'] = blade_chord
+            self.arguments['chord_dist'] = blade_chord
         elif blade_chord_cp:
             self.arguments['chord_cp'] = blade_chord_cp
         
@@ -310,3 +221,53 @@ class BEMParameters(m3l.ExplicitOperation):
 
     def assign_attributes(self):
         self.name = self.parameters['name']
+
+
+
+
+def evaluate_multiple_BEM_instances(
+        num_instances : int,
+        name_prefix : str,
+        bem_parameters : BEMParameters,
+        bem_mesh_list : List[RotorMeshes],
+        rpm_list : List[m3l.Variable],
+        ac_states : AcStates,
+        atmoshpere : AtmosphericProperties,
+        num_nodes : int = 1, 
+        m3l_model : m3l.Model=None,
+) -> List[BEMOutputs]:
+    """
+    Helper function to create multiple BEM instances at once
+    """
+
+    if len(bem_mesh_list) != num_instances:
+        raise ValueError("'num_instance' not equal to number of mesh instances contained in 'bem_mesh_list'")
+    elif len(rpm_list) != num_instances:
+        raise ValueError("number of rpm variables contained in 'rpm_list' not equal to 'num_instance'")
+
+    bem_output_list = []
+    for i in range(num_instances):
+        bem_instance = BEM(
+            name=f'{name_prefix}_{i}',
+            BEM_parameters=bem_parameters,
+            num_nodes=num_nodes,
+        )
+
+        bem_mesh = bem_mesh_list[i]
+        rpm = rpm_list[i]
+        thrust_vector = bem_mesh.thrust_vector
+        thrust_origin = bem_mesh.thrust_origin
+        chord_profile = bem_mesh.chord_profile
+        twist_profile = bem_mesh.twist_profile
+
+        bem_outputs = bem_instance.evaluate(ac_states=ac_states, rpm=rpm, atmosphere=atmoshpere, 
+                                  thrust_origin=thrust_origin, thrust_vector=thrust_vector, rotor_radius=bem_mesh.radius,
+                                  blade_chord=chord_profile, blade_twist=twist_profile)
+        
+        if m3l_model is not None:
+            m3l_model.register_output(bem_outputs)
+        
+        bem_output_list.append(bem_outputs)
+
+    return bem_output_list
+
