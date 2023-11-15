@@ -97,7 +97,7 @@ class BEM(m3l.ExplicitOperation):
                  thrust_vector : m3l.Variable, thrust_origin : m3l.Variable,
                  atmosphere : AtmosphericProperties, blade_chord : Union[m3l.Variable, None] = None,
                  blade_twist : Union[m3l.Variable, None] = None, blade_chord_cp : Union[m3l.Variable, None] = None,
-                 blade_twist_cp : Union[m3l.Variable, None] = None) -> BEMOutputs:
+                 blade_twist_cp : Union[m3l.Variable, None] = None, reference_point : m3l.Variable=None) -> BEMOutputs:
         """
         This method evaluates BEM and returns a data class with top-level analysis outputs
 
@@ -142,6 +142,11 @@ class BEM(m3l.ExplicitOperation):
         self.arguments['R'] = rotor_radius
         self.arguments['thrust_vector'] = thrust_vector
         self.arguments['to'] = thrust_origin
+        
+        if reference_point == None:
+            self.arguments['reference_point'] = m3l.Variable(shape=(3, ), value=np.array([0., 0., 0.,]))
+        else:
+            self.arguments['reference_point'] = reference_point
 
         if blade_chord:
             self.arguments['chord_dist'] = blade_chord
@@ -225,7 +230,7 @@ class BEMParameters(m3l.ExplicitOperation):
 
 
 
-def evaluate_multiple_BEM_instances(
+def evaluate_multiple_BEM_models(
         num_instances : int,
         name_prefix : str,
         bem_parameters : BEMParameters,

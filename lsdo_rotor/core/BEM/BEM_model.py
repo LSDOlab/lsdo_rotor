@@ -129,8 +129,8 @@ class BEMModel(Model):
             # self.print_var(radius)
 
             to = self.declare_variable('to', shape=(num_nodes, 3)) 
-            self.register_output('thrust_origin', to * 0.3048)
-            self.print_var(to)
+            thrust_origin = self.register_output('thrust_origin', to * 0.3048)
+            # self.print_var(to)
 
 
             if 'chord_dist' in arguments: 
@@ -163,8 +163,8 @@ class BEMModel(Model):
             # self.print_var(radius)
 
             to = self.declare_variable('to', shape=(num_nodes, 3)) 
-            self.register_output('thrust_origin', to * 1)
-            self.print_var(to)
+            thrust_origin = self.register_output('thrust_origin', to * 1)
+            # self.print_var(to)
 
 
             if 'chord_dist' in arguments: 
@@ -274,7 +274,7 @@ class BEMModel(Model):
             ref_pt = self.declare_variable('reference_point',shape=(num_nodes,3), val=np.tile(reference_point,(num_nodes,1)))
             thrust_vector = self.declare_variable('thrust_vector', shape=(num_nodes, 3))
             # self.print_var(thrust_vector)
-            thrust_origin = self.declare_variable('thrust_origin', shape=(num_nodes, 3))
+            # thrust_origin = self.declare_variable('thrust_origin', shape=(num_nodes, 3))
             # loop over pt set list 
             
 
@@ -327,8 +327,8 @@ class BEMModel(Model):
             ref_pt = self.declare_variable('reference_point',shape=(num_nodes,3), val=np.tile(reference_point,(num_nodes,1)))
             thrust_vector = self.declare_variable('thrust_vector', shape=(num_nodes, 3))
             # self.print_var(thrust_vector)
-            thrust_origin = self.declare_variable('thrust_origin', shape=(num_nodes, 3))
-            self.print_var(thrust_origin)
+            # thrust_origin = self.declare_variable('thrust_origin', shape=(num_nodes, 3))
+            # self.print_var(thrust_origin)
             # loop over pt set list 
             
 
