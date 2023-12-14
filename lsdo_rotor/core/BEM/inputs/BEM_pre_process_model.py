@@ -8,11 +8,13 @@ class BEMPreprocessModel(Model):
     def initialize(self):
         self.parameters.declare('shape', types=tuple)
         self.parameters.declare('num_blades', types=int)
+        self.parameters.declare('rotation_direction', values=['cw', 'ccw', 'ignore'], allow_none=False)
 
     def define(self):
         shape = self.parameters['shape']
         num_blades = self.parameters['num_blades']
-
+        rotation_direction = self.parameters['rotation_direction']
+        
         # -----
         _rotational_speed = self.declare_variable('_rotational_speed', shape=shape)
         _chord = self.declare_variable('_chord', shape=shape)
@@ -50,10 +52,17 @@ class BEMPreprocessModel(Model):
         self.register_output('_in_plane_inflow_velocity',_inflow_y)
         self.register_output('inflow_z', _inflow_z)
         
-        self.register_output(
-            '_tangential_inflow_velocity', 
-            1 * _inflow_z * csdl.cos(_theta) + 
-            1 * _inflow_y * csdl.sin(_theta) + 
-            _radius * _angular_speed
-        )
-
+        if (rotation_direction == 'cw') or (rotation_direction == 'ignore'):
+            self.register_output(
+                '_tangential_inflow_velocity', 
+                1 * _inflow_z * csdl.cos(_theta) + 
+                1 * _inflow_y * csdl.sin(_theta) + 
+                _radius * _angular_speed
+            )
+        else: 
+            self.register_output(
+                '_tangential_inflow_velocity', 
+                -1 * _inflow_z * csdl.cos(_theta) - 
+                1 * _inflow_y * csdl.sin(_theta) + 
+                _radius * _angular_speed
+            )

@@ -17,25 +17,25 @@ class PittPetersAirfoilModel2(csdl.CustomExplicitOperation):
         rotor = self.parameters['rotor']
         
         self.add_input('_re_pitt_peters', shape=shape)
-        self.add_input('AoA_pitt_peters_2', shape=shape)
+        self.add_input('alpha_distribution', shape=shape)
         # self.add_input('_chord', shape=shape)
         
 
-        self.add_output('Cl_pitt_peters_2', shape=shape)
-        self.add_output('Cd_pitt_peters_2', shape=shape)
+        self.add_output('Cl', shape=shape)
+        self.add_output('Cd', shape=shape)
 
         indices = np.arange(shape[0] * shape[1] * shape[2])
         # print(indices,'INDICES')
         # self.declare_derivatives('Cl', 'Re')
         # self.declare_derivatives('Cl', 'alpha_distribution')
-        self.declare_derivatives('Cl_pitt_peters_2', '_re_pitt_peters', rows=indices, cols=indices)
-        self.declare_derivatives('Cl_pitt_peters_2', 'AoA_pitt_peters_2', rows=indices, cols=indices)
+        self.declare_derivatives('Cl', '_re_pitt_peters', rows=indices, cols=indices)
+        self.declare_derivatives('Cl', 'alpha_distribution', rows=indices, cols=indices)
        
         
         # self.declare_derivatives('Cd', 'Re')
         # self.declare_derivatives('Cd', 'alpha_distribution')
-        self.declare_derivatives('Cd_pitt_peters_2', '_re_pitt_peters', rows=indices, cols=indices)
-        self.declare_derivatives('Cd_pitt_peters_2', 'AoA_pitt_peters_2', rows=indices, cols=indices)
+        self.declare_derivatives('Cd', '_re_pitt_peters', rows=indices, cols=indices)
+        self.declare_derivatives('Cd', 'alpha_distribution', rows=indices, cols=indices)
         
 
         self.x_1 = np.zeros((shape[0] * shape[1] * shape[2], 2))
@@ -48,7 +48,7 @@ class PittPetersAirfoilModel2(csdl.CustomExplicitOperation):
         rotor       = self.parameters['rotor']
         interp      = rotor['interp']
 
-        alpha       = inputs['AoA_pitt_peters_2'].flatten()
+        alpha       = inputs['alpha_distribution'].flatten()
         Re          = inputs['_re_pitt_peters'].flatten()
         # print(Re)
         # AoA         = inputs['AoA'].flatten()
@@ -60,8 +60,8 @@ class PittPetersAirfoilModel2(csdl.CustomExplicitOperation):
  
         y_1 = interp.predict_values(self.x_1).reshape((shape[0] , shape[1] , shape[2], 2))
     
-        outputs['Cl_pitt_peters_2'] = y_1[:,:,:,0]
-        outputs['Cd_pitt_peters_2'] = y_1[:,:,:,1]
+        outputs['Cl'] = y_1[:,:,:,0]
+        outputs['Cd'] = y_1[:,:,:,1]
 
 
 
@@ -69,7 +69,7 @@ class PittPetersAirfoilModel2(csdl.CustomExplicitOperation):
         rotor       = self.parameters['rotor']
         interp      = rotor['interp']
         
-        alpha       = inputs['AoA_pitt_peters_2'].flatten()
+        alpha       = inputs['alpha_distribution'].flatten()
         Re          = inputs['_re_pitt_peters'].flatten()
         # AoA         = inputs['AoA'].flatten()
        
@@ -80,10 +80,10 @@ class PittPetersAirfoilModel2(csdl.CustomExplicitOperation):
         dy_dalpha = interp.predict_derivatives(self.x_1, 0)
         dy_dRe = interp.predict_derivatives(self.x_1, 1)
 
-        derivatives['Cl_pitt_peters_2', 'AoA_pitt_peters_2'] = dy_dalpha[:, 0]
-        derivatives['Cd_pitt_peters_2', 'AoA_pitt_peters_2'] = dy_dalpha[:, 1]
+        derivatives['Cl', 'alpha_distribution'] = dy_dalpha[:, 0]
+        derivatives['Cd', 'alpha_distribution'] = dy_dalpha[:, 1]
 
-        derivatives['Cl_pitt_peters_2', '_re_pitt_peters'] = dy_dRe[:, 0] /2e6
-        derivatives['Cd_pitt_peters_2', '_re_pitt_peters'] = dy_dRe[:, 1] /2e6
+        derivatives['Cl', '_re_pitt_peters'] = dy_dRe[:, 0] /2e6
+        derivatives['Cd', '_re_pitt_peters'] = dy_dRe[:, 1] /2e6
 
 

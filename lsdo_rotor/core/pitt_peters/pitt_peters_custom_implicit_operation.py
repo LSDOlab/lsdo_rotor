@@ -128,7 +128,7 @@ class PittPetersCustomImplicitOperation(csdl.CustomImplicitOperation):
         # compute solidity 
         sigma = B * chord / 2 / np.pi / r 
         Cl = 0
-
+        # print('Cl', Cl)
         # Compute nu and self.ux (ne, nr, nt)
         self.lamb_exp = self.lamb_0_exp + self.lamb_c_exp * self.r_norm * np.cos(psi) + self.lamb_s_exp * self.r_norm * np.sin(psi)
         self.ux = (self.lamb_exp + mu_z_exp) * Omega * R
@@ -662,7 +662,7 @@ class PittPetersCustomImplicitOperation(csdl.CustomImplicitOperation):
             normalized_radial_discretization,
         )
 
-        lambda_0 = 0.01 * np.ones((ne,))#np.random.randn(shape[0],)#np.zeros((ne,))#0.01 * np.ones((ne,))#
+        lambda_0 = 0.01 * np.ones((ne,))#np.random.randn(shape[0],)#np.zeros((ne,))#0.01 * np.ones((ne,))# 
         lambda_c = 0.01 * np.ones((ne,))#np.random.randn(shape[0],)#np.zeros((ne,))#
         lambda_s = 0.01 * np.ones((ne,))#np.random.randn(shape[0],)#np.zeros((ne,))#
         
@@ -701,9 +701,8 @@ class PittPetersCustomImplicitOperation(csdl.CustomImplicitOperation):
             # Compute inflow angle self.phi (ne, nr, nt)
             # ignore u_theta
             # self.phi = np.arctan(self.ux / Vt * (1 + sigma * Cl / 4))
-            self.phi = np.arctan(self.ux / Vt)
+            self.phi = np.arctan2(self.ux , Vt)
             # u_theta = 2 * sigma * Cl * np.sin(self.phi) * Vt / (4 * np.sin(self.phi) * np.cos(self.phi) + sigma * Cl * np.sin(self.phi))
-            # print(u_theta, 'u_theta')
             # Compute sectional AoA (ne, nr, nt)
             alpha = twist - self.phi 
 
@@ -740,7 +739,7 @@ class PittPetersCustomImplicitOperation(csdl.CustomImplicitOperation):
                 lamb_i = np.mean(self.lamb_exp[i,:,:])
                 lamb = lamb_i + mu_z[i]
 
-                Chi = np.arctan(mu[i]/lamb)
+                Chi = np.arctan2(mu[i], lamb)
                 V_eff = (mu[i]**2 + lamb * (lamb + lamb_i)) / (mu[i]**2 + lamb**2)**0.5
                 L[i,0,0] = 0.5
                 L[i,0,1] = -15 * np.pi/64 * ((1 - np.cos(Chi))/(1 + np.cos(Chi)))**0.5
@@ -750,18 +749,14 @@ class PittPetersCustomImplicitOperation(csdl.CustomImplicitOperation):
 
                 L[i,:,:] = L[i,:,:] / V_eff
                 L_list.append(L[i,:,:])
-
-                # print(L[i,:,:])
-
+                
                 L_inv[i,:,:] = np.linalg.inv(L[i,:,:])
                 L_inv_list.append(L_inv[i,:,:])
 
-        
                 self.C[i,0] = self.C_T[i]
                 self.C[i,1] = -self.C_My[i]
                 self.C[i,2] = self.C_Mx[i] 
                 
-
                 self.lamb[i,0] = lambda_0[i]
                 self.lamb[i,1] = lambda_c[i]
                 self.lamb[i,2] = lambda_s[i] 
@@ -793,15 +788,8 @@ class PittPetersCustomImplicitOperation(csdl.CustomImplicitOperation):
             lambda_0 = self.lamb[:,0]
             lambda_c = self.lamb[:,1]
             lambda_s = self.lamb[:,2]
-        # print(Cl)
-        # print(Cl.shape)
-        # np.savetxt('txt_files/lift_distribution.txt',Cl.flatten() )
-        # np.savetxt('txt_files/drag_distribution.txt',Cd.flatten() )
-        # np.savetxt('txt_files/phi_distribution.txt',self.phi.flatten() )
-        # print(self.phi.shape)
-        # np.savetxt('txt_files/section_thrust_distribution.txt',self.dT.flatten() )
-        # np.savetxt('txt_files/ux_distribution.txt',self.ux.flatten() )
-        # np.savetxt('sectional_CT.txt',self.dC_T.flatten())
+
+       
         if np.linalg.norm(self.lamb.flatten()-self.lamb_new) > 1e-15:
             print('Pitt-Peters not converged to tolerance!')
             print('Norm between successive iterates: {}'.format(np.linalg.norm(self.lamb.flatten()-self.lamb_new)))

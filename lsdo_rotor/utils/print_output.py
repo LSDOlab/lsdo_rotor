@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd 
 pd.set_option('colheader_justify', 'center')
 import os
-from lsdo_rotor import BEM
+from lsdo_rotor import BEM, PittPeters
 
 
 def print_output(sim, rotor, comprehensive_print : bool=False, write_to_csv : bool=False, file_name : str=None):
@@ -15,27 +15,34 @@ def print_output(sim, rotor, comprehensive_print : bool=False, write_to_csv : bo
         raise TypeError("argument 'file_name' must be of type string")
 
     bem_object = None
+    pitt_peters_object = None
     for operation_name, operation in rotor.operations.items():
         if isinstance(operation, BEM):
             bem_object = operation
+        elif isinstance(operation, PittPeters):
+            pitt_peters_object = operation
 
-    B = bem_object.parameters['BEM_parameters'].parameters['num_blades']
-    bem_name = bem_object.name
+    if bem_object is not None:
+        B = bem_object.parameters['BEM_parameters'].parameters['num_blades']
+        rotor_name = bem_object.name
+    elif pitt_peters_object is not None:
+        B = pitt_peters_object.parameters['pitt_peters_parameters'].parameters['num_blades']
+        rotor_name = pitt_peters_object.name
 
-    T = sim[f'{bem_name}.T'].flatten()
-    Q = sim[f'{bem_name}.Q'].flatten()
-    M = sim[f'{bem_name}.M'].flatten()
-    eta = sim[f'{bem_name}.eta'].flatten()
-    FM = sim[f'{bem_name}.FOM'].flatten()
-    C_T = sim[f'{bem_name}.C_T'].flatten()
-    C_Q = sim[f'{bem_name}.C_Q'].flatten()
-    C_P = sim[f'{bem_name}.C_P_compute'].flatten()
+    T = sim[f'{rotor_name}.T'].flatten()
+    Q = sim[f'{rotor_name}.Q'].flatten()
+    M = sim[f'{rotor_name}.M'].flatten()
+    eta = sim[f'{rotor_name}.eta'].flatten()
+    FM = sim[f'{rotor_name}.FOM'].flatten()
+    C_T = sim[f'{rotor_name}.C_T'].flatten()
+    C_Q = sim[f'{rotor_name}.C_Q'].flatten()
+    C_P = sim[f'{rotor_name}.C_P_compute'].flatten()
 
-    chord = sim[f'{bem_name}._chord'].flatten()
-    dr = sim[f'{bem_name}._dr'].flatten()
-    twist = sim[f'{bem_name}._pitch'].flatten()
-    radius = sim[f'{bem_name}._radius'].flatten()
-    R = sim[f'{bem_name}.propeller_radius'].flatten()
+    chord = sim[f'{rotor_name}._chord'].flatten()
+    dr = sim[f'{rotor_name}._dr'].flatten()
+    twist = sim[f'{rotor_name}._pitch'].flatten()
+    radius = sim[f'{rotor_name}._radius'].flatten()
+    R = sim[f'{rotor_name}.propeller_radius'].flatten()
 
     sigma = B * np.trapz(chord, radius) / np.pi / R**2
     na = '-----'
@@ -56,15 +63,20 @@ def print_output(sim, rotor, comprehensive_print : bool=False, write_to_csv : bo
     high_level_df.index = ['Value (SI)', 'Coeff./ dim.-less qty.']
 
     # distributions 
-    radius = sim[f'{bem_name}._radius'].flatten()
-    twist = sim[f'{bem_name}._pitch'].flatten() * 180/np.pi
-    chord = sim[f'{bem_name}._chord'].flatten()
-    dT = sim[f'{bem_name}._dT'].flatten()
-    dQ = sim[f'{bem_name}._dQ'].flatten()
-    aoa = sim[f'{bem_name}.alpha_distribution'].flatten() * 180/np.pi
-    Cl = sim[f'{bem_name}.Cl'].flatten()
-    Cd = sim[f'{bem_name}.Cd'].flatten()
-    LoD = Cl/Cd
+    radius = sim[f'{rotor_name}._radius'][0, :, 0].flatten()
+    twist = sim[f'{rotor_name}._pitch'][0, :, 0].flatten() * 180/np.pi
+    chord = sim[f'{rotor_name}._chord'][0, :, 0].flatten()
+    dT = sim[f'{rotor_name}._dT'][0, :, 0].flatten()
+    dQ = sim[f'{rotor_name}._dQ'][0, :, 0].flatten()
+    aoa = sim[f'{rotor_name}.alpha_distribution'][0, :, 0].flatten() * 180/np.pi
+    if bem_object is not None:
+        Cl = sim[f'{rotor_name}.Cl'] # [0, :, 0].flatten()
+        Cd = sim[f'{rotor_name}.Cd']# [0, :, 0].flatten()
+        LoD = Cl/Cd
+    else:
+        Cl = sim[f'{rotor_name}.Cl'][0, :, 0].flatten()
+        Cd = sim[f'{rotor_name}.Cd'][0, :, 0].flatten()
+        LoD = Cl/Cd
 
     distributions = {
         'radius' : np.round(radius, 3),
@@ -77,7 +89,7 @@ def print_output(sim, rotor, comprehensive_print : bool=False, write_to_csv : bo
         'Cd' : np.round(Cd, 3),
         'Cl/Cd' : np.round(LoD, 3),
     }
-    
+
     distributions_df = pd.DataFrame(data=distributions)
     print('\n')
     message1 =  '-------------------------------------' + '\n' \

@@ -8,10 +8,12 @@ class PittPetersPreprocessModel(Model):
     def initialize(self):
         self.parameters.declare('shape', types=tuple)
         self.parameters.declare('num_blades', types=int)
+        self.parameters.declare('rotation_direction', values=['cw', 'ccw', 'ignore'])
 
     def define(self):
         shape = self.parameters['shape']
         num_blades = self.parameters['num_blades']
+        rotation_direction = self.parameters['rotation_direction']
 
         # -----
         _rotational_speed = self.declare_variable('_rotational_speed', shape=shape)
@@ -49,14 +51,23 @@ class PittPetersPreprocessModel(Model):
         _inflow_y = csdl.dot(_inflow_velocity, _y_dir, axis = 3)
         _inflow_z = csdl.dot(_inflow_velocity, _z_dir, axis = 3)
 
+
         self.register_output('_axial_inflow_velocity', _inflow_x)
-        self.register_output('_in_plane_inflow_velocity',_inflow_y)
+        self.register_output('inflow_y',_inflow_y)
         self.register_output('inflow_z', _inflow_z)
         
-        self.register_output(
-            '_tangential_inflow_velocity', 
-            _direction * _inflow_z * csdl.cos(_theta) + 
-            _direction * _inflow_y * csdl.sin(_theta) + 
-            _radius * _angular_speed
-        )
+        if (rotation_direction == 'cw') or (rotation_direction == 'ignore'):
+            self.register_output(
+                '_tangential_inflow_velocity', 
+                1 * _inflow_z * csdl.cos(_theta) +
+                1 * _inflow_y * csdl.sin(_theta) + 
+                _radius * _angular_speed
+            )
+        else: 
+            self.register_output(
+                '_tangential_inflow_velocity', 
+                -1 * _inflow_z * csdl.cos(_theta) - 
+                1 * _inflow_y * csdl.sin(_theta) + 
+                _radius * _angular_speed
+            )
 

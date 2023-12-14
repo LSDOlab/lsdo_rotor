@@ -18,11 +18,11 @@ class StabilityAdapterModelCSDL(csdl.Model):
     def define(self):
         args = self.parameters['arguments']
         num_nodes = self.parameters['num_nodes']
-        ac_states = ['u', 'v', 'w', 'p', 'q', 'r', 'theta', 'phi']
+        ac_states = ['u', 'v', 'w', 'p', 'q', 'r', 'theta', 'phi', 'psi', 'x', 'y', 'z']
         special_cases = self.parameters['neglect']
         for key, value in args.items():
             if key in ac_states:
-                csdl_var = self.declare_variable(key, shape=(num_nodes * 9, ))
+                csdl_var = self.declare_variable(key, shape=(num_nodes * 13, ))
                 self.register_output(name=f'{key}_exp', var=csdl_var * 1)
             elif key in special_cases:
                 csdl_var = self.declare_variable(key, shape=value.shape)
@@ -31,18 +31,18 @@ class StabilityAdapterModelCSDL(csdl.Model):
                 csdl_var = self.declare_variable(key, shape=value.shape)
                 if len(value.shape) == 1 and value.shape[0] == 1:
                     # print(key, value.shape)
-                    csdl_var_exp = csdl.expand(csdl_var, shape=(num_nodes * 9, ))
+                    csdl_var_exp = csdl.expand(csdl_var, shape=(num_nodes * 13, ))
                     self.register_output(name=f'{key}_exp', var=csdl_var_exp)
                 elif len(value.shape) == 1 and value.shape[0] != 1:
-                    # print(key, (9, ) + value.shape)
-                    csdl_var_exp = csdl.reshape(csdl.expand(csdl_var, shape=(9, ) + value.shape, indices='i->ji'), new_shape=(9, value.shape[0]))
+                    # print(key, (13, ) + value.shape)
+                    csdl_var_exp = csdl.reshape(csdl.expand(csdl_var, shape=(13, ) + value.shape, indices='i->ji'), new_shape=(13, value.shape[0]))
                     self.register_output(name=f'{key}_exp', var=csdl_var_exp)
                 elif len(value.shape) == 2:
                     if num_nodes == value.shape[0]:
-                        csdl_var_exp = csdl.reshape(csdl.expand(csdl_var, shape=(9, ) + value.shape, indices='ij->kij'), new_shape=(9*num_nodes, value.shape[1]))
+                        csdl_var_exp = csdl.reshape(csdl.expand(csdl_var, shape=(13, ) + value.shape, indices='ij->kij'), new_shape=(13*num_nodes, value.shape[1]))
                         self.register_output(name=f'{key}_exp', var=csdl_var_exp)
                     elif num_nodes == value.shape[1]:
-                        csdl_var_exp = csdl.reshape(csdl.expand(csdl_var, shape=(9, ) + value.shape, indices='ij->kij'), new_shape=(9*num_nodes, value.shape[0]))
+                        csdl_var_exp = csdl.reshape(csdl.expand(csdl_var, shape=(13, ) + value.shape, indices='ij->kij'), new_shape=(13*num_nodes, value.shape[0]))
                         self.register_output(name=f'{key}_exp', var=csdl_var_exp)
                 elif len(value.shape) > 2:
                     raise NotImplementedError
@@ -53,7 +53,7 @@ class BEM(m3l.ExplicitOperation):
     def initialize(self, kwargs):
         self.parameters.declare('num_nodes', types=int)
         self.parameters.declare('BEM_parameters', types=BEMParameters)
-        
+        self.parameters.declare('rotation_direction', values=['cw', 'ccw', 'ignore'], default='cw', allow_none=False)
         self._stability_flag = False
         super().initialize(kwargs=kwargs)
 
@@ -62,19 +62,21 @@ class BEM(m3l.ExplicitOperation):
         from lsdo_rotor.core.BEM.BEM_model import BEMModel
         num_nodes = self.parameters['num_nodes']
         bem_parameters = self.parameters['BEM_parameters']
+        rotation_direction = self.parameters['rotation_direction']
         if self._stability_flag:
             csdl_model = StabilityAdapterModelCSDL(
                 arguments=self.arguments,
                 num_nodes=num_nodes,
-                neglect=['chord_profile', 'chord_cp', 'twist_profile','twist_cp', 'propeller_radius']
+                neglect=['chord_dist', 'chord_cp', 'twist_profile','twist_cp', 'R', 'reference_point']
                 
             )
 
             solver_model = BEMModel(
                 BEM_parameters=bem_parameters,
-                num_nodes=num_nodes * 9,
+                num_nodes=num_nodes * 13,
                 operation=self,
                 stability_flag=self._stability_flag,
+                rotation_direction=rotation_direction,
             )
 
             operation_name = self.parameters['name']
@@ -88,6 +90,7 @@ class BEM(m3l.ExplicitOperation):
                 BEM_parameters=bem_parameters,
                 num_nodes=num_nodes,
                 operation=self,
+                rotation_direction=rotation_direction,
             )
 
 
@@ -97,7 +100,8 @@ class BEM(m3l.ExplicitOperation):
                  thrust_vector : m3l.Variable, thrust_origin : m3l.Variable,
                  atmosphere : AtmosphericProperties, blade_chord : Union[m3l.Variable, None] = None,
                  blade_twist : Union[m3l.Variable, None] = None, blade_chord_cp : Union[m3l.Variable, None] = None,
-                 blade_twist_cp : Union[m3l.Variable, None] = None, reference_point : m3l.Variable=None) -> BEMOutputs:
+                 blade_twist_cp : Union[m3l.Variable, None] = None, reference_point : m3l.Variable=None,
+                 in_plane_1 : Union[m3l.Variable, None]=None, in_plane_2 : Union[m3l.Variable, None]=None, cg_vec : m3l.Variable=None) -> BEMOutputs:
         """
         This method evaluates BEM and returns a data class with top-level analysis outputs
 
@@ -132,6 +136,8 @@ class BEM(m3l.ExplicitOperation):
         self.arguments['q'] = ac_states.q
         self.arguments['r'] = ac_states.r
         self.arguments['theta'] = ac_states.theta
+        self.arguments['phi'] = ac_states.phi
+        self.arguments['psi'] = ac_states.psi
         
         self.arguments['rpm'] = rpm
 
@@ -140,9 +146,14 @@ class BEM(m3l.ExplicitOperation):
         self.arguments['speed_of_sound'] = atmosphere.speed_of_sound
 
         self.arguments['R'] = rotor_radius
-        self.arguments['thrust_vector'] = thrust_vector
+        self.arguments['tv'] = thrust_vector
         self.arguments['to'] = thrust_origin
         
+        if cg_vec == None:
+            self.arguments['eval_point'] = m3l.Variable(shape=(3, ), value=np.array([0., 0., 0.,]))
+        else:
+            self.arguments['eval_point'] = cg_vec
+
         if reference_point == None:
             self.arguments['reference_point'] = m3l.Variable(shape=(3, ), value=np.array([0., 0., 0.,]))
         else:
@@ -158,48 +169,101 @@ class BEM(m3l.ExplicitOperation):
         elif blade_twist_cp:
             self.arguments['twist_cp'] = blade_twist_cp
 
+        if in_plane_1 is None:
+            self.arguments['in_plane_1'] = m3l.Variable(shape=(3, ), name='in_plane_1', value=np.array([1., 0., 0.]))
+        else:
+            self.arguments['in_plane_1'] = in_plane_1
+
+        if in_plane_2 is None:
+            self.arguments['in_plane_2'] = m3l.Variable(shape=(3, ), name='in_plane_2', value=np.array([0., 1., 0.]))
+        else:
+            self.arguments['in_plane_2'] = in_plane_2
 
         num_radial = self.parameters['BEM_parameters'].parameters['num_radial'] 
         num_tangential = self.parameters['BEM_parameters'].parameters['num_tangential']
 
-        forces = m3l.Variable(name='F', shape=(num_nodes, 3), operation=self)
-        moments = m3l.Variable(name='M', shape=(num_nodes, 3), operation=self)
-        C_T = m3l.Variable(name='C_T', shape=(num_nodes, ), operation=self)
-        C_Q = m3l.Variable(name='C_Q', shape=(num_nodes, ), operation=self)
-        Q = m3l.Variable(name='Q', shape=(num_nodes, ), operation=self)
-        T = m3l.Variable(name='T', shape=(num_nodes, ), operation=self)
-        eta = m3l.Variable(name='eta', shape=(num_nodes, ), operation=self)
-        FOM = m3l.Variable(name='FOM', shape=(num_nodes, ), operation=self)
-        dT = m3l.Variable(name='_dT', shape=(num_nodes, num_radial, num_tangential), operation=self)
-        dQ = m3l.Variable(name='_dQ', shape=(num_nodes, num_radial, num_tangential), operation=self)
-        dD = m3l.Variable(name='_dD', shape=(num_nodes, num_radial, num_tangential), operation=self)
-        u_x = m3l.Variable(name='_ux', shape=(num_nodes, num_radial, num_tangential), operation=self)
-        phi = m3l.Variable(name='_phi', shape=(num_nodes, num_radial, num_tangential), operation=self)
-
-        bem_outputs = BEMOutputs(
-            forces=forces,
-            moments=moments,
-            T=T,
-            C_T=C_T,
-            Q=Q,
-            C_Q=C_Q,
-            eta=eta,
-            FOM=FOM,
-            dT=dT,
-            dQ=dQ,
-            dD=dD,
-            u_x=u_x,
-            phi=phi,
-        )
-
         if self._stability_flag:
-            F_perturbed = m3l.Variable(name='F_perturbed', shape=(8, 3), operation=self)
-            M_perturbed = m3l.Variable(name='M_perturbed', shape=(8, 3), operation=self)
+            num_nodes *= 13
+            forces = m3l.Variable(name=f'{self.name}.F', shape=(num_nodes, 3), operation=self)
+            moments = m3l.Variable(name=f'{self.name}.M', shape=(num_nodes, 3), operation=self)
+            Q = m3l.Variable(name=f'{self.name}.Q', shape=(num_nodes,), operation=self)
+            T = m3l.Variable(name=f'{self.name}.T', shape=(num_nodes,), operation=self)
+            C_T = m3l.Variable(name=f'{self.name}.C_T', shape=(num_nodes,), operation=self)
+            C_Q = m3l.Variable(name=f'{self.name}.C_Q', shape=(num_nodes,), operation=self)
+            dT = m3l.Variable(name=f'{self.name}._dT', shape=(num_nodes, num_radial, num_tangential), operation=self)
+            dQ = m3l.Variable(name=f'{self.name}._dQ', shape=(num_nodes, num_radial, num_tangential), operation=self)
+            dD = m3l.Variable(name=f'{self.name}._dD', shape=(num_nodes, num_radial, num_tangential), operation=self)
+            u_x = m3l.Variable(name=f'{self.name}._ux', shape=(num_nodes, num_radial, num_tangential), operation=self)
+            phi = m3l.Variable(name=f'{self.name}._phi', shape=(num_nodes, num_radial, num_tangential), operation=self)
+            eta = m3l.Variable(name=f'{self.name}.eta', shape=(num_nodes, ), operation=self)
+            FOM = m3l.Variable(name=f'{self.name}.FOM', shape=(num_nodes, ), operation=self)
+        
+            BEM_outputs = BEMOutputs(
+                    forces=forces,
+                    moments=moments,
+                    T=T,
+                    C_T=C_T,
+                    Q=Q,
+                    C_Q=C_Q,
+                    eta=eta,
+                    FOM=FOM,
+                    dT=dT,
+                    dQ=dQ,
+                    dD=dD,
+                    u_x=u_x,
+                    phi=phi,
+                    # forces_perturbed = F_perturbed,
+                    # moments_perturbed = M_perturbed,
+                )
+            if blade_chord_cp is not None:
+                chord_profile = m3l.Variable(name=f'{self.name}.chord_profile', shape=(num_radial, ), operation=self)
+                BEM_outputs._chord_profile = chord_profile
 
-            bem_outputs.forces_perturbed = F_perturbed
-            bem_outputs.moments_perturbed = M_perturbed
+            if blade_twist_cp is not None:
+                twist_profile = m3l.Variable(name=f'{self.name}.twist_profile', shape=(num_radial, ), operation=self)
+                BEM_outputs._twist_profile = twist_profile
+            
 
-        return bem_outputs
+        else:
+            forces = m3l.Variable(name='F', shape=(num_nodes, 3), operation=self)
+            moments = m3l.Variable(name='M', shape=(num_nodes, 3), operation=self)
+            Q = m3l.Variable(name='Q', shape=(num_nodes,), operation=self)
+            T = m3l.Variable(name='T', shape=(num_nodes,), operation=self)
+            C_T = m3l.Variable(name='C_T', shape=(num_nodes,), operation=self)
+            C_Q = m3l.Variable(name='C_Q', shape=(num_nodes,), operation=self)
+            dT = m3l.Variable(name='_dT', shape=(num_nodes, num_radial, num_tangential), operation=self)
+            dQ = m3l.Variable(name='_dQ', shape=(num_nodes, num_radial, num_tangential), operation=self)
+            dD = m3l.Variable(name='_dD', shape=(num_nodes, num_radial, num_tangential), operation=self)
+            u_x = m3l.Variable(name='_ux', shape=(num_nodes, num_radial, num_tangential), operation=self)
+            phi = m3l.Variable(name='_phi', shape=(num_nodes, num_radial, num_tangential), operation=self)
+            eta = m3l.Variable(name='eta', shape=(num_nodes, ), operation=self)
+            FOM = m3l.Variable(name='FOM', shape=(num_nodes, ), operation=self)
+        
+            BEM_outputs = BEMOutputs(
+                forces=forces,
+                moments=moments,
+                T=T,
+                C_T=C_T,
+                Q=Q,
+                C_Q=C_Q,
+                eta=eta,
+                FOM=FOM,
+                dT=dT,
+                dQ=dQ,
+                dD=dD,
+                u_x=u_x,
+                phi=phi,
+            )
+
+            if blade_chord_cp is not None:
+                chord_profile = m3l.Variable(name=f'chord_profile', shape=(num_radial, ), operation=self)
+                BEM_outputs._chord_profile = chord_profile
+
+            if blade_twist_cp is not None:
+                twist_profile = m3l.Variable(name=f'twist_profile', shape=(num_radial, ), operation=self)
+                BEM_outputs._twist_profile = twist_profile
+
+        return BEM_outputs
         
 
 class BEMParameters(m3l.ExplicitOperation):
@@ -228,10 +292,16 @@ class BEMParameters(m3l.ExplicitOperation):
         self.name = self.parameters['name']
 
 
+def check_same_length(*lists):
+    return all(len(lst) == len(lists[0]) for lst in lists)
 
+def are_objects_of_same_type(*objects):
+    return all(isinstance(obj, type(objects[0])) for obj in objects)
+
+def check_required_string(required_strings, given_strings):
+    return all(entry in required_strings for entry in given_strings)
 
 def evaluate_multiple_BEM_models(
-        num_instances : int,
         name_prefix : str,
         bem_parameters : BEMParameters,
         bem_mesh_list : List[RotorMeshes],
@@ -240,23 +310,44 @@ def evaluate_multiple_BEM_models(
         atmoshpere : AtmosphericProperties,
         num_nodes : int = 1, 
         m3l_model : m3l.Model=None,
+        rotation_direction_list : List[str]=None,
+        chord_cp : bool = False,
+        twist_cp : bool = False
 ) -> List[BEMOutputs]:
     """
     Helper function to create multiple BEM instances at once
     """
 
-    if len(bem_mesh_list) != num_instances:
-        raise ValueError("'num_instance' not equal to number of mesh instances contained in 'bem_mesh_list'")
-    elif len(rpm_list) != num_instances:
-        raise ValueError("number of rpm variables contained in 'rpm_list' not equal to 'num_instance'")
+    if rotation_direction_list is not None:
+        if not are_objects_of_same_type(bem_mesh_list, rpm_list, rotation_direction_list):
+            raise TypeError("bem_mesh_list, rpm_list, and rotation_direction_list must all be lists")
+        if not check_same_length(bem_mesh_list, rpm_list, rotation_direction_list):    
+            raise ValueError("bem_mesh_list, rpm_list, and rotation_direction_list must all have the same length")
+        if not check_required_string(required_strings=['cw', 'ccw'], given_strings=rotation_direction_list):
+            raise ValueError("rotation_direction can only be 'cw' or 'ccw'")
+    else:
+        if not are_objects_of_same_type(bem_mesh_list, rpm_list):
+            raise TypeError("bem_mesh_list, rpm_list must all be lists")
+        if not check_same_length(bem_mesh_list, rpm_list):    
+            raise ValueError("bem_mesh_list, rpm_list must all have the same length")
+    
+    num_instances = len(rpm_list)
 
     bem_output_list = []
     for i in range(num_instances):
-        bem_instance = BEM(
-            name=f'{name_prefix}_{i}',
-            BEM_parameters=bem_parameters,
-            num_nodes=num_nodes,
-        )
+        if rotation_direction_list is not None:
+            bem_instance = BEM(
+                name=f'{name_prefix}_{i}',
+                BEM_parameters=bem_parameters,
+                num_nodes=num_nodes,
+                rotation_direction=rotation_direction_list[i],
+            )
+        else:
+            bem_instance = BEM(
+                name=f'{name_prefix}_{i}',
+                BEM_parameters=bem_parameters,
+                num_nodes=num_nodes,
+            )
 
         bem_mesh = bem_mesh_list[i]
         rpm = rpm_list[i]
@@ -265,10 +356,23 @@ def evaluate_multiple_BEM_models(
         chord_profile = bem_mesh.chord_profile
         twist_profile = bem_mesh.twist_profile
 
-        bem_outputs = bem_instance.evaluate(ac_states=ac_states, rpm=rpm, atmosphere=atmoshpere, 
+
+        if (chord_cp is True) and (twist_cp is True):
+            chord_cps = bem_mesh.chord_cps
+            twist_cps = bem_mesh.twist_cps
+
+            bem_outputs = bem_instance.evaluate(ac_states=ac_states, rpm=rpm, atmosphere=atmoshpere, 
+                                  thrust_origin=thrust_origin, thrust_vector=thrust_vector, rotor_radius=bem_mesh.radius,
+                                  blade_chord_cp=chord_cps, blade_twist_cp=twist_cps)
+            
+            
+        elif (chord_cp is False) and (twist_cp is False):
+            bem_outputs = bem_instance.evaluate(ac_states=ac_states, rpm=rpm, atmosphere=atmoshpere, 
                                   thrust_origin=thrust_origin, thrust_vector=thrust_vector, rotor_radius=bem_mesh.radius,
                                   blade_chord=chord_profile, blade_twist=twist_profile)
-        
+        else:
+            raise NotImplementedError
+
         if m3l_model is not None:
             m3l_model.register_output(bem_outputs)
         

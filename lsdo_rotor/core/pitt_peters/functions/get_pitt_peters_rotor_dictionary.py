@@ -15,6 +15,7 @@ def get_pitt_peters_rotor_dictionary(airfoil,interp,normal_inflow,in_plane_inflo
 
     # -------Azimuth angle-------- #
     v = np.linspace(0, np.pi * 2 - np.pi * 2 / nt, nt)
+    # v = np.linspace(0, np.pi * 2-1e-5, nt)
     theta = np.einsum(
         'ij,k->ijk',
         np.ones((ne, nr)),
@@ -22,17 +23,6 @@ def get_pitt_peters_rotor_dictionary(airfoil,interp,normal_inflow,in_plane_inflo
     )
     
     # -------non-dimensiona quantities ------- #
-    # print('------SHAPES-------')
-    # print(normal_inflow.shape)
-    # print(angular_speed.shape)
-    # print(rotor_radius.shape)
-    # print('------SHAPES-------')
-    # print('------SHAPES-------')
-   
-    # print(in_plane_inflow.shape)
-
-    # print('------SHAPES-------')
-
     mu_z = normal_inflow / angular_speed / csdl.expand(rotor_radius,(ne,))
     mu = in_plane_inflow / angular_speed / csdl.expand(rotor_radius,(ne,))
 
@@ -77,13 +67,10 @@ def get_pitt_peters_rotor_dictionary(airfoil,interp,normal_inflow,in_plane_inflo
               [+15 * np.pi / 64 * ((1-cos(Chi))/(1+cos(Chi)))**0.5, 4 * cos(Chi) / (1+cos(Chi)), 0],
               [0,0,4/(1+cos(Chi))]]))
 
-    # inv_L = L.inv()
-
     dL_dlambda = sym.diff(L,lamb_i_vec)
     dL_dlambda_func = lambdify((lamb_0,lamb_c,lamb_s,r_cos_psi_mean,r_sin_psi_mean,mu_z_sym,mu_sym),dL_dlambda,'numpy')
 
     dL_dmu = sym.diff(L,mu_sym)
-    # print(dL_dmu.shape,'SHAPE!!!!!')
     dL_dmu_func = lambdify((lamb_0,lamb_c,lamb_s,r_cos_psi_mean,r_sin_psi_mean,mu_z_sym,mu_sym),dL_dmu,'numpy')
     dL_dmu_z = sym.diff(L,mu_z_sym)
     dL_dmu_z_func = lambdify((lamb_0,lamb_c,lamb_s,r_cos_psi_mean,r_sin_psi_mean,mu_z_sym,mu_sym),dL_dmu_z,'numpy')

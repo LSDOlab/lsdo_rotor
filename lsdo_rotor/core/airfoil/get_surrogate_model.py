@@ -51,7 +51,7 @@ def get_surrogate_model(airfoil_name, custom_polar):
 
             # = = = = = = = = = = = =  NEW  = = = = = = = = = = = =
             interp = SurrogateSingleton(airfoil_name).surrogate_models[airfoil_name]
-            print('INTERP', interp)
+            # print('INTERP', interp)
             return interp
 
     # else:

@@ -60,7 +60,7 @@ class BILDPhiBracketedSearchModel(Model):
             maxiter=100,
             iprint=False,
         )
-        solve_residual_function.linear_solver = ScipyKrylov()
+        solve_residual_function.linear_solver = csdl.DirectSolver()
 
 
         Vx = self.declare_variable('u', shape=(num_nodes,))

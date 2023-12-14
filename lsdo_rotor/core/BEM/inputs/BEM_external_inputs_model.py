@@ -3,7 +3,6 @@ from csdl import Model
 import csdl
 
 
-
 class BEMExternalInputsModel(csdl.Model):
     def initialize(self):
         self.parameters.declare('shape', types=tuple)
@@ -12,22 +11,23 @@ class BEMExternalInputsModel(csdl.Model):
     def define(self):
         shape = self.parameters['shape']
         shape = (shape[0], shape[1], shape[2])
-        
         r_h_percent = self.parameters['hub_radius_percent']
         
         num_nodes = num_evaluations = shape[0]
         num_radial = shape[1]
         num_tangential = shape[2]
-        
 
         proj_vec = np.array([0,1,0]).reshape(1,3)
         projection_vec = self.create_input('projection_vector',val=proj_vec)
 
-
+        in_plane_1 = self.declare_variable('in_plane_1', shape=(num_nodes, 3))
+        in_plane_2 = self.declare_variable('in_plane_2', shape=(num_nodes, 3))
        
         ft2m = 1/3.281
         rotor_radius = self.declare_variable(name='propeller_radius', shape=(1,), units='m') #* ft2m / 2
-        # self.print_var(rotor_radius)
+        to = self.declare_variable(name='thrust_origin', shape=(num_nodes, 3), val=0)
+        ep = self.declare_variable(name='eval_point', shape=(num_nodes, 3), val=0)
+        rot_vec = to - ep
 
         # Inputs changing across conditions (segments)
         omega = self.declare_variable('rpm', shape=(num_nodes, 1), units='rpm') #* 1000
@@ -39,17 +39,25 @@ class BEMExternalInputsModel(csdl.Model):
         V = self.create_output('velocity_vector', shape=(num_nodes,3), units='m/s')
 
         p = self.declare_variable(name='p', shape=(num_nodes, 1), units='rad/s', val=0)
-        self.register_output('p1',p*1)
         q = self.declare_variable(name='q', shape=(num_nodes, 1), units='rad/s', val=0)
-        self.register_output('q1',q*1)
         r = self.declare_variable(name='r', shape=(num_nodes, 1), units='rad/s', val=0)
-        self.register_output('r1',r*1)
+        rotations = self.create_output(name='rotation', shape=(num_nodes, 3))
+        rotations[:, 0] = p
+        rotations[:, 1] = q
+        rotations[:, 2] = r
+
+        lin_vel = csdl.cross(rotations, rot_vec,  axis=1) * 1
+        self.register_output('linear_velocity_due_to_rotations', lin_vel)
+
+        u = u + lin_vel[:, 0]
+        v = v + lin_vel[:, 1]
+        w = w + lin_vel[:, 2]
+
 
         inflow_velocity = self.create_output('inflow_velocity', shape=shape + (3,))
         x_dir = np.zeros((num_evaluations,3))
         y_dir = np.zeros((num_evaluations,3))
         z_dir = np.zeros((num_evaluations,3))
-       
 
         R_h = r_h_percent * rotor_radius
         self.register_output('hub_radius',R_h)
@@ -62,10 +70,13 @@ class BEMExternalInputsModel(csdl.Model):
             normal_vec = thrust_vector[i,:]
             normal_vec_axial_induced = -1 * normal_vec 
             
-            in_plane_1 = projection_vec - csdl.expand(csdl.dot(projection_vec,normal_vec,axis=1),(1,3) ) * normal_vec
-            in_plane_ey =  (in_plane_1 / csdl.expand(csdl.pnorm(in_plane_1,pnorm_type=2),(1,3)))
-            in_plane_ex = csdl.cross(normal_vec, in_plane_ey, axis=1)
+            # in_plane_1 = projection_vec - csdl.expand(csdl.dot(projection_vec,normal_vec,axis=1),(1,3) ) * normal_vec
+            # in_plane_ey =  (in_plane_1 / csdl.expand(csdl.pnorm(in_plane_1,pnorm_type=2),(1,3)))
+            # in_plane_ex = csdl.cross(normal_vec, in_plane_ey, axis=1)
             
+
+            in_plane_ex = in_plane_1[i, :] / csdl.expand(csdl.pnorm(in_plane_1[i, :]), (1, 3))
+            in_plane_ey = in_plane_2[i, :] / csdl.expand(csdl.pnorm(in_plane_2[i, :]), (1, 3))
             
             x_dir[i,0] = 1 
             y_dir[i,1] = 1
@@ -85,8 +96,8 @@ class BEMExternalInputsModel(csdl.Model):
             inflow_velocity[i,:,:,1] = csdl.expand(-in_plane_ux,(1,num_radial,num_tangential,1),'i->ijkl')
             inflow_velocity[i,:,:,2] = csdl.expand(in_plane_uy, (1,num_radial,num_tangential,1),'i->ijkl')
         
-        self.register_output('in_plane_ex', in_plane_ex)
-        self.register_output('in_plane_ey', in_plane_ey)
+        # self.register_output('in_plane_ex', in_plane_ex)
+        # self.register_output('in_plane_ey', in_plane_ey)
         self.create_input('x_dir',val=x_dir)
         self.create_input('y_dir',val=y_dir)
         self.create_input('z_dir',val=z_dir)

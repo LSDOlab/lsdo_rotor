@@ -64,17 +64,17 @@ class PittPetersPostProcessModel(Model):
         # self.print_var(ux)
         phi = csdl.arctan(ux/Vt)
         alpha = twist - phi 
-        self.register_output('AoA_pitt_peters_2', alpha)
+        self.register_output('alpha_distribution', alpha)
 
         airfoil_model_output = csdl.custom(Re,alpha, op= PittPetersAirfoilModel2(
                 rotor=rotor,
                 shape=shape,
             ))
-        self.register_output('Cl_pitt_peters_2',airfoil_model_output[0])
-        self.register_output('Cd_pitt_peters_2',airfoil_model_output[1])
+        self.register_output('Cl', airfoil_model_output[0])
+        self.register_output('Cd',airfoil_model_output[1])
 
-        Cl = self.declare_variable('Cl_pitt_peters_2', shape=shape)
-        Cd = self.declare_variable('Cd_pitt_peters_2', shape=shape)
+        Cl = airfoil_model_output[0] # self.declare_variable('Cl', shape=shape)
+        Cd = airfoil_model_output[1] # self.declare_variable('Cd', shape=shape)
         
         Cx = (Cl * csdl.cos(phi) - Cd * csdl.sin(phi))
         Ct = (Cl * csdl.sin(phi) + Cd * csdl.cos(phi))
@@ -99,45 +99,37 @@ class PittPetersPostProcessModel(Model):
         C_L = csdl.reshape(csdl.sum(dC_L, axes = (1,2))  / shape[2], new_shape = (shape[0],1))
         C_M = csdl.reshape(csdl.sum(dC_M, axes = (1,2))  / shape[2], new_shape = (shape[0],1))
 
-
-
         T = csdl.sum(dT, axes = (1,2)) / shape[2]
         Q = csdl.sum(dQ, axes = (1,2)) / shape[2]
 
-        # print(n[:,0,0].shape,'SHAPE')
-        # print(T.shape,'SHAPE')
 
         C_T_2 = T / rho / (csdl.sum(n,axes=(1,2))/shape[1]/shape[2])**2 / (2 * csdl.sum(rotor_radius,axes=(1,2))/shape[1]/shape[2])**4
         C_Q = Q / rho / (csdl.sum(n,axes=(1,2))/shape[1]/shape[2])**2 / (2 * csdl.sum(rotor_radius,axes=(1,2))/shape[1]/shape[2])**5
         C_P = 2 * np.pi * C_Q
         J = csdl.sum((Vx / n /  (2 * rotor_radius)),axes=(1,2))/shape[1]/shape[2]
         eta = C_T_2 * J / C_P
+        FOM = C_T * (C_T/2)**0.5 / csdl.reshape(C_P, new_shape=(shape[0], 1))
 
         Q_total = csdl.sum(Q)
         T_total = csdl.sum(T)
 
-        self.register_output('total_torque', Q)
-        self.register_output('total_torque_all_rotors', Q_total)
-        self.register_output('total_thrust_all_rotors', T_total)
-        # self.register_output('total_thrust', T)
-        self.register_output('T', T)
-        # self.print_var(T)
-        self.register_output('_dT',dT)
-        self.register_output('_dQ',dQ)
-        self.register_output('_ux',ux)
-        self.register_output('_dD', dDrag)
+        self.register_output('total_torque_all_rotors_compute', Q_total)
+        self.register_output('total_thrust_all_rotors_compute', T_total)
+        self.register_output('Q_compute', Q)
+        self.register_output('T_compute', T)
+        self.register_output('_dT_compute',dT)
+        self.register_output('_dQ_compute',dQ)
+        self.register_output('_ux_compute',ux)
+        self.register_output('_dD_compute', dDrag)
+        self.register_output('phi_distribution', phi)
 
-        self.register_output('C_T',C_T)
-        self.register_output('dC_T',dC_T)
-        self.register_output('C_T_2',C_T_2)
-        self.register_output('C_Q',C_Q)
-        self.register_output('C_P',C_P)
-        self.register_output('eta',eta)
-        self.register_output('C_L',C_L)
-        self.register_output('C_M',C_M)
-        self.register_output('J',J)
-
-
-
-        # self.add_objective('total_torque')
-        # self.add_constraint('T', equals = 1500)
+        self.register_output('C_T_compute',C_T)
+        self.register_output('dC_T_compute',dC_T)
+        self.register_output('C_T_2_compute',C_T_2)
+        self.register_output('C_Q_compute',C_Q)
+        self.register_output('C_P_compute',C_P)
+        self.register_output('eta_compute',eta)
+        self.register_output('FOM_compute',FOM)
+        self.register_output('C_L_compute',C_L)
+        self.register_output('C_M_compute',C_M)
+        self.register_output('J_compute',J)

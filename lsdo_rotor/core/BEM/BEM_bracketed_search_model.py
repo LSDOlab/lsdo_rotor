@@ -180,6 +180,7 @@ class BEMBracketedSearchGroup(Model):
         solve_BEM_residual.declare_state('phi_distribution', residual='BEM_residual_function', bracket=(eps, np.pi/2 - eps))
 
         if rotor['use_airfoil_ml'] is False and rotor['use_custom_airfoil_ml'] is False:
+            model.tol_user = 1e-12
             sigma = self.declare_variable('_blade_solidity', shape=shape)
             Vx = self.declare_variable('_axial_inflow_velocity', shape=shape)
             Vt = self.declare_variable('_tangential_inflow_velocity', shape=shape)
@@ -195,6 +196,7 @@ class BEMBracketedSearchGroup(Model):
             phi = solve_BEM_residual(sigma,Vx,Vt,radius,rotor_radius,hub_radius,chord,twist,Re, expose=['Cl', 'Cd', 'alpha_distribution'])
 
         elif rotor['use_airfoil_ml'] is True and rotor['use_custom_airfoil_ml'] is False:
+            model.tol_user = 6e-6
             sigma = self.declare_variable('_blade_solidity', shape=shape)
             Vx = self.declare_variable('_axial_inflow_velocity', shape=shape)
             Vt = self.declare_variable('_tangential_inflow_velocity', shape=shape)
@@ -214,6 +216,7 @@ class BEMBracketedSearchGroup(Model):
 
         
         elif rotor['use_airfoil_ml'] is False and rotor['use_custom_airfoil_ml'] is True:
+            model.tol_user = 6e-6
             sigma = self.declare_variable('_blade_solidity', shape=shape)
             Vx = self.declare_variable('_axial_inflow_velocity', shape=shape)
             Vt = self.declare_variable('_tangential_inflow_velocity', shape=shape)
