@@ -41,12 +41,14 @@ class RotorMeshes:
         y22 = geometry.evaluate(self._y22_parametric)
         
         
-        disk_in_plane_y = y11 - y12
-        disk_in_plane_x = y21 - y22
+        disk_in_plane_y = (y11 - y12)*1
+        disk_in_plane_x = (y21 - y22)*1
         
-        rotor_radius = m3l.norm((y12 - y11)/2)
-        rotor_radius_2 = m3l.norm((y22 - y21)/2)
-        thrust_vector = m3l.cross(disk_in_plane_x, disk_in_plane_y)
+        rotor_radius = m3l.norm(disk_in_plane_y/ 2) 
+        # rotor_radius = m3l.norm((y12 - y11)/2)
+        rotor_radius_2 = m3l.norm(disk_in_plane_x / 2)
+        # rotor_radius_2 = m3l.norm((y22 - y21)/2)
+        thrust_vector = m3l.cross(disk_in_plane_x*1, disk_in_plane_y*1)
         thrust_unit_vector = thrust_vector / m3l.norm(thrust_vector)
 
         self.thrust_origin = disk_origin

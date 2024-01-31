@@ -110,5 +110,5 @@ class BEMRunModel(Model):
             # self.print_var(T_BILD_csdl)
             thrust_constraint = T_BEM-T_BILD_csdl
             self.register_output('thrust_constraint_optimization', thrust_constraint)
-            self.add_constraint('thrust_constraint_optimization', equals=0)
+            # self.add_constraint('thrust_constraint_optimization', equals=0)
             self.add_objective('total_energy_loss', scaler=1/E_total_BILD)

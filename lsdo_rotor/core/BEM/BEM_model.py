@@ -207,6 +207,7 @@ class BEMModel(Model):
                 ))
                 self.register_output('chord_profile', comp_chord)
 
+        # self.print_var(radius)
 
         if 'twist_profile' in arguments:
             self.declare_variable('twist_profile', shape=(num_radial, ))
@@ -384,11 +385,11 @@ class BEMModel(Model):
             self.register_output('C_T', C_T*1)
             self.register_output('C_Q', C_Q*1)
             self.register_output('Q', Q*1)
-            self.add_constraint('Q', lower=20, scaler=1e-2)
+            # self.add_constraint('Q', lower=20, scaler=1e-2)
             self.register_output('T', T*1)
-            self.add_constraint('T', lower=10, scaler=1e-3)
+            # self.add_constraint('T', lower=10, scaler=1e-3)
             self.register_output('eta', eta*1)
-            # self.add_constraint('eta', upper=0.999)
+            # # self.add_constraint('eta', upper=0.999)
             self.register_output('FOM', FOM*1)
             self.register_output('_dT', dT*1)
             self.register_output('_dQ', dQ*1)

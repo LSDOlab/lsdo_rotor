@@ -137,6 +137,6 @@ class BEMInducedVelocityModel(Model):
         # self.add_objective('total_torque')
         # self.add_objective('total_energy_loss')
 
-        # self.add_constraint('T', equals = 230)
+        # # self.add_constraint('T', equals = 230)
 
 

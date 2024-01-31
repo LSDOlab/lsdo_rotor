@@ -75,8 +75,8 @@ csdl_model = rotor_analysis.assemble_csdl()
 sim = Simulator(csdl_model, analytics=True)
 sim.run()
 print('finish sim.run()')
-print_output(sim, rotor=rotor_analysis, comprehensive_print=False, write_to_csv=False)
-exit()
+# print_output(sim, rotor=rotor_analysis, comprehensive_print=False, write_to_csv=False)
+# exit()
 
 # Optimization
 prob = CSDLProblem(problem_name='bem_blade_shape_optimization', simulator=sim)
