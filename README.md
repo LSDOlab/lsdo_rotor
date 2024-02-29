@@ -9,6 +9,8 @@ This is a python package for low-fidelity rotor aerodynamic analysis and design.
 ### Step 0: Install miniconda
 Next, we recommend the usage of Python environments. [Miniconda](https://docs.conda.io/projects/miniconda/en/latest/) is a compact version of the Anaconda Python distribution. Please see the link to find detailed installation instructions and verify that the commands below to install Miniconda are up-to-date. 
 
+NOTE that in the commands below, the assumed operating system is Linux. If you are on MacOS or Windows, refer to the Miniconda link for OS specific instructions.
+
 ```sh
 mkdir -p ~/miniconda3
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
