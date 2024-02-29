@@ -55,7 +55,6 @@ cd ..
 
 ### step 4: Install modOpt
 modOpt is an optimizaiton library through which we can make use of state-of-art optimization algorithms and even create our own optimizaiton algorithms.
-This package is needed only temporarily and will not be required long-term.
 ```sh
 git clone https://github.com/LSDOlab/modopt.git
 cd modopt
