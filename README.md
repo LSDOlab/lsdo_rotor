@@ -82,6 +82,7 @@ git pull
 To see whether the installation was successful, you can try running an example script by typing the following commands
 
 ```sh
+cd lsdo_rotor
 cd examples
 python ex_BEM_rotor_optimization.py
 ```
