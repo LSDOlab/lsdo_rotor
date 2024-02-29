@@ -1,6 +1,8 @@
 """
 Example 1: Rotor chord and twist profile optimization using blade element momentum theory
+"""
 
+"""
 Overview
 --------
 In this example we optimize a rotor blade subject to a thrust constraint. The blade is discretized
