@@ -2,7 +2,7 @@ import numpy as np
 from csdl import Model
 import csdl
 from lsdo_rotor.core.BEM.BEM_rotor_parameters import BEMRotorParameters
-import openmdao.api as om
+
 
 class BILDAirfoilParametersModel(csdl.CustomExplicitOperation):
     def initialize(self):

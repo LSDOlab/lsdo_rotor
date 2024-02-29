@@ -3,7 +3,6 @@ from csdl import Model
 import csdl
 # from lsdo_rotor.rotor_parameters import RotorParameters
 from lsdo_rotor.core.BEM.BEM_rotor_parameters import BEMRotorParameters
-import openmdao.api as om
 
 
 

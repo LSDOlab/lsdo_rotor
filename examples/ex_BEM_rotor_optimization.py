@@ -11,12 +11,9 @@ from modopt.csdl_library import CSDLProblem
 rotor_analysis = RotorAnalysis()
 
 u = rotor_analysis.create_input('u', val=50.06, shape=(1, ))
-v = rotor_analysis.create_input('v', val=0.0, shape=(1, ))
-w = rotor_analysis.create_input('w', val=0.0, shape=(1, ))
-theta = rotor_analysis.create_input('theta', val=np.deg2rad(0))
 altitude = rotor_analysis.create_input('altitude', val=0, shape=(1, ))
 
-ac_states = AcStates(u=u, v=v, w=w, theta=theta)
+ac_states = AcStates(u=u)
 atmos = get_atmosphere(altitude=altitude)
 
 
@@ -72,10 +69,11 @@ sim = Simulator(csdl_model, analytics=True)
 sim.run()
 
 print_output(sim, rotor=rotor_analysis, comprehensive_print=True, write_to_csv=True, file_name='test_BEM')
+
 # Optimization
 prob = CSDLProblem(problem_name='bem_blade_shape_optimization', simulator=sim)
 optimizer = SLSQP(prob, maxiter=100, ftol=1E-7)
 optimizer.solve()
 optimizer.print_results()
 
-print_output(sim, rotor=rotor_analysis, comprehensive_print=True, write_to_csv=True, file_name='test_BEM')
+print_output(sim, rotor=rotor_analysis, comprehensive_print=True, write_to_csv=True, file_name='test_BEM_opt')

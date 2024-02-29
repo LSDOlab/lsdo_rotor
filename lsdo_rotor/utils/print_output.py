@@ -15,7 +15,7 @@ def print_output(sim, rotor, comprehensive_print : bool=False, write_to_csv : bo
         raise TypeError("argument 'file_name' must be of type string")
 
     bem_object = None
-    for operation_name, operation in rotor.operations.items():
+    for operation in rotor.operations:
         if isinstance(operation, BEM):
             bem_object = operation
 

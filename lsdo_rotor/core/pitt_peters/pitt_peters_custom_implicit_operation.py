@@ -7,7 +7,6 @@ from lsdo_rotor.core.pitt_peters.pitt_peters_rotor_parameters import PittPetersR
 # # from lsdo_rotor.rotor_parameters import RotorParameters
 # from lsdo_rotor.functions.get_rotor_dictionary import get_rotor_dictionary
 # from lsdo_rotor.core.airfoil.get_surrogate_model import get_surrogate_model
-# import openmdao.api as om
 from scipy.linalg import block_diag
 import time
 import sympy as sym 
@@ -826,7 +825,7 @@ class PittPetersCustomImplicitOperation(csdl.CustomImplicitOperation):
 # from csdl import Model
 # import csdl
 # # from lsdo_rotor.rotor_parameters import RotorParameters
-# import openmdao.api as om
+# import .api as om
 # from scipy.linalg import block_diag
 
 
