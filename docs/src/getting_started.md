@@ -58,6 +58,7 @@ modOpt is an optimizaiton library through which we can make use of state-of-art 
 git clone https://github.com/LSDOlab/modopt.git
 cd modopt
 pip install -e .
+git checkout 3cd2de77b6a551b208501d395fa970b511998b8b
 cd ..
 ```
 
