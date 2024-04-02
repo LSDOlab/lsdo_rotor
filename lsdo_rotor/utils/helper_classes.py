@@ -24,20 +24,20 @@ class AcStates:
     """
     Container data class for aircraft states and time (time for steady cases only)
     """
-    u: m3l.Variable = None
-    v: m3l.Variable = None
-    w: m3l.Variable = None
-    p: m3l.Variable = None
-    q: m3l.Variable = None
-    r: m3l.Variable = None
-    theta: m3l.Variable = None
-    phi: m3l.Variable = None
-    gamma: m3l.Variable = None
-    psi: m3l.Variable = None
-    x: m3l.Variable = None
-    y: m3l.Variable = None
-    z: m3l.Variable = None
-    time: m3l.Variable = None
+    u: m3l.Variable = m3l.Variable(shape=(1, ), value=0.)
+    v: m3l.Variable = m3l.Variable(shape=(1, ), value=0.)
+    w: m3l.Variable = m3l.Variable(shape=(1, ), value=0.)
+    p: m3l.Variable = m3l.Variable(shape=(1, ), value=0.)
+    q: m3l.Variable = m3l.Variable(shape=(1, ), value=0.)
+    r: m3l.Variable = m3l.Variable(shape=(1, ), value=0.)
+    theta: m3l.Variable = m3l.Variable(shape=(1, ), value=0.)
+    phi: m3l.Variable = m3l.Variable(shape=(1, ), value=0.)
+    gamma: m3l.Variable = m3l.Variable(shape=(1, ), value=0.)
+    psi: m3l.Variable = m3l.Variable(shape=(1, ), value=0.)
+    x: m3l.Variable = m3l.Variable(shape=(1, ), value=0.)
+    y: m3l.Variable = m3l.Variable(shape=(1, ), value=0.)
+    z: m3l.Variable = m3l.Variable(shape=(1, ), value=0.)
+    time: m3l.Variable = m3l.Variable(shape=(1, ), value=0.)
     stability_flag: bool = False
 
 

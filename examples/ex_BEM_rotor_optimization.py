@@ -172,4 +172,4 @@ optimizer.solve()
 optimizer.print_results()
 
 # print outputs again after optimization
-print_output(sim, rotor=rotor_analysis, comprehensive_print=True, write_to_csv=True, file_name='test_BEM_opt')
+print_output(sim, rotor=rotor_analysis, comprehensive_print=False, write_to_csv=True, file_name='test_BEM_opt')
